@@ -8,3 +8,6 @@ numpy
 scikit-learn
 pandas
 python-dotenv
+dj-database-url
+whitenoise
+
