@@ -1,0 +1,56 @@
+from rest_framework import serializers
+from .models import Message, Notification, Feedback
+from apps.users.serializers import UserSerializer
+from apps.users.models import User
+from apps.academics.models import Subject
+
+class MessageSerializer(serializers.ModelSerializer):
+    sender_details = UserSerializer(source='sender', read_only=True)
+    receiver = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), write_only=True)
+    receiver_details = UserSerializer(source='receiver', read_only=True)
+
+    class Meta:
+        model = Message
+        fields = [
+            'id', 'sender', 'sender_details', 
+            'receiver', 'receiver_details', 
+            'subject', 'body', 'is_read', 'timestamp'
+        ]
+        read_only_fields = ['id', 'sender', 'timestamp', 'is_read']
+
+    def validate_receiver(self, value):
+        user = self.context['request'].user
+        if value.college != user.college:
+            raise serializers.ValidationError("You can only message users within your college.")
+        return value
+
+    def create(self, validated_data):
+        user = self.context['request'].user
+        validated_data['sender'] = user
+        validated_data['college'] = user.college
+        return super().create(validated_data)
+
+class NotificationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Notification
+        fields = ['id', 'recipient', 'title', 'message', 'notification_type', 'is_read', 'created_at']
+        read_only_fields = ['id', 'recipient', 'created_at']
+
+class FeedbackSerializer(serializers.ModelSerializer):
+    student_name = serializers.SerializerMethodField()
+    subject_name = serializers.CharField(source='subject.name', read_only=True)
+
+    class Meta:
+        model = Feedback
+        fields = ['id', 'student', 'student_name', 'subject', 'subject_name', 'rating', 'comments', 'is_anonymous', 'created_at']
+        read_only_fields = ['id', 'student', 'created_at']
+
+    def get_student_name(self, obj):
+        if obj.is_anonymous:
+            return "Anonymous"
+        return obj.student.get_full_name()
+    
+    def create(self, validated_data):
+        user = self.context['request'].user
+        validated_data['student'] = user
+        return super().create(validated_data)

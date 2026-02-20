@@ -1,0 +1,23 @@
+import api from '../api/axios';
+
+const BATCH_API = '/academics/batches/';
+
+export const batchService = {
+    getAll: async () => {
+        const response = await api.get(BATCH_API);
+        return response.data;
+    },
+    create: async (data) => {
+        const response = await api.post(BATCH_API, data);
+        return response.data;
+    },
+    update: async (id, data) => {
+        const response = await api.patch(`${BATCH_API}${id}/`, data);
+        return response.data;
+    },
+    delete: async (id) => {
+        await api.delete(`${BATCH_API}${id}/`);
+    }
+};
+
+export default batchService;
