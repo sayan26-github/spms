@@ -1,0 +1,102 @@
+Creating test database for alias 'default'...
+System check identified some issues:
+
+WARNINGS:
+academics.Batch: (models.W042) Auto-created primary key used when not defining a primary key type, by default 'django.db.models.AutoField'.
+	HINT: Configure the DEFAULT_AUTO_FIELD setting or the AppConfig.default_auto_field attribute to point to a subclass of AutoField, e.g. 'django.db.models.BigAutoField'.
+academics.College: (models.W042) Auto-created primary key used when not defining a primary key type, by default 'django.db.models.AutoField'.
+	HINT: Configure the DEFAULT_AUTO_FIELD setting or the AppConfig.default_auto_field attribute to point to a subclass of AutoField, e.g. 'django.db.models.BigAutoField'.
+academics.Department: (models.W042) Auto-created primary key used when not defining a primary key type, by default 'django.db.models.AutoField'.
+	HINT: Configure the DEFAULT_AUTO_FIELD setting or the AppConfig.default_auto_field attribute to point to a subclass of AutoField, e.g. 'django.db.models.BigAutoField'.
+academics.Enrollment: (models.W042) Auto-created primary key used when not defining a primary key type, by default 'django.db.models.AutoField'.
+	HINT: Configure the DEFAULT_AUTO_FIELD setting or the AppConfig.default_auto_field attribute to point to a subclass of AutoField, e.g. 'django.db.models.BigAutoField'.
+academics.Resource: (models.W042) Auto-created primary key used when not defining a primary key type, by default 'django.db.models.AutoField'.
+	HINT: Configure the DEFAULT_AUTO_FIELD setting or the AppConfig.default_auto_field attribute to point to a subclass of AutoField, e.g. 'django.db.models.BigAutoField'.
+academics.Student: (models.W042) Auto-created primary key used when not defining a primary key type, by default 'django.db.models.AutoField'.
+	HINT: Configure the DEFAULT_AUTO_FIELD setting or the AppConfig.default_auto_field attribute to point to a subclass of AutoField, e.g. 'django.db.models.BigAutoField'.
+academics.Subject: (models.W042) Auto-created primary key used when not defining a primary key type, by default 'django.db.models.AutoField'.
+	HINT: Configure the DEFAULT_AUTO_FIELD setting or the AppConfig.default_auto_field attribute to point to a subclass of AutoField, e.g. 'django.db.models.BigAutoField'.
+academics.Teacher: (models.W042) Auto-created primary key used when not defining a primary key type, by default 'django.db.models.AutoField'.
+	HINT: Configure the DEFAULT_AUTO_FIELD setting or the AppConfig.default_auto_field attribute to point to a subclass of AutoField, e.g. 'django.db.models.BigAutoField'.
+analytics.Prediction: (models.W042) Auto-created primary key used when not defining a primary key type, by default 'django.db.models.AutoField'.
+	HINT: Configure the DEFAULT_AUTO_FIELD setting or the AppConfig.default_auto_field attribute to point to a subclass of AutoField, e.g. 'django.db.models.BigAutoField'.
+assessments.Assessment: (models.W042) Auto-created primary key used when not defining a primary key type, by default 'django.db.models.AutoField'.
+	HINT: Configure the DEFAULT_AUTO_FIELD setting or the AppConfig.default_auto_field attribute to point to a subclass of AutoField, e.g. 'django.db.models.BigAutoField'.
+assessments.Marks: (models.W042) Auto-created primary key used when not defining a primary key type, by default 'django.db.models.AutoField'.
+	HINT: Configure the DEFAULT_AUTO_FIELD setting or the AppConfig.default_auto_field attribute to point to a subclass of AutoField, e.g. 'django.db.models.BigAutoField'.
+attendance.Attendance: (models.W042) Auto-created primary key used when not defining a primary key type, by default 'django.db.models.AutoField'.
+	HINT: Configure the DEFAULT_AUTO_FIELD setting or the AppConfig.default_auto_field attribute to point to a subclass of AutoField, e.g. 'django.db.models.BigAutoField'.
+attendance.ClassSession: (models.W042) Auto-created primary key used when not defining a primary key type, by default 'django.db.models.AutoField'.
+	HINT: Configure the DEFAULT_AUTO_FIELD setting or the AppConfig.default_auto_field attribute to point to a subclass of AutoField, e.g. 'django.db.models.BigAutoField'.
+communication.Feedback: (models.W042) Auto-created primary key used when not defining a primary key type, by default 'django.db.models.AutoField'.
+	HINT: Configure the DEFAULT_AUTO_FIELD setting or the AppConfig.default_auto_field attribute to point to a subclass of AutoField, e.g. 'django.db.models.BigAutoField'.
+communication.Message: (models.W042) Auto-created primary key used when not defining a primary key type, by default 'django.db.models.AutoField'.
+	HINT: Configure the DEFAULT_AUTO_FIELD setting or the AppConfig.default_auto_field attribute to point to a subclass of AutoField, e.g. 'django.db.models.BigAutoField'.
+communication.Notification: (models.W042) Auto-created primary key used when not defining a primary key type, by default 'django.db.models.AutoField'.
+	HINT: Configure the DEFAULT_AUTO_FIELD setting or the AppConfig.default_auto_field attribute to point to a subclass of AutoField, e.g. 'django.db.models.BigAutoField'.
+
+System check identified 16 issues (0 silenced).
+EE.EEF.
+======================================================================
+ERROR: test_assessments_e2e (unittest.loader._FailedTest.test_assessments_e2e)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_assessments_e2e
+Traceback (most recent call last):
+  File "C:\Program Files\Python314\Lib\unittest\loader.py", line 426, in _find_test_path
+    module = self._get_module_from_name(name)
+  File "C:\Program Files\Python314\Lib\unittest\loader.py", line 367, in _get_module_from_name
+    __import__(name)
+    ~~~~~~~~~~^^^^^^
+  File "C:\Users\Sayan\Documents\spms\backend\test_assessments_e2e.py", line 2, in <module>
+    import requests
+ModuleNotFoundError: No module named 'requests'
+
+
+======================================================================
+ERROR: test_attendance_e2e (unittest.loader._FailedTest.test_attendance_e2e)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_attendance_e2e
+Traceback (most recent call last):
+  File "C:\Program Files\Python314\Lib\unittest\loader.py", line 426, in _find_test_path
+    module = self._get_module_from_name(name)
+  File "C:\Program Files\Python314\Lib\unittest\loader.py", line 367, in _get_module_from_name
+    __import__(name)
+    ~~~~~~~~~~^^^^^^
+  File "C:\Users\Sayan\Documents\spms\backend\test_attendance_e2e.py", line 2, in <module>
+    import requests
+ModuleNotFoundError: No module named 'requests'
+
+
+======================================================================
+ERROR: test_get_feedback_anonymity (apps.communication.test_notifications_feedback.NotificationFeedbackTests.test_get_feedback_anonymity)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Sayan\Documents\spms\backend\apps\communication\test_notifications_feedback.py", line 100, in test_get_feedback_anonymity
+    self.assertEqual(response.data[0]['student_name'], "Anonymous")
+                     ~~~~~~~~~~~~~^^^
+KeyError: 0
+
+======================================================================
+ERROR: test_get_feedback_named (apps.communication.test_notifications_feedback.NotificationFeedbackTests.test_get_feedback_named)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Sayan\Documents\spms\backend\apps\communication\test_notifications_feedback.py", line 116, in test_get_feedback_named
+    self.assertEqual(response.data[0]['student_name'], "Student One")
+                     ~~~~~~~~~~~~~^^^
+KeyError: 0
+
+======================================================================
+FAIL: test_get_notifications (apps.communication.test_notifications_feedback.NotificationFeedbackTests.test_get_notifications)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\Users\Sayan\Documents\spms\backend\apps\communication\test_notifications_feedback.py", line 59, in test_get_notifications
+    self.assertEqual(len(response.data), 1)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 4 != 1
+
+----------------------------------------------------------------------
+Ran 7 tests in 5.112s
+
+FAILED (failures=1, errors=4)
+Destroying test database for alias 'default'...
+Found 7 test(s).

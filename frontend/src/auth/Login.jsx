@@ -4,8 +4,7 @@ import { useNavigate } from "react-router-dom";
 import {
     Lock, User, ArrowRight, ShieldCheck, BookOpen, GraduationCap, Building2
 } from "lucide-react";
-import api from "../api/axios";
-import { ENDPOINTS } from "../api/endpoints";
+import { authService } from "../services/authService";
 
 /* ─── role config ─── */
 const ROLES = [
@@ -59,7 +58,7 @@ const Login = () => {
     useEffect(() => {
         const fetchColleges = async () => {
             try {
-                const res = await api.get(ENDPOINTS.COLLEGES);
+                const res = await authService.getColleges();
                 setColleges(res.data);
                 if (res.data.length > 0) {
                     setSelectedCollege(res.data[0]);
@@ -93,19 +92,15 @@ const Login = () => {
     };
 
     return (
-        <div className="bg-premium-gradient min-h-screen flex items-center justify-center p-4">
-            {/* decorative orbs */}
-            <div className="fixed top-[-20%] right-[-10%] w-[500px] h-[500px] rounded-full bg-indigo-600/10 blur-3xl pointer-events-none" />
-            <div className="fixed bottom-[-20%] left-[-10%] w-[400px] h-[400px] rounded-full bg-purple-600/10 blur-3xl pointer-events-none" />
-
-            <div className="w-full max-w-md animate-fade-in relative">
+        <div className="bg-brand-bg min-h-screen flex items-center justify-center p-4">
+            <div className="w-full max-w-md animate-fade-in relative z-10">
                 {/* ── Branding ── */}
                 <div className="text-center mb-8">
-                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-indigo-600 shadow-lg shadow-indigo-600/30 mb-4">
+                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-indigo-600 shadow-md shadow-indigo-600/20 mb-4">
                         <span className="text-white text-2xl font-extrabold">S</span>
                     </div>
-                    <h1 className="text-3xl font-extrabold text-white tracking-tight">SPMS</h1>
-                    <p className="text-slate-400 text-sm mt-1">
+                    <h1 className="text-3xl font-extrabold text-brand-text tracking-tight">SPMS</h1>
+                    <p className="text-brand-muted text-sm mt-1">
                         Student Performance Monitoring System
                     </p>
                 </div>
@@ -113,24 +108,24 @@ const Login = () => {
                 {/* ── College Name ── */}
                 {!collegesLoading && selectedCollege && (
                     <div className="text-center mb-6 animate-fade-in">
-                        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10">
-                            <Building2 className="w-4 h-4 text-indigo-400" />
+                        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-brand-border shadow-sm">
+                            <Building2 className="w-4 h-4 text-indigo-500" />
                             {colleges.length > 1 ? (
                                 <select
                                     value={selectedCollege.code}
                                     onChange={(e) =>
                                         setSelectedCollege(colleges.find((c) => c.code === e.target.value))
                                     }
-                                    className="bg-transparent text-white font-semibold text-sm outline-none cursor-pointer"
+                                    className="bg-transparent text-brand-text font-semibold text-sm outline-none cursor-pointer"
                                 >
                                     {colleges.map((c) => (
-                                        <option key={c.code} value={c.code} className="bg-gray-900">
+                                        <option key={c.code} value={c.code}>
                                             {c.name}
                                         </option>
                                     ))}
                                 </select>
                             ) : (
-                                <span className="text-white font-semibold text-sm">
+                                <span className="text-brand-text font-semibold text-sm">
                                     {selectedCollege.name}
                                 </span>
                             )}
@@ -139,7 +134,7 @@ const Login = () => {
                 )}
 
                 {/* ── Role Tabs ── */}
-                <div className="flex gap-2 mb-5 p-1 rounded-xl bg-white/5 border border-white/10">
+                <div className="flex gap-2 mb-5 p-1 rounded-xl bg-white border border-brand-border shadow-sm">
                     {ROLES.map((r, idx) => {
                         const Icon = r.icon;
                         const active = idx === activeRole;
@@ -151,8 +146,8 @@ const Login = () => {
                                     setError("");
                                 }}
                                 className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 cursor-pointer ${active
-                                        ? `bg-gradient-to-r ${r.gradient} text-white shadow-md ${r.glow}`
-                                        : "text-slate-400 hover:text-white hover:bg-white/5"
+                                    ? `bg-indigo-50 text-indigo-600`
+                                    : "text-brand-muted hover:text-brand-text hover:bg-slate-50"
                                     }`}
                             >
                                 <Icon className="w-4 h-4" />
@@ -163,23 +158,23 @@ const Login = () => {
                 </div>
 
                 {/* ── Card ── */}
-                <div className={`glass-card rounded-2xl p-8 shadow-2xl border-t-2 ${role.accent} transition-all duration-300`}>
+                <div className={`modern-card border-t-4 ${role.accent} rounded-2xl p-8`}>
                     {/* role header */}
                     <div className="flex items-center gap-3 mb-6">
-                        <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${role.gradient} flex items-center justify-center shadow-lg ${role.glow}`}>
+                        <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${role.gradient} flex items-center justify-center shadow-md ${role.glow}`}>
                             <RoleIcon className="w-5 h-5 text-white" />
                         </div>
                         <div>
-                            <h2 className="text-lg font-bold text-white">
+                            <h2 className="text-lg font-bold text-brand-text">
                                 {role.label} Login
                             </h2>
-                            <p className="text-slate-400 text-xs">{role.desc}</p>
+                            <p className="text-brand-muted text-xs">{role.desc}</p>
                         </div>
                     </div>
 
                     {/* error */}
                     {error && (
-                        <div className="mb-4 p-3 text-sm text-red-300 bg-red-500/10 border border-red-500/20 rounded-xl">
+                        <div className="mb-4 p-3 text-sm text-red-700 bg-red-50 border border-red-200 rounded-xl">
                             {error}
                         </div>
                     )}
@@ -187,17 +182,17 @@ const Login = () => {
                     {/* form */}
                     <form onSubmit={handleLogin} className="space-y-5">
                         <div>
-                            <label className="block text-sm font-medium text-slate-300 mb-1.5">
+                            <label className="block text-sm font-medium text-slate-700 mb-1.5">
                                 Registration Number
                             </label>
                             <div className="relative">
                                 <div className="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none">
-                                    <User className="w-4 h-4 text-slate-500" />
+                                    <User className="w-4 h-4 text-slate-400" />
                                 </div>
                                 <input
                                     type="text"
                                     required
-                                    className="w-full pl-10 pr-4 py-2.5 bg-white/5 border border-white/10 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus-glow"
+                                    className="w-full pl-10 pr-4 py-2.5 modern-input rounded-xl placeholder-slate-400"
                                     placeholder={role.placeholder}
                                     value={regNumber}
                                     onChange={(e) => setRegNumber(e.target.value)}
@@ -206,17 +201,17 @@ const Login = () => {
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-slate-300 mb-1.5">
+                            <label className="block text-sm font-medium text-slate-700 mb-1.5">
                                 Password
                             </label>
                             <div className="relative">
                                 <div className="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none">
-                                    <Lock className="w-4 h-4 text-slate-500" />
+                                    <Lock className="w-4 h-4 text-slate-400" />
                                 </div>
                                 <input
                                     type="password"
                                     required
-                                    className="w-full pl-10 pr-4 py-2.5 bg-white/5 border border-white/10 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus-glow"
+                                    className="w-full pl-10 pr-4 py-2.5 modern-input rounded-xl placeholder-slate-400"
                                     placeholder="••••••••"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
@@ -227,7 +222,7 @@ const Login = () => {
                         <button
                             type="submit"
                             disabled={loading}
-                            className={`w-full flex items-center justify-center gap-2 px-4 py-3 font-semibold text-white bg-gradient-to-r ${role.gradient} rounded-xl hover:brightness-110 active:scale-[0.98] disabled:opacity-50 shadow-lg ${role.glow} cursor-pointer transition-all duration-200`}
+                            className={`w-full flex items-center justify-center gap-2 px-4 py-3 font-semibold text-white bg-gradient-to-r ${role.gradient} rounded-xl hover:brightness-110 active:scale-[0.98] disabled:opacity-50 shadow-md ${role.glow} cursor-pointer transition-all duration-200`}
                         >
                             {loading ? (
                                 <span className="inline-block w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -241,7 +236,7 @@ const Login = () => {
                     </form>
                 </div>
 
-                <p className="text-center text-slate-500 text-xs mt-6">
+                <p className="text-center text-brand-muted text-xs mt-6">
                     © 2026 SPMS • AI-Driven Student Performance Monitoring
                 </p>
             </div>

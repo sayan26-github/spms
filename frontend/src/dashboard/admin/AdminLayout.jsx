@@ -8,14 +8,18 @@ import {
     GraduationCap,
     MessageSquare,
     ClipboardCheck,
-    BarChart3
+    BarChart3,
+    ShieldCheck
 } from 'lucide-react';
 import { useAuth } from '../../auth/AuthContext';
+import AdminProfileModal from './AdminProfileModal';
+import { useState } from 'react';
 
 const AdminLayout = () => {
     const { logout, user } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
+    const [isProfileOpen, setIsProfileOpen] = useState(false);
 
     const handleLogout = () => {
         logout();
@@ -38,36 +42,38 @@ const AdminLayout = () => {
     };
 
     return (
-        <div className="flex h-screen bg-slate-50">
-            {/* Sidebar */}
-            <div className="w-64 sidebar-bg text-white flex flex-col relative overflow-hidden">
-                {/* Subtle decorative glow */}
-                <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-600/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="flex h-screen bg-brand-bg relative overflow-hidden">
+            {/* Ambient Background (Optional gentle pattern could go here, but omitted for Minimalist Frost) */}
 
+            {/* Sidebar */}
+            <div className="w-64 bg-white border-r border-brand-border flex flex-col relative z-20 shadow-sm">
                 {/* Logo area */}
-                <div className="p-5 border-b border-white/5 flex items-center space-x-3 relative z-10">
-                    <div className="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center shadow-lg shadow-indigo-600/30">
+                <div className="p-5 border-b border-brand-border flex items-center space-x-3 relative z-10">
+                    <div className="w-10 h-10 rounded-xl bg-brand-primary flex items-center justify-center shadow-md shadow-indigo-600/20">
                         <span className="text-lg font-extrabold text-white">S</span>
                     </div>
                     <div>
-                        <h1 className="text-lg font-bold tracking-wide">SPMS</h1>
-                        <p className="text-[11px] text-slate-400 leading-none">College Administration</p>
+                        <h1 className="text-lg font-bold text-brand-text tracking-wide">SPMS</h1>
+                        <p className="text-[11px] text-brand-muted leading-none">College Administration</p>
                     </div>
                 </div>
 
                 {/* User card */}
-                <div className="mx-4 mt-5 mb-4 px-4 py-3 rounded-xl bg-white/5 border border-white/5">
-                    <p className="text-[10px] text-slate-500 uppercase font-semibold tracking-wider mb-1">Logged in as</p>
-                    <p className="font-semibold text-sm truncate text-white/90">
+                <div
+                    onClick={() => setIsProfileOpen(true)}
+                    className="mx-4 mt-5 mb-4 px-4 py-3 rounded-xl bg-slate-50 border border-brand-border cursor-pointer hover:bg-slate-100 transition-colors group"
+                >
+                    <p className="text-[10px] text-brand-muted uppercase font-semibold tracking-wider mb-1 group-hover:text-brand-primary transition-colors">Logged in as</p>
+                    <p className="font-semibold text-sm truncate text-brand-text">
                         {user?.first_name} {user?.last_name}
                     </p>
-                    <span className="inline-block mt-1 text-[10px] font-medium px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/20">
+                    <span className="inline-block mt-1 text-[10px] font-medium px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-700 border border-indigo-200">
                         {user?.role}
                     </span>
                 </div>
 
                 {/* Navigation */}
-                <nav className="flex-1 px-3 space-y-0.5 overflow-y-auto">
+                <nav className="flex-1 px-3 space-y-1 overflow-y-auto">
                     {navItems.map((item) => {
                         const active = isActivePath(item);
                         const Icon = item.icon;
@@ -76,25 +82,36 @@ const AdminLayout = () => {
                                 key={item.path}
                                 to={item.path}
                                 className={`flex items-center space-x-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${active
-                                    ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/25'
-                                    : 'text-slate-400 hover:bg-white/5 hover:text-white'
+                                    ? 'bg-brand-primaryLight text-brand-primary shadow-sm'
+                                    : 'text-brand-muted hover:bg-slate-50 hover:text-brand-text'
                                     }`}
                             >
                                 <Icon size={18} strokeWidth={active ? 2.5 : 2} />
                                 <span>{item.label}</span>
                                 {active && (
-                                    <span className="ml-auto w-1.5 h-1.5 rounded-full bg-white" />
+                                    <span className="ml-auto w-1.5 h-1.5 rounded-full bg-brand-primary" />
                                 )}
                             </Link>
                         );
                     })}
                 </nav>
 
-                {/* Logout */}
-                <div className="p-3 border-t border-white/5">
+                {/* Footer Actions (Manage Admins & Logout) */}
+                <div className="p-4 border-t border-brand-border space-y-1">
+                    <Link
+                        to="/admin/manage-admins"
+                        className={`flex items-center space-x-3 px-3 py-2.5 w-full rounded-xl text-sm font-medium transition-colors ${isActivePath({ path: '/admin/manage-admins', exact: true })
+                                ? 'bg-brand-primaryLight text-brand-primary shadow-sm'
+                                : 'text-brand-muted hover:bg-slate-50 hover:text-brand-text'
+                            }`}
+                    >
+                        <ShieldCheck size={18} strokeWidth={isActivePath({ path: '/admin/manage-admins', exact: true }) ? 2.5 : 2} />
+                        <span>Manage Admins</span>
+                    </Link>
+
                     <button
                         onClick={handleLogout}
-                        className="flex items-center space-x-3 px-3 py-2.5 w-full text-slate-400 hover:text-red-400 hover:bg-red-500/10 rounded-xl text-sm font-medium cursor-pointer"
+                        className="flex items-center space-x-3 px-3 py-2.5 w-full text-brand-muted hover:text-red-600 hover:bg-red-50 rounded-xl text-sm font-medium cursor-pointer transition-colors"
                     >
                         <LogOut size={18} />
                         <span>Logout</span>
@@ -108,6 +125,12 @@ const AdminLayout = () => {
                     <Outlet />
                 </div>
             </div>
+
+            {/* Modals */}
+            <AdminProfileModal
+                isOpen={isProfileOpen}
+                onClose={() => setIsProfileOpen(false)}
+            />
         </div>
     );
 };

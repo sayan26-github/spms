@@ -58,7 +58,7 @@ class ChangePasswordView(views.APIView):
             return Response({"detail": message}, status=status.HTTP_200_OK)
         return Response({"detail": message}, status=status.HTTP_400_BAD_REQUEST)
 
-class UserProfileView(generics.RetrieveAPIView):
+class UserProfileView(generics.RetrieveUpdateAPIView):
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = UserSerializer
 
@@ -85,3 +85,26 @@ class UserViewSet(viewsets.ModelViewSet):
         if self.action == 'create':
             return UserCreateSerializer
         return UserSerializer
+
+from rest_framework import mixins
+
+class AdminManagementViewSet(mixins.CreateModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet):
+    """
+    ViewSet specifically for managing other Admins.
+    Allows listing and creating admins within the same college.
+    Does not allow updating or deleting admins.
+    """
+    permission_classes = [permissions.IsAuthenticated, IsAdmin]
+    
+    def get_queryset(self):
+        return User.objects.filter(college=self.request.user.college, role='ADMIN')
+
+    def get_serializer_class(self):
+        if self.action == 'create':
+            return UserCreateSerializer
+        return UserSerializer
+
+    def perform_create(self, serializer):
+        # Force the role to ADMIN irrespective of user input, 
+        # and assign the current admin's college.
+        serializer.save(college=self.request.user.college, role='ADMIN')

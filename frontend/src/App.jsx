@@ -26,6 +26,7 @@ import EnrollDeptPage from './dashboard/admin/EnrollDeptPage';
 import EnrollSubjectPage from './dashboard/admin/EnrollSubjectPage';
 import EnrollStudentsPage from './dashboard/admin/EnrollStudentsPage';
 import AdminAnalytics from './dashboard/admin/AdminAnalytics';
+import ManageAdmins from './dashboard/admin/ManageAdmins';
 
 import MessagesPage from './dashboard/messages/MessagesPage';
 
@@ -64,6 +65,7 @@ function App() {
             <Route path="enrollments/students/batch/:batchId/dept/:deptId" element={<EnrollSubjectPage />} />
             <Route path="enrollments/students/batch/:batchId/dept/:deptId/subject/:subjectId" element={<EnrollStudentsPage />} />
             <Route path="analytics" element={<AdminAnalytics />} />
+            <Route path="manage-admins" element={<ManageAdmins />} />
           </Route>
 
           {/* Communication */}

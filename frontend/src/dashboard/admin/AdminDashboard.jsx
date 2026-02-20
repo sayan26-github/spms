@@ -44,10 +44,10 @@ const AdminDashboard = () => {
         <div>
             {/* Header */}
             <div className="mb-8">
-                <h1 className="text-2xl font-extrabold text-gray-900 tracking-tight">
+                <h1 className="text-2xl font-extrabold text-brand-text tracking-tight">
                     Dashboard
                 </h1>
-                <p className="text-sm text-gray-500 mt-1">Overview of your institution's performance</p>
+                <p className="text-sm text-brand-muted mt-1">Overview of your institution's performance</p>
             </div>
 
             {/* Stats Grid */}
@@ -58,45 +58,45 @@ const AdminDashboard = () => {
                         <button
                             key={key}
                             onClick={link ? () => navigate(link) : undefined}
-                            className={`group relative bg-white rounded-2xl p-5 shadow-premium hover:shadow-premium-hover border border-gray-100/80 text-left animate-fade-in stagger-${idx + 1} ${link ? 'cursor-pointer' : 'cursor-default'}`}
+                            className={`group relative modern-card rounded-2xl p-5 text-left animate-fade-in stagger-${idx + 1} ${link ? 'cursor-pointer' : 'cursor-default'} transition-all hover:-translate-y-1`}
                             style={{ opacity: 0 }}
                         >
                             <div className="flex items-start justify-between">
-                                <div className={`w-11 h-11 rounded-xl bg-gradient-to-br ${gradient} ${shadow} shadow-lg flex items-center justify-center`}>
+                                <div className={`w-11 h-11 rounded-xl bg-gradient-to-br ${gradient} shadow-sm flex items-center justify-center`}>
                                     <Icon className="text-white" size={20} strokeWidth={2.5} />
                                 </div>
                                 {link && (
-                                    <ArrowRight size={16} className="text-gray-300 group-hover:text-gray-500 group-hover:translate-x-0.5 transition-transform" />
+                                    <ArrowRight size={16} className="text-brand-muted group-hover:text-brand-primary group-hover:translate-x-0.5 transition-all" />
                                 )}
                             </div>
-                            <p className="mt-4 text-3xl font-extrabold text-gray-900 tracking-tight">
+                            <p className="mt-4 text-3xl font-extrabold text-brand-text tracking-tight">
                                 {value}
                             </p>
-                            <p className="text-sm text-gray-500 mt-0.5 font-medium">{label}</p>
+                            <p className="text-sm text-brand-muted mt-0.5 font-medium">{label}</p>
                         </button>
                     );
                 })}
             </div>
 
             {/* Quick Actions */}
-            <div className="bg-white rounded-2xl shadow-premium border border-gray-100/80 p-6">
+            <div className="modern-card rounded-2xl p-6">
                 <div className="flex items-center gap-2 mb-5">
-                    <TrendingUp size={18} className="text-indigo-500" />
-                    <h2 className="text-lg font-bold text-gray-900">Quick Actions</h2>
+                    <TrendingUp size={18} className="text-brand-primary" />
+                    <h2 className="text-lg font-bold text-brand-text">Quick Actions</h2>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     {QUICK_ACTIONS.map(({ label, icon: Icon, path, desc }) => (
                         <button
                             key={path}
                             onClick={() => navigate(path)}
-                            className="group flex items-start gap-3 p-4 rounded-xl border border-gray-100 hover:border-indigo-200 hover:bg-indigo-50/50 text-left cursor-pointer"
+                            className="group flex items-start gap-4 p-4 rounded-xl border border-brand-border hover:border-indigo-300 hover:bg-slate-50 text-left cursor-pointer transition-all focus-glow"
                         >
-                            <div className="w-9 h-9 rounded-lg bg-indigo-50 flex items-center justify-center flex-shrink-0 group-hover:bg-indigo-100">
-                                <Icon className="text-indigo-500" size={18} />
+                            <div className="w-10 h-10 rounded-xl bg-brand-primaryLight flex items-center justify-center flex-shrink-0 group-hover:bg-indigo-100 transition-colors">
+                                <Icon className="text-brand-primary" size={20} />
                             </div>
                             <div>
-                                <p className="font-semibold text-sm text-gray-800">{label}</p>
-                                <p className="text-xs text-gray-400 mt-0.5">{desc}</p>
+                                <p className="font-semibold text-sm text-brand-text">{label}</p>
+                                <p className="text-xs text-brand-muted mt-1">{desc}</p>
                             </div>
                         </button>
                     ))}

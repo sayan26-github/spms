@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { createPortal } from 'react-dom';
 import { Link, useNavigate } from "react-router-dom";
 import { academicService } from "../services/academicService";
 import { assessmentService } from "../services/assessmentService";
@@ -175,8 +176,8 @@ const AssessmentsPage = () => {
 
             {/* Modal - Simplified CSS */}
             {
-                showModal && (
-                    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black bg-opacity-50">
+                showModal && createPortal(
+                    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/40 backdrop-blur-sm">
                         <div className="bg-white rounded-lg shadow-xl w-full max-w-md mx-4 overflow-hidden">
                             <form onSubmit={handleCreateAssessment}>
                                 <div className="px-6 py-4 bg-gray-50 border-b border-gray-100 flex justify-between items-center">
@@ -242,7 +243,8 @@ const AssessmentsPage = () => {
                                 </div>
                             </form>
                         </div>
-                    </div>
+                    </div>,
+                    document.body
                 )
             }
         </div >

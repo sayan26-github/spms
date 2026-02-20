@@ -2,6 +2,7 @@ import api from '../api/axios';
 
 const ADMIN_API = {
     USERS: '/auth/users/',
+    ADMINS: '/auth/admins/',
     SUBJECTS: '/academics/subjects/',
     ENROLLMENTS: '/academics/enrollments/',
     TEACHERS: '/academics/teachers/',
@@ -25,6 +26,14 @@ export const adminService = {
     },
     createUser: async (userData) => {
         const response = await api.post(ADMIN_API.USERS, userData);
+        return response.data;
+    },
+    getAdmins: async () => {
+        const response = await api.get(ADMIN_API.ADMINS);
+        return response.data;
+    },
+    createAdmin: async (adminData) => {
+        const response = await api.post(ADMIN_API.ADMINS, adminData);
         return response.data;
     },
     updateUser: async (id, userData) => {

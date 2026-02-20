@@ -61,71 +61,71 @@ const StudentDashboard = ({ user }) => {
     }
 
     return (
-        <div className="space-y-6">
-            <header className="flex justify-between items-center">
-                <h2 className="text-2xl font-bold text-gray-800">Student Dashboard</h2>
-                <div className="text-sm text-gray-500">
+        <div className="space-y-6 relative z-10">
+            <header className="flex justify-between items-center modern-card p-6 rounded-2xl mb-6">
+                <h2 className="text-2xl font-bold text-brand-text">Student Dashboard</h2>
+                <div className="text-sm text-brand-muted">
                     {new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
                 </div>
             </header>
 
             <StudentRiskWidget />
 
-            <div className="bg-white rounded-lg shadow-sm p-6 mb-6 flex justify-between items-center">
+            <div className="modern-card rounded-lg p-6 mb-6 flex justify-between items-center">
                 <div>
-                    <h1 className="text-xl font-bold text-gray-900">Welcome, {user?.first_name}</h1>
-                    <p className="mt-1 text-sm text-gray-500">
+                    <h1 className="text-xl font-bold text-brand-text">Welcome, {user?.first_name}</h1>
+                    <p className="mt-1 text-sm text-brand-muted">
                         Overview of your enrolled subjects and performance.
                     </p>
                 </div>
-                <Link to="/messages" className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition shadow-sm font-medium">
+                <Link to="/messages" className="px-4 py-2 bg-brand-primary text-white rounded-lg hover:bg-indigo-500 transition shadow-sm font-medium">
                     Messages
                 </Link>
             </div>
 
             {subjects.length === 0 ? (
-                <div className="bg-white rounded-lg shadow p-6 text-center text-gray-500">
+                <div className="modern-card rounded-lg p-6 text-center text-brand-muted">
                     You are not enrolled in any subjects yet.
                 </div>
             ) : (
                 <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                     {subjects.map((subject) => (
-                        <div key={subject.id} className="bg-white overflow-hidden shadow rounded-lg hover:shadow-md transition-shadow">
+                        <div key={subject.id} className="modern-card overflow-hidden rounded-2xl hover:-translate-y-1 transition-all">
                             <div className="px-4 py-5 sm:p-6">
                                 <div className="flex items-center">
-                                    <div className="flex-shrink-0 bg-indigo-100 rounded-md p-3">
-                                        <BookOpen className="h-6 w-6 text-indigo-600" />
+                                    <div className="flex-shrink-0 bg-brand-primaryLight rounded-xl p-3">
+                                        <BookOpen className="h-6 w-6 text-brand-primary" />
                                     </div>
                                     <div className="ml-5 w-0 flex-1">
                                         <dl>
-                                            <dt className="text-sm font-medium text-gray-500 truncate">
+                                            <dt className="text-sm font-medium text-brand-muted truncate">
                                                 {subject.code}
                                             </dt>
-                                            <dd className="text-lg font-medium text-gray-900 truncate">
+                                            <dd className="text-lg font-medium text-brand-text truncate">
                                                 {subject.name}
                                             </dd>
                                         </dl>
                                     </div>
                                 </div>
 
-                                <div className="mt-6 border-t border-gray-100 pt-4 grid grid-cols-2 gap-4">
+                                <div className="mt-6 border-t border-brand-border pt-4 grid grid-cols-2 gap-4">
                                     <button
                                         onClick={() => setSelectedSubject(subject)}
-                                        className="col-span-2 flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-indigo-700 bg-indigo-50 hover:bg-indigo-100"
+                                        className="col-span-2 flex items-center justify-center px-4 py-2 border border-brand-border text-sm font-medium rounded-xl text-brand-primary bg-brand-primaryLight hover:bg-indigo-100 transition-colors"
                                     >
                                         <FileText className="mr-2 h-4 w-4" />
                                         View Resources
                                     </button>
                                     <Link
                                         to={`/student/attendance?subject=${subject.id}`}
-                                        className="flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-gray-700 bg-gray-50 hover:bg-gray-100"
+                                        className="flex items-center justify-center px-4 py-2 border border-brand-border text-sm font-medium rounded-xl text-slate-700 bg-slate-50 hover:bg-slate-100 transition-colors"
                                     >
                                         <UserCheck className="mr-2 h-4 w-4" />
                                         Attendance
                                     </Link>
                                     <Link
                                         to={`/student/marks?subject=${subject.id}`}
-                                        className="flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-gray-700 bg-gray-50 hover:bg-gray-100"
+                                        className="flex items-center justify-center px-4 py-2 border border-brand-border text-sm font-medium rounded-xl text-slate-700 bg-slate-50 hover:bg-slate-100 transition-colors"
                                     >
                                         <Award className="mr-2 h-4 w-4" />
                                         Marks

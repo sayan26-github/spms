@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 import { useNavigate, useParams } from 'react-router-dom';
 import { adminService } from '../../services/adminService';
 import batchService from '../../services/batchService';
@@ -175,8 +176,8 @@ const EnrollStudentsPage = () => {
             </div>
 
             {/* Edit Modal — Checklist */}
-            {showEdit && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+            {showEdit && createPortal(
+                <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4">
                     <div className="bg-white rounded-xl shadow-xl max-w-2xl w-full max-h-[90vh] flex flex-col">
                         {/* Header */}
                         <div className="flex items-center justify-between p-5 border-b">
@@ -260,7 +261,8 @@ const EnrollStudentsPage = () => {
                             </div>
                         </div>
                     </div>
-                </div>
+                </div>,
+                document.body
             )}
         </div>
     );

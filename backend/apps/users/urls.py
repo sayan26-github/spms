@@ -9,9 +9,10 @@ urlpatterns = [
 ]
 
 from rest_framework.routers import DefaultRouter
-from .views import UserViewSet
+from .views import UserViewSet, AdminManagementViewSet
 
 router = DefaultRouter()
 router.register(r'users', UserViewSet, basename='user')
+router.register(r'admins', AdminManagementViewSet, basename='admin')
 
 urlpatterns += router.urls

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { communicationService } from '../../services/communicationService';
 import { Mail, Send, Plus, User, ArrowLeft, CheckCircle } from 'lucide-react';
 import { useAuth } from '../../auth/AuthContext';
@@ -172,8 +173,8 @@ const MessagesPage = () => {
             </div>
 
             {/* Compose Modal */}
-            {isComposeOpen && (
-                <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+            {isComposeOpen && createPortal(
+                <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4">
                     <div className="bg-white rounded-xl shadow-2xl w-full max-w-lg overflow-hidden animate-in fade-in zoom-in duration-200">
                         <div className="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
                             <h3 className="text-lg font-bold text-gray-800">New Message</h3>
@@ -236,7 +237,8 @@ const MessagesPage = () => {
                             </div>
                         </form>
                     </div>
-                </div>
+                </div>,
+                document.body
             )}
         </div>
     );

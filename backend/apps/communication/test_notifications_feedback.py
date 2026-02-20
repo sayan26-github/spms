@@ -56,8 +56,9 @@ class NotificationFeedbackTests(APITransactionTestCase):
         url = reverse('notification-list')
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 1)
-        self.assertEqual(response.data[0]['title'], "Welcome")
+        self.assertEqual(len(response.data.get('results', response.data)), 1)
+        res_data = response.data.get('results', response.data)
+        self.assertEqual(res_data[0]['title'], "Welcome")
 
     def test_mark_notification_read(self):
         self.client.force_authenticate(user=self.student_user)
@@ -97,7 +98,8 @@ class NotificationFeedbackTests(APITransactionTestCase):
         url = reverse('feedback-list')
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data[0]['student_name'], "Anonymous")
+        res_data = response.data.get('results', response.data)
+        self.assertEqual(res_data[0]['student_name'], "Anonymous")
 
     def test_get_feedback_named(self):
         # Create named feedback
@@ -113,4 +115,5 @@ class NotificationFeedbackTests(APITransactionTestCase):
         url = reverse('feedback-list')
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data[0]['student_name'], "Student One")
+        res_data = response.data.get('results', response.data)
+        self.assertEqual(res_data[0]['student_name'], "Student One")

@@ -1,6 +1,5 @@
 import { createContext, useState, useEffect, useContext } from "react";
-import api from "../api/axios";
-import { ENDPOINTS } from "../api/endpoints";
+import { authService } from "../services/authService";
 
 const AuthContext = createContext();
 
@@ -21,11 +20,7 @@ export const AuthProvider = ({ children }) => {
 
     const login = async (registrationNumber, password, collegeCode = "IITB") => {
         try {
-            const response = await api.post(ENDPOINTS.LOGIN, {
-                registration_number: registrationNumber,
-                password,
-                college_code: collegeCode,
-            });
+            const response = await authService.login(registrationNumber, password, collegeCode);
 
             const { access, refresh, role, name, first_name, last_name, college } = response.data;
 
@@ -46,6 +41,13 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
+    const updateUser = (newUserData) => {
+        // Merge existing user data with new updates
+        const updatedUser = { ...user, ...newUserData };
+        setUser(updatedUser);
+        localStorage.setItem("user", JSON.stringify(updatedUser));
+    };
+
     const logout = () => {
         localStorage.removeItem("access_token");
         localStorage.removeItem("refresh_token");
@@ -54,7 +56,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ user, login, logout, loading }}>
+        <AuthContext.Provider value={{ user, login, logout, updateUser, loading }}>
             {!loading && children}
         </AuthContext.Provider>
     );

@@ -4,7 +4,8 @@ export const ENDPOINTS = {
     LOGIN: "/auth/login/",
     COLLEGES: "/auth/colleges/",
     REFRESH: "/auth/token/refresh/",
-    ME: "/users/me/",
+    PROFILE: "/auth/profile/",
+    ADMINS: "/auth/admins/",
 
     // Dashboard Metrics
     DASHBOARD_STATS: "/analytics/dashboard-stats/",

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { resourceService } from '../services/resourceService';
 import { Upload, Link, Type, X } from 'lucide-react';
 
@@ -47,8 +48,8 @@ const ResourceUploadModal = ({ subjectId, onClose, onUploadSuccess }) => {
         }
     };
 
-    return (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    return createPortal(
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4">
             <div className="bg-white rounded-xl shadow-2xl w-full max-w-md overflow-hidden animate-in fade-in zoom-in duration-200">
                 <div className="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
                     <h3 className="text-lg font-bold text-gray-800">Upload Resource</h3>
@@ -153,7 +154,8 @@ const ResourceUploadModal = ({ subjectId, onClose, onUploadSuccess }) => {
                     </div>
                 </form>
             </div>
-        </div>
+        </div>,
+        document.body
     );
 };
 

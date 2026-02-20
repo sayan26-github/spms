@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { adminService } from '../../services/adminService';
 import { Plus, Edit, Trash, Search, UserPlus } from 'lucide-react';
 
@@ -109,8 +110,8 @@ const UserManagement = () => {
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{user.registration_number}</td>
                                 <td className="px-6 py-4 whitespace-nowrap">
                                     <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${user.role === 'TEACHER' ? 'bg-green-100 text-green-800' :
-                                            user.role === 'ADMIN' ? 'bg-purple-100 text-purple-800' :
-                                                'bg-blue-100 text-blue-800'
+                                        user.role === 'ADMIN' ? 'bg-purple-100 text-purple-800' :
+                                            'bg-blue-100 text-blue-800'
                                         }`}>
                                         {user.role}
                                     </span>
@@ -127,9 +128,9 @@ const UserManagement = () => {
             </div>
 
             {/* Add User Modal */}
-            {showModal && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-                    <div className="bg-white rounded-lg max-w-md w-full p-6">
+            {showModal && createPortal(
+                <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4">
+                    <div className="bg-white rounded-lg max-w-md w-full p-6 shadow-2xl">
                         <h3 className="text-lg font-bold mb-4">Add New User</h3>
                         <form onSubmit={handleSubmit} className="space-y-4">
                             <div>
@@ -169,7 +170,8 @@ const UserManagement = () => {
                             </div>
                         </form>
                     </div>
-                </div>
+                </div>,
+                document.body
             )}
         </div>
     );

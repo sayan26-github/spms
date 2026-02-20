@@ -32,10 +32,10 @@ const StudentRiskWidget = () => {
 
     const getRiskColor = (level) => {
         switch (level) {
-            case 'HIGH': return 'bg-red-50 text-red-700 border-red-100';
-            case 'MEDIUM': return 'bg-yellow-50 text-yellow-700 border-yellow-100';
-            case 'LOW': return 'bg-green-50 text-green-700 border-green-100';
-            default: return 'bg-gray-50 text-gray-700 border-gray-200';
+            case 'HIGH': return 'bg-red-500/10 text-red-400 border-red-500/20';
+            case 'MEDIUM': return 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20';
+            case 'LOW': return 'bg-green-500/10 text-green-400 border-green-500/20';
+            default: return 'glass-panel text-slate-300 border-white/10';
         }
     };
 
@@ -51,15 +51,15 @@ const StudentRiskWidget = () => {
     const colorClass = getRiskColor(prediction.risk_level);
 
     return (
-        <div className={`p-4 rounded-lg border ${colorClass} mb-6 flex items-center justify-between shadow-sm`}>
-            <div className="flex items-center space-x-3">
-                <div className="p-2 bg-white bg-opacity-50 rounded-full">
+        <div className={`p-4 rounded-xl border ${colorClass} mb-6 flex items-center justify-between shadow-lg backdrop-blur-md`}>
+            <div className="flex items-center space-x-4">
+                <div className="p-2.5 bg-white/10 rounded-xl">
                     {getRiskIcon(prediction.risk_level)}
                 </div>
                 <div>
-                    <h3 className="font-bold text-lg">Risk Assessment: {prediction.risk_level}</h3>
-                    <p className="text-sm opacity-80">
-                        Predicted Semester GPA: {prediction.predicted_gpa} / 10.0
+                    <h3 className="font-bold text-lg text-white">Risk Assessment: {prediction.risk_level}</h3>
+                    <p className="text-sm text-slate-300 mt-0.5">
+                        Predicted Semester GPA: <span className="font-semibold text-white">{prediction.predicted_gpa}</span> / 10.0
                     </p>
                 </div>
             </div>

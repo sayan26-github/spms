@@ -15,10 +15,13 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = [
             'id', 'registration_number', 'first_name', 'last_name', 
-            'email', 'role', 'role_display', 'college', 'college_name',
+            'email', 'phone_number', 'role', 'role_display', 'college', 'college_name',
             'is_active', 'must_change_password', 'last_login'
         ]
-        read_only_fields = ['id', 'role', 'college', 'must_change_password', 'last_login']
+        read_only_fields = [
+            'id', 'registration_number', 'role', 'college', 
+            'is_active', 'must_change_password', 'last_login'
+        ]
 
 class LoginSerializer(serializers.Serializer):
     registration_number = serializers.CharField()
