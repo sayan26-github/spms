@@ -12,6 +12,9 @@ export const authService = {
     getColleges: async () => {
         return api.get(ENDPOINTS.COLLEGES);
     },
+    registerCollege: async (data) => {
+        return api.post(ENDPOINTS.REGISTER_COLLEGE, data);
+    },
     getProfile: async () => {
         return api.get(ENDPOINTS.PROFILE);
     },

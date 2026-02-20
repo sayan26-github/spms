@@ -85,3 +85,38 @@ class UserCreateSerializer(serializers.ModelSerializer):
                 pass
                 
         return user
+
+
+class CollegeRegistrationSerializer(serializers.Serializer):
+    """Validates input for public college + admin registration."""
+
+    # College fields
+    college_name = serializers.CharField(max_length=255)
+    college_code = serializers.CharField(max_length=50)
+    contact_email = serializers.EmailField(required=False, default='')
+    contact_phone = serializers.CharField(max_length=20, required=False, default='')
+    address = serializers.CharField(required=False, default='')
+
+    # Admin fields
+    admin_registration_number = serializers.CharField(max_length=50)
+    admin_password = serializers.CharField(write_only=True, min_length=6)
+    admin_confirm_password = serializers.CharField(write_only=True)
+    admin_first_name = serializers.CharField(max_length=150, required=False, default='Admin')
+    admin_last_name = serializers.CharField(max_length=150, required=False, default='User')
+    admin_email = serializers.EmailField(required=False, default='')
+
+    def validate_college_code(self, value):
+        """Ensure college code is unique."""
+        if College.objects.filter(code=value.upper().strip()).exists():
+            raise serializers.ValidationError(
+                'A college with this code already exists.'
+            )
+        return value
+
+    def validate(self, attrs):
+        """Ensure passwords match."""
+        if attrs['admin_password'] != attrs['admin_confirm_password']:
+            raise serializers.ValidationError(
+                {'admin_confirm_password': 'Passwords do not match.'}
+            )
+        return attrs

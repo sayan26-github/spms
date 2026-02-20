@@ -2,8 +2,11 @@ from rest_framework import views, status, permissions, generics, viewsets
 from rest_framework.response import Response
 from django.utils.translation import gettext_lazy as _
 
-from .serializers import LoginSerializer, UserSerializer, ChangePasswordSerializer, UserCreateSerializer
-from .services import AuthService
+from .serializers import (
+    LoginSerializer, UserSerializer, ChangePasswordSerializer,
+    UserCreateSerializer, CollegeRegistrationSerializer
+)
+from .services import AuthService, CollegeRegistrationService
 from .models import User
 from .permissions import IsAdmin, IsHead
 from apps.academics.models import College
@@ -16,6 +19,41 @@ class CollegeListView(views.APIView):
     def get(self, request):
         colleges = College.objects.values('id', 'name', 'code').order_by('name')
         return Response(list(colleges))
+
+
+class CollegeRegistrationView(views.APIView):
+    """Public endpoint to register a new college with its first admin."""
+    permission_classes = [permissions.AllowAny]
+    serializer_class = CollegeRegistrationSerializer
+
+    def post(self, request):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        try:
+            college, admin_user = (
+                CollegeRegistrationService.register_college_with_admin(
+                    serializer.validated_data
+                )
+            )
+        except ValueError as e:
+            return Response(
+                {'detail': str(e)},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        return Response(
+            {
+                'detail': 'College registered successfully.',
+                'college': {
+                    'id': college.id,
+                    'name': college.name,
+                    'code': college.code,
+                },
+                'admin_username': admin_user.username,
+            },
+            status=status.HTTP_201_CREATED
+        )
 
 class LoginView(views.APIView):
     permission_classes = [permissions.AllowAny]

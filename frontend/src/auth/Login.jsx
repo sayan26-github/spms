@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "./AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import {
     Lock, User, ArrowRight, ShieldCheck, BookOpen, GraduationCap, Building2
 } from "lucide-react";
@@ -238,6 +238,15 @@ const Login = () => {
 
                 <p className="text-center text-brand-muted text-xs mt-6">
                     © 2026 SPMS • AI-Driven Student Performance Monitoring
+                </p>
+
+                <p className="text-center text-sm mt-4">
+                    <Link
+                        to="/register-college"
+                        className="text-indigo-600 font-semibold hover:underline"
+                    >
+                        Register New College →
+                    </Link>
                 </p>
             </div>
         </div>

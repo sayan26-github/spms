@@ -1,8 +1,11 @@
 from django.contrib.auth import authenticate
+from django.db import transaction
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.core.exceptions import MultipleObjectsReturned, ObjectDoesNotExist
 from django.utils.translation import gettext_lazy as _
 from .models import User
+from apps.academics.models import College
+from apps.common.constants import UserRole
 
 class AuthService:
     @staticmethod
@@ -57,3 +60,49 @@ class AuthService:
         user.must_change_password = False # Reset flag
         user.save()
         return True, _("Password changed successfully.")
+
+
+class CollegeRegistrationService:
+    """Service for public college + admin registration."""
+
+    @staticmethod
+    def register_college_with_admin(validated_data):
+        """
+        Atomically create a College and its first Admin user.
+
+        Args:
+            validated_data: Dict with college and admin fields.
+
+        Returns:
+            Tuple of (college, admin_user).
+
+        Raises:
+            ValueError: If college code already exists.
+        """
+        college_code = validated_data['college_code'].upper().strip()
+
+        if College.objects.filter(code=college_code).exists():
+            raise ValueError(
+                f'College with code "{college_code}" already exists.'
+            )
+
+        with transaction.atomic():
+            college = College.objects.create(
+                name=validated_data['college_name'].strip(),
+                code=college_code,
+                contact_email=validated_data.get('contact_email', ''),
+                contact_phone=validated_data.get('contact_phone', ''),
+                address=validated_data.get('address', ''),
+            )
+
+            admin_user = User.objects.create_superuser(
+                registration_number=validated_data['admin_registration_number'].strip(),
+                password=validated_data['admin_password'],
+                college=college,
+                email=validated_data.get('admin_email', ''),
+                first_name=validated_data.get('admin_first_name', 'Admin'),
+                last_name=validated_data.get('admin_last_name', 'User'),
+                role=UserRole.ADMIN,
+            )
+
+        return college, admin_user

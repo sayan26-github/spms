@@ -1,5 +1,6 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import Login from "./auth/Login";
+import RegisterCollege from "./auth/RegisterCollege";
 import ProtectedRoute from "./auth/ProtectedRoute";
 import Dashboard from "./dashboard/Dashboard";
 import Unauthorized from "./components/Unauthorized";
@@ -35,6 +36,7 @@ function App() {
     <AuthProvider>
       <Routes>
         <Route path="/login" element={<Login />} />
+        <Route path="/register-college" element={<RegisterCollege />} />
         <Route path="/unauthorized" element={<Unauthorized />} />
 
         {/* Protected Routes */}

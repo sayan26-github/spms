@@ -3,6 +3,7 @@ export const API_BASE_URL = "http://127.0.0.1:8000/api/v1";
 export const ENDPOINTS = {
     LOGIN: "/auth/login/",
     COLLEGES: "/auth/colleges/",
+    REGISTER_COLLEGE: "/auth/register-college/",
     REFRESH: "/auth/token/refresh/",
     PROFILE: "/auth/profile/",
     ADMINS: "/auth/admins/",
