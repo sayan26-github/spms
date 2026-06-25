@@ -9,10 +9,11 @@ export const ENDPOINTS = {
     ADMINS: "/auth/admins/",
 
     // Dashboard Metrics
-    DASHBOARD_STATS: "/analytics/dashboard-stats/",
+    ANALYTICS_DASHBOARD_STATS: "/analytics/predictions/dashboard_stats/",
+    ACADEMICS_DASHBOARD_STATS: "/academics/dashboard-stats/",
 
     // Attendance
-    ATTENDANCE: "/attendance/attendance/",
+    ATTENDANCE: "/attendance/records/",
     SESSIONS: "/attendance/sessions/",
 
     // Assessments
@@ -24,6 +25,8 @@ export const ENDPOINTS = {
 
     // Analytics
     PREDICTIONS: "/analytics/predictions/",
+    MY_INSIGHTS: '/analytics/predictions/my-insights/',
+    SUBJECT_RECOMMENDATIONS: '/analytics/predictions/subject-recommendations/',
 
     // Communication
     MESSAGES: "/communication/messages/",

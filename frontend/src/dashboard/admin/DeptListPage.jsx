@@ -24,12 +24,15 @@ const DeptListPage = () => {
             setLoading(true);
             const [batchList, deptsData] = await Promise.all([
                 batchService.getAll(),
-                departmentService.getByBatch(batchId)
+                departmentService.getAll({ page_size: 1000 })
             ]);
             const batchesArr = Array.isArray(batchList) ? batchList : batchList?.results || [];
             const found = batchesArr.find(b => String(b.id) === String(batchId));
             setBatch(found || { name: `Batch ${batchId}`, id: batchId });
-            setDepartments(Array.isArray(deptsData) ? deptsData : deptsData?.results || []);
+            
+            const allDepts = Array.isArray(deptsData) ? deptsData : deptsData?.results || [];
+            const validDepts = allDepts.filter(d => !d.batch || String(d.batch) === String(batchId));
+            setDepartments(validDepts);
         } catch (err) {
             console.error('Failed to fetch data', err);
         } finally {

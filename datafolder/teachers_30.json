@@ -1,0 +1,302 @@
+[
+  {
+    "registration_number": "TCH001",
+    "password": "Teach@100",
+    "first_name": "Amit",
+    "last_name": "Sharma",
+    "email": "amit.sharma@college.edu",
+    "department_code": "CSE",
+    "department_name": "Computer Science & Engineering",
+    "designation": "Professor"
+  },
+  {
+    "registration_number": "TCH002",
+    "password": "Teach@101",
+    "first_name": "Priya",
+    "last_name": "Patel",
+    "email": "priya.patel@college.edu",
+    "department_code": "ECE",
+    "department_name": "Electronics and Communication Engineering",
+    "designation": "Associate Professor"
+  },
+  {
+    "registration_number": "TCH003",
+    "password": "Teach@102",
+    "first_name": "Rahul",
+    "last_name": "Gupta",
+    "email": "rahul.gupta@college.edu",
+    "department_code": "EE",
+    "department_name": "Electrical Engineering",
+    "designation": "Assistant Professor"
+  },
+  {
+    "registration_number": "TCH004",
+    "password": "Teach@103",
+    "first_name": "Sneha",
+    "last_name": "Singh",
+    "email": "sneha.singh@college.edu",
+    "department_code": "ME",
+    "department_name": "Mechanical Engineering",
+    "designation": "Assistant Professor"
+  },
+  {
+    "registration_number": "TCH005",
+    "password": "Teach@104",
+    "first_name": "Vikram",
+    "last_name": "Verma",
+    "email": "vikram.verma@college.edu",
+    "department_code": "CE",
+    "department_name": "Civil Engineering",
+    "designation": "Lecturer"
+  },
+  {
+    "registration_number": "TCH006",
+    "password": "Teach@105",
+    "first_name": "Neha",
+    "last_name": "Mishra",
+    "email": "neha.mishra@college.edu",
+    "department_code": "CSE",
+    "department_name": "Computer Science & Engineering",
+    "designation": "Assistant Professor"
+  },
+  {
+    "registration_number": "TCH007",
+    "password": "Teach@106",
+    "first_name": "Arjun",
+    "last_name": "Joshi",
+    "email": "arjun.joshi@college.edu",
+    "department_code": "ECE",
+    "department_name": "Electronics and Communication Engineering",
+    "designation": "Professor"
+  },
+  {
+    "registration_number": "TCH008",
+    "password": "Teach@107",
+    "first_name": "Pooja",
+    "last_name": "Yadav",
+    "email": "pooja.yadav@college.edu",
+    "department_code": "EE",
+    "department_name": "Electrical Engineering",
+    "designation": "Associate Professor"
+  },
+  {
+    "registration_number": "TCH009",
+    "password": "Teach@108",
+    "first_name": "Rakesh",
+    "last_name": "Agarwal",
+    "email": "rakesh.agarwal@college.edu",
+    "department_code": "ME",
+    "department_name": "Mechanical Engineering",
+    "designation": "Assistant Professor"
+  },
+  {
+    "registration_number": "TCH010",
+    "password": "Teach@109",
+    "first_name": "Anjali",
+    "last_name": "Jain",
+    "email": "anjali.jain@college.edu",
+    "department_code": "CE",
+    "department_name": "Civil Engineering",
+    "designation": "Assistant Professor"
+  },
+  {
+    "registration_number": "TCH011",
+    "password": "Teach@110",
+    "first_name": "Karan",
+    "last_name": "Saxena",
+    "email": "karan.saxena@college.edu",
+    "department_code": "CSE",
+    "department_name": "Computer Science & Engineering",
+    "designation": "Lecturer"
+  },
+  {
+    "registration_number": "TCH012",
+    "password": "Teach@111",
+    "first_name": "Meera",
+    "last_name": "Roy",
+    "email": "meera.roy@college.edu",
+    "department_code": "ECE",
+    "department_name": "Electronics and Communication Engineering",
+    "designation": "Assistant Professor"
+  },
+  {
+    "registration_number": "TCH013",
+    "password": "Teach@112",
+    "first_name": "Sandeep",
+    "last_name": "Chauhan",
+    "email": "sandeep.chauhan@college.edu",
+    "department_code": "EE",
+    "department_name": "Electrical Engineering",
+    "designation": "Professor"
+  },
+  {
+    "registration_number": "TCH014",
+    "password": "Teach@113",
+    "first_name": "Nisha",
+    "last_name": "Malhotra",
+    "email": "nisha.malhotra@college.edu",
+    "department_code": "ME",
+    "department_name": "Mechanical Engineering",
+    "designation": "Associate Professor"
+  },
+  {
+    "registration_number": "TCH015",
+    "password": "Teach@114",
+    "first_name": "Rohit",
+    "last_name": "Bansal",
+    "email": "rohit.bansal@college.edu",
+    "department_code": "CE",
+    "department_name": "Civil Engineering",
+    "designation": "Assistant Professor"
+  },
+  {
+    "registration_number": "TCH016",
+    "password": "Teach@115",
+    "first_name": "Kavita",
+    "last_name": "Kapoor",
+    "email": "kavita.kapoor@college.edu",
+    "department_code": "CSE",
+    "department_name": "Computer Science & Engineering",
+    "designation": "Assistant Professor"
+  },
+  {
+    "registration_number": "TCH017",
+    "password": "Teach@116",
+    "first_name": "Deepak",
+    "last_name": "Tiwari",
+    "email": "deepak.tiwari@college.edu",
+    "department_code": "ECE",
+    "department_name": "Electronics and Communication Engineering",
+    "designation": "Lecturer"
+  },
+  {
+    "registration_number": "TCH018",
+    "password": "Teach@117",
+    "first_name": "Shreya",
+    "last_name": "Pandey",
+    "email": "shreya.pandey@college.edu",
+    "department_code": "EE",
+    "department_name": "Electrical Engineering",
+    "designation": "Assistant Professor"
+  },
+  {
+    "registration_number": "TCH019",
+    "password": "Teach@118",
+    "first_name": "Manoj",
+    "last_name": "Srivastava",
+    "email": "manoj.srivastava@college.edu",
+    "department_code": "ME",
+    "department_name": "Mechanical Engineering",
+    "designation": "Professor"
+  },
+  {
+    "registration_number": "TCH020",
+    "password": "Teach@119",
+    "first_name": "Aarti",
+    "last_name": "Kumar",
+    "email": "aarti.kumar@college.edu",
+    "department_code": "CE",
+    "department_name": "Civil Engineering",
+    "designation": "Associate Professor"
+  },
+  {
+    "registration_number": "TCH021",
+    "password": "Teach@120",
+    "first_name": "Abhishek",
+    "last_name": "Sinha",
+    "email": "abhishek.sinha@college.edu",
+    "department_code": "CSE",
+    "department_name": "Computer Science & Engineering",
+    "designation": "Assistant Professor"
+  },
+  {
+    "registration_number": "TCH022",
+    "password": "Teach@121",
+    "first_name": "Ritu",
+    "last_name": "Reddy",
+    "email": "ritu.reddy@college.edu",
+    "department_code": "ECE",
+    "department_name": "Electronics and Communication Engineering",
+    "designation": "Assistant Professor"
+  },
+  {
+    "registration_number": "TCH023",
+    "password": "Teach@122",
+    "first_name": "Tarun",
+    "last_name": "Nair",
+    "email": "tarun.nair@college.edu",
+    "department_code": "EE",
+    "department_name": "Electrical Engineering",
+    "designation": "Lecturer"
+  },
+  {
+    "registration_number": "TCH024",
+    "password": "Teach@123",
+    "first_name": "Swati",
+    "last_name": "Das",
+    "email": "swati.das@college.edu",
+    "department_code": "ME",
+    "department_name": "Mechanical Engineering",
+    "designation": "Assistant Professor"
+  },
+  {
+    "registration_number": "TCH025",
+    "password": "Teach@124",
+    "first_name": "Nitin",
+    "last_name": "Kulkarni",
+    "email": "nitin.kulkarni@college.edu",
+    "department_code": "CE",
+    "department_name": "Civil Engineering",
+    "designation": "Professor"
+  },
+  {
+    "registration_number": "TCH026",
+    "password": "Teach@125",
+    "first_name": "Preeti",
+    "last_name": "Bhattacharya",
+    "email": "preeti.bhattacharya@college.edu",
+    "department_code": "CSE",
+    "department_name": "Computer Science & Engineering",
+    "designation": "Associate Professor"
+  },
+  {
+    "registration_number": "TCH027",
+    "password": "Teach@126",
+    "first_name": "Varun",
+    "last_name": "Ghosh",
+    "email": "varun.ghosh@college.edu",
+    "department_code": "ECE",
+    "department_name": "Electronics and Communication Engineering",
+    "designation": "Assistant Professor"
+  },
+  {
+    "registration_number": "TCH028",
+    "password": "Teach@127",
+    "first_name": "Komal",
+    "last_name": "Menon",
+    "email": "komal.menon@college.edu",
+    "department_code": "EE",
+    "department_name": "Electrical Engineering",
+    "designation": "Assistant Professor"
+  },
+  {
+    "registration_number": "TCH029",
+    "password": "Teach@128",
+    "first_name": "Ashish",
+    "last_name": "Pillai",
+    "email": "ashish.pillai@college.edu",
+    "department_code": "ME",
+    "department_name": "Mechanical Engineering",
+    "designation": "Lecturer"
+  },
+  {
+    "registration_number": "TCH030",
+    "password": "Teach@129",
+    "first_name": "Divya",
+    "last_name": "Tripathi",
+    "email": "divya.tripathi@college.edu",
+    "department_code": "CE",
+    "department_name": "Civil Engineering",
+    "designation": "Assistant Professor"
+  }
+]

@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'apps.assessments',
     'apps.analytics',
     'apps.communication',
+    'apps.placements',
 ]
 
 MIDDLEWARE = [
@@ -177,8 +178,7 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
     ),
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 10,
+    'DEFAULT_PAGINATION_CLASS': 'apps.common.pagination.StandardResultsSetPagination',
     'EXCEPTION_HANDLER': 'apps.common.utils.custom_exception_handler',
 }
 

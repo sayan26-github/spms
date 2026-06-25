@@ -18,6 +18,24 @@ export const analyticsService = {
     getPredictions: async () => {
         const response = await api.get(ENDPOINTS.PREDICTIONS);
         return response.data;
+    },
+
+    // Get student's own performance insights (prediction + recommendations + features)
+    getMyInsights: async () => {
+        const response = await api.get(`${ENDPOINTS.PREDICTIONS}my-insights/`);
+        return response.data;
+    },
+
+    // Get smart subject/elective recommendations
+    getSubjectRecommendations: async () => {
+        const response = await api.get(`${ENDPOINTS.PREDICTIONS}subject-recommendations/`);
+        return response.data;
+    },
+
+    // Get teacher specific at-risk analytics and XAI insights
+    getTeacherAnalytics: async () => {
+        const response = await api.get(`${ENDPOINTS.PREDICTIONS}teacher-analytics/`);
+        return response.data;
     }
 };
 

@@ -39,6 +39,18 @@ export const assessmentService = {
         });
         return response.data;
     },
+
+    // Get Transcript for a specific student
+    getTranscript: async (studentId) => {
+        const response = await api.get(`/assessments/transcript/${studentId}/`);
+        return response.data;
+    },
+
+    // Get Transcript for the currently logged-in student
+    getMyTranscript: async () => {
+        const response = await api.get('/assessments/transcript/me/');
+        return response.data;
+    },
 };
 
 export default assessmentService;

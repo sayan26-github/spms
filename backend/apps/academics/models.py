@@ -119,6 +119,11 @@ class Student(TimeStampedModel):
     # batch_year = models.IntegerField(_('batch year'), null=True, blank=True)
     
     semester = models.IntegerField(_('current semester'), default=1)
+    
+    # Profile Info
+    bio = models.TextField(_('bio'), blank=True, null=True)
+    resume = models.FileField(_('resume upload'), upload_to='resumes/', blank=True, null=True)
+    
     # Additional fields like DOB, Blood Group can go here if not in User
 
     def __str__(self):
@@ -143,7 +148,12 @@ class Subject(TimeStampedModel):
     )
     
     class Meta:
-        unique_together = ('college', 'code') # Code unique within college
+        constraints = [
+            models.UniqueConstraint(
+                fields=['college', 'code'],
+                name='unique_subject_code_per_college'
+            )
+        ]
         indexes = [
             models.Index(fields=['college', 'semester'], name='subj_college_sem_idx'),
         ]

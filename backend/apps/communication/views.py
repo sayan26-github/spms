@@ -60,8 +60,6 @@ class MessageViewSet(viewsets.ModelViewSet):
             
         serializer = UserSerializer(users, many=True)
         return Response(serializer.data)
-        serializer = UserSerializer(users, many=True)
-        return Response(serializer.data)
 
 class NotificationViewSet(viewsets.ModelViewSet):
     serializer_class = NotificationSerializer
@@ -90,13 +88,18 @@ class FeedbackViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         user = self.request.user
         if user.role in [UserRole.ADMIN, UserRole.HEAD]:
-            return Feedback.objects.filter(student__college=user.college)
+            return Feedback.objects.filter(college=user.college)
         elif user.role == UserRole.TEACHER:
             # Teachers see feedback for subjects they teach
-            return Feedback.objects.filter(subject__teacher__user=user)
+            return Feedback.objects.filter(
+                college=user.college, subject__teacher__user=user
+            )
         else:
             # Students see their own feedback
-            return Feedback.objects.filter(student=user)
+            return Feedback.objects.filter(student=user, college=user.college)
 
     def perform_create(self, serializer):
-        serializer.save(student=self.request.user)
+        serializer.save(
+            student=self.request.user,
+            college=self.request.user.college
+        )

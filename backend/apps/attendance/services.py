@@ -52,14 +52,36 @@ class AttendanceService:
             raise ValidationError("Session not found")
 
         with transaction.atomic():
+            existing_attendances = Attendance.objects.filter(class_session=session)
+            existing_map = {att.student_id: att for att in existing_attendances}
+            
+            to_update = []
+            to_create = []
+            
             for record in attendance_data:
                 student_id = record.get('student_id')
                 status = record.get('status')
                 
                 if student_id and status:
-                    Attendance.objects.update_or_create(
-                        class_session=session,
-                        student_id=student_id,
-                        defaults={'status': status}
-                    )
+                    if student_id in existing_map:
+                        att = existing_map[student_id]
+                        if att.status != status:
+                            att.status = status
+                            to_update.append(att)
+                    else:
+                        to_create.append(
+                            Attendance(class_session=session, student_id=student_id, status=status)
+                        )
+                        
+            if to_update:
+                Attendance.objects.bulk_update(to_update, ['status'])
+            if to_create:
+                Attendance.objects.bulk_create(to_create)
+
+        # Trigger async ML prediction recalculation for affected students
+        affected_student_ids = [record.get('student_id') for record in attendance_data if record.get('student_id')]
+        if affected_student_ids:
+            from apps.analytics.services import AnalyticsService
+            AnalyticsService.trigger_ml_update_async(affected_student_ids)
+
         return True

@@ -9,7 +9,19 @@ import MarkAttendance from "./attendance/MarkAttendance";
 import AssessmentsPage from "./assessments/AssessmentsPage";
 import UploadMarks from "./assessments/UploadMarks";
 import StudentAttendance from "./student/StudentAttendance";
-import StudentMarks from "./student/StudentMarks";
+import StudentDashboard from './student/StudentDashboard';
+import PerformanceInsights from './student/PerformanceInsights';
+import StudentMarks from './student/StudentMarks';
+import StudentTranscript from './student/StudentTranscript';
+import StudentProfile from './student/StudentProfile';
+import StudentAssignments from "./assessments/StudentAssignments";
+import AssignmentSubmit from "./assessments/AssignmentSubmit";
+import StudentPlacements from './placements/StudentPlacements';
+import AdminPlacements from './placements/AdminPlacements';
+
+import TeacherAssignments from "./assessments/TeacherAssignments";
+import AssignmentGrading from "./assessments/AssignmentGrading";
+
 import { AuthProvider } from "./auth/AuthContext";
 
 import AdminLayout from './dashboard/admin/AdminLayout';
@@ -28,6 +40,9 @@ import EnrollSubjectPage from './dashboard/admin/EnrollSubjectPage';
 import EnrollStudentsPage from './dashboard/admin/EnrollStudentsPage';
 import AdminAnalytics from './dashboard/admin/AdminAnalytics';
 import ManageAdmins from './dashboard/admin/ManageAdmins';
+import BatchesManagement from './dashboard/admin/BatchesManagement';
+import DepartmentsManagement from './dashboard/admin/DepartmentsManagement';
+import TranscriptPage from './dashboard/admin/TranscriptPage';
 
 import MessagesPage from './dashboard/messages/MessagesPage';
 
@@ -43,22 +58,33 @@ function App() {
         <Route element={<ProtectedRoute />}>
           <Route path="/" element={<Dashboard />} />
           <Route path="/attendance" element={<AttendancePage />} />
-          <Route path="/attendance/session/:sessionId" element={<MarkAttendance />} />
           <Route path="/assessments" element={<AssessmentsPage />} />
+          <Route path="/assignments" element={<TeacherAssignments />} />
+          <Route path="/assignments/:id/grade" element={<AssignmentGrading />} />
+          <Route path="/attendance/session/:sessionId" element={<MarkAttendance />} />
           <Route path="/assessments/:assessmentId/marks" element={<UploadMarks />} />
 
           {/* Student Routes */}
           <Route path="/student/attendance" element={<StudentAttendance />} />
           <Route path="/student/marks" element={<StudentMarks />} />
+          <Route path="/student/transcript" element={<StudentTranscript />} />
+          <Route path="/student/performance" element={<PerformanceInsights />} />
+          <Route path="/student/profile" element={<StudentProfile />} />
+          <Route path="/student/assignments" element={<StudentAssignments />} />
+          <Route path="/student/assignments/:id/submit" element={<AssignmentSubmit />} />
+          <Route path="/student/placements" element={<StudentPlacements />} />
 
           {/* Admin Routes */}
           <Route path="/admin" element={<AdminLayout />}>
             <Route index element={<AdminDashboard />} />
             <Route path="users" element={<UserManagement />} />
             <Route path="teachers" element={<TeachersManagement />} />
+            <Route path="batches" element={<BatchesManagement />} />
+            <Route path="departments" element={<DepartmentsManagement />} />
             <Route path="students" element={<StudentsManagement />} />
             <Route path="students/batch/:batchId" element={<DeptListPage />} />
             <Route path="students/batch/:batchId/dept/:deptId" element={<StudentListPage />} />
+            <Route path="students/transcript/:studentId" element={<TranscriptPage />} />
             <Route path="subjects" element={<SubjectManagement />} />
             <Route path="enrollments" element={<EnrollmentManagement />} />
             <Route path="enrollments/teachers" element={<TeacherAssignment />} />
@@ -68,6 +94,7 @@ function App() {
             <Route path="enrollments/students/batch/:batchId/dept/:deptId/subject/:subjectId" element={<EnrollStudentsPage />} />
             <Route path="analytics" element={<AdminAnalytics />} />
             <Route path="manage-admins" element={<ManageAdmins />} />
+            <Route path="placements" element={<AdminPlacements />} />
           </Route>
 
           {/* Communication */}

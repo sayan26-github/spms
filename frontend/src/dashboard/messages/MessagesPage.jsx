@@ -124,7 +124,7 @@ const MessagesPage = () => {
                                             : `To: ${msg.receiver_details?.first_name} ${msg.receiver_details?.last_name}`
                                         }
                                     </span>
-                                    <span className="text-xs text-gray-400">{new Date(msg.timestamp).toLocaleDateString()}</span>
+                                    <span className="text-xs text-gray-400">{new Date(msg.created_at).toLocaleDateString()}</span>
                                 </div>
                                 <h3 className={`text-sm mb-1 truncate ${!msg.is_read && activeTab === 'inbox' ? 'font-medium text-gray-900' : 'text-gray-600'}`}>{msg.subject}</h3>
                                 <p className="text-xs text-gray-400 truncate">{msg.body}</p>
@@ -155,7 +155,7 @@ const MessagesPage = () => {
                                                 : `To: ${selectedMessage.receiver_details?.first_name} ${selectedMessage.receiver_details?.last_name}`
                                             }
                                         </p>
-                                        <p className="text-xs text-gray-400">{new Date(selectedMessage.timestamp).toLocaleString()}</p>
+                                        <p className="text-xs text-gray-400">{new Date(selectedMessage.created_at).toLocaleString()}</p>
                                     </div>
                                 </div>
                             </div>

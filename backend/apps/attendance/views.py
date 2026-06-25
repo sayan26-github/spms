@@ -46,8 +46,12 @@ class ClassSessionViewSet(viewsets.ModelViewSet):
                 return Response({"detail": "Invalid Subject"}, status=status.HTTP_403_FORBIDDEN)
             
             # Permission check: Only teacher of subject or admin
-            if request.user.role == 'TEACHER' and subject.teacher.user != request.user:
-                 return Response({"detail": "You are not the teacher of this subject"}, status=status.HTTP_403_FORBIDDEN)
+            if request.user.role == 'TEACHER':
+                if not subject.teacher or subject.teacher.user != request.user:
+                    return Response(
+                        {"detail": "You are not the teacher of this subject"},
+                        status=status.HTTP_403_FORBIDDEN
+                    )
 
             session = AttendanceService.create_class_session(subject, date, request.user, topic)
             return Response(ClassSessionSerializer(session).data, status=status.HTTP_201_CREATED)

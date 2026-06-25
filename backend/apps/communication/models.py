@@ -4,17 +4,19 @@ from apps.academics.models import College, Subject
 from apps.common.constants import NotificationType
 from apps.common.models import TimeStampedModel
 
-class Message(models.Model):
+class Message(TimeStampedModel):
+    """
+    Direct messages between users within the same college.
+    """
     college = models.ForeignKey(College, on_delete=models.CASCADE, related_name='messages')
     sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sent_messages')
     receiver = models.ForeignKey(User, on_delete=models.CASCADE, related_name='received_messages')
     subject = models.CharField(max_length=255)
     body = models.TextField()
     is_read = models.BooleanField(default=False)
-    timestamp = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        ordering = ['-timestamp']
+        ordering = ['-created_at']
         indexes = [
             models.Index(fields=['sender']),
             models.Index(fields=['receiver']),
@@ -52,6 +54,9 @@ class Feedback(TimeStampedModel):
     """
     Feedback from students about subjects/courses.
     """
+    college = models.ForeignKey(
+        College, on_delete=models.CASCADE, related_name='feedbacks'
+    )
     student = models.ForeignKey(User, on_delete=models.CASCADE, related_name='feedbacks')
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name='feedbacks')
     rating = models.IntegerField(choices=[(i, i) for i in range(1, 6)], help_text="Rating from 1 to 5")
@@ -60,8 +65,15 @@ class Feedback(TimeStampedModel):
 
     class Meta:
         ordering = ['-created_at']
+        constraints = [
+            models.UniqueConstraint(
+                fields=['student', 'subject'],
+                name='unique_feedback_per_student_subject'
+            )
+        ]
         indexes = [
             models.Index(fields=['subject']),
+            models.Index(fields=['college']),
         ]
 
     def __str__(self):

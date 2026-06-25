@@ -20,7 +20,7 @@ class CustomUserAdmin(UserAdmin):
         (_('Permissions'), {
             'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions'),
         }),
-        (_('Important Dates'), {'fields': ('last_login', 'date_joined')}),
+        (_('Important Dates'), {'fields': ('last_login',)}),
         (_('Security'), {'fields': ('must_change_password',)}),
     )
     
@@ -28,7 +28,7 @@ class CustomUserAdmin(UserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('registration_number', 'college', 'role', 'password', 'confirm_password'),
+            'fields': ('registration_number', 'college', 'role', 'password1', 'password2'),
         }),
     )
 

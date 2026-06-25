@@ -18,8 +18,8 @@ const TeacherAssignment = () => {
         try {
             setLoading(true);
             const [subjectsData, teachersData] = await Promise.all([
-                adminService.getSubjects(),
-                adminService.getTeachers()
+                adminService.getSubjects({ page_size: 1000 }),
+                adminService.getTeachers({ page_size: 1000 })
             ]);
             setSubjects(subjectsData.results || subjectsData);
             setTeachers(teachersData.results || teachersData);

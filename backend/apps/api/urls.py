@@ -18,4 +18,7 @@ urlpatterns = [
     
     # Communication
     path('communication/', include('apps.communication.urls')),
+    
+    # Placements
+    path('placements/', include('apps.placements.urls')),
 ]

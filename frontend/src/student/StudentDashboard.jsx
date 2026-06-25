@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { BookOpen, UserCheck, Award, ChevronRight, ArrowLeft, FileText } from 'lucide-react';
+import { BookOpen, UserCheck, Award, ChevronRight, ArrowLeft, FileText, BarChart3 } from 'lucide-react';
 import { useAuth } from '../auth/AuthContext';
 import academicService from '../services/academicService';
 import StudentRiskWidget from './StudentRiskWidget';
@@ -62,26 +62,99 @@ const StudentDashboard = ({ user }) => {
 
     return (
         <div className="space-y-6 relative z-10">
-            <header className="flex justify-between items-center modern-card p-6 rounded-2xl mb-6">
-                <h2 className="text-2xl font-bold text-brand-text">Student Dashboard</h2>
-                <div className="text-sm text-brand-muted">
-                    {new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
-                </div>
-            </header>
 
-            <StudentRiskWidget />
 
             <div className="modern-card rounded-lg p-6 mb-6 flex justify-between items-center">
                 <div>
                     <h1 className="text-xl font-bold text-brand-text">Welcome, {user?.first_name}</h1>
-                    <p className="mt-1 text-sm text-brand-muted">
-                        Overview of your enrolled subjects and performance.
+                    <p className="mt-1 text-sm text-brand-muted font-medium">
+                        {user?.department && user?.batch ? (
+                            <span className="flex items-center gap-2">
+                                <span className="bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded text-xs border border-indigo-100">{user.department}</span>
+                                <span className="text-gray-300">•</span>
+                                <span>{user.batch}</span>
+                            </span>
+                        ) : (
+                            "Overview of your enrolled subjects and performance."
+                        )}
                     </p>
                 </div>
                 <Link to="/messages" className="px-4 py-2 bg-brand-primary text-white rounded-lg hover:bg-indigo-500 transition shadow-sm font-medium">
                     Messages
                 </Link>
             </div>
+
+            <StudentRiskWidget />
+
+            {/* Performance Insights CTA */}
+            <Link
+                to="/student/performance"
+                className="group modern-card rounded-2xl p-6 mb-6 flex items-center justify-between hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 border-2 border-transparent hover:border-indigo-200"
+            >
+                <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/20">
+                        <BarChart3 className="text-white" size={22} />
+                    </div>
+                    <div>
+                        <h3 className="font-bold text-brand-text group-hover:text-brand-primary transition-colors">AI Performance Insights</h3>
+                        <p className="text-sm text-brand-muted">View your XGBoost-powered predictions, recommendations, and trends</p>
+                    </div>
+                </div>
+                <ChevronRight size={20} className="text-brand-muted group-hover:text-brand-primary transition-colors" />
+            </Link>
+
+            {/* Transcript CTA */}
+            <Link
+                to="/student/transcript"
+                className="group modern-card rounded-2xl p-6 mb-6 flex items-center justify-between hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 border-2 border-transparent hover:border-violet-200"
+            >
+                <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-violet-500 to-fuchsia-600 flex items-center justify-center shadow-lg shadow-violet-500/20">
+                        <FileText className="text-white" size={22} />
+                    </div>
+                    <div>
+                        <h3 className="font-bold text-brand-text group-hover:text-violet-700 transition-colors">Semester Results & Transcript</h3>
+                        <p className="text-sm text-brand-muted">View your official academic records, CGPA, and semester grades</p>
+                    </div>
+                </div>
+                <ChevronRight size={20} className="text-brand-muted group-hover:text-violet-700 transition-colors" />
+            </Link>
+
+            {/* Assignments CTA */}
+            <Link
+                to="/student/assignments"
+                className="group modern-card rounded-2xl p-6 mb-6 flex items-center justify-between hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 border-2 border-transparent hover:border-emerald-200"
+            >
+                <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-lg shadow-emerald-500/20">
+                        <BookOpen className="text-white" size={22} />
+                    </div>
+                    <div>
+                        <h3 className="font-bold text-brand-text group-hover:text-emerald-700 transition-colors">My Assignments</h3>
+                        <p className="text-sm text-brand-muted">View pending assignments and upload your submissions</p>
+                    </div>
+                </div>
+                <ChevronRight size={20} className="text-brand-muted group-hover:text-emerald-700 transition-colors" />
+            </Link>
+
+            {/* Placements CTA */}
+            <Link
+                to="/student/placements"
+                className="group modern-card rounded-2xl p-6 mb-6 flex items-center justify-between hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 border-2 border-transparent hover:border-blue-200"
+            >
+                <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/20">
+                        <UserCheck className="text-white" size={22} />
+                    </div>
+                    <div>
+                        <h3 className="font-bold text-brand-text group-hover:text-blue-700 transition-colors">Placement & Internships</h3>
+                        <p className="text-sm text-brand-muted">View AI-recommended jobs, track applications, and find skill gaps</p>
+                    </div>
+                </div>
+                <ChevronRight size={20} className="text-brand-muted group-hover:text-blue-700 transition-colors" />
+            </Link>
+
+
 
             {subjects.length === 0 ? (
                 <div className="modern-card rounded-lg p-6 text-center text-brand-muted">

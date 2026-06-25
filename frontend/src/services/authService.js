@@ -20,5 +20,12 @@ export const authService = {
     },
     updateProfile: async (data) => {
         return api.patch(ENDPOINTS.PROFILE, data);
+    },
+    updateProfileWithFile: async (formData) => {
+        return api.patch(ENDPOINTS.PROFILE, formData, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+        });
     }
 };

@@ -25,12 +25,8 @@ class IsSameCollege(permissions.BasePermission):
     For object views, this checks obj.college == user.college.
     """
     def has_object_permission(self, request, view, obj):
-        # Assumes obj has a 'college' attribute
+        # Strict multi-tenancy: every core model must have 'college'.
+        # Deny access if the attribute is missing.
         if not hasattr(obj, 'college'):
-            return True # Or False depending on strictness. 
-                        # If obj is global/shared, maybe True. 
-                        # But strict multi-tenancy implies everything has college.
-                        # For now, if no college attr, valid permission check might not apply.
-            # However, prompt said: "Every core model MUST include college".
-            
+            return False
         return obj.college == request.user.college

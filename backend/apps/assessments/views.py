@@ -5,8 +5,10 @@ from apps.users.permissions import IsTeacher, IsAdmin, IsSameCollege
 from .models import Assessment, Marks
 from .serializers import AssessmentSerializer, MarksSerializer, BulkMarksSerializer
 from .services import AssessmentService
-from apps.academics.models import Subject
+from apps.academics.models import Subject, Student
 from django.core.exceptions import ValidationError
+from rest_framework.views import APIView
+from django.shortcuts import get_object_or_404
 
 class AssessmentViewSet(viewsets.ModelViewSet):
     """
@@ -117,3 +119,141 @@ class MarksViewSet(viewsets.ReadOnlyModelViewSet):
             return Response({"detail": "Assessment not found"}, status=status.HTTP_404_NOT_FOUND)
         except ValidationError as e:
             return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+class TranscriptView(APIView):
+    """
+    Generate student transcript data (Marks and Attendance)
+    """
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, student_id):
+        student = get_object_or_404(Student, id=student_id)
+        
+        if request.user.role in ['ADMIN', 'HEAD']:
+            if student.user.college != request.user.college:
+                return Response({"detail": "Permission denied"}, status=status.HTTP_403_FORBIDDEN)
+        elif request.user.role == 'STUDENT':
+            if student.user != request.user:
+                return Response({"detail": "Permission denied"}, status=status.HTTP_403_FORBIDDEN)
+        else:
+            return Response({"detail": "Permission denied"}, status=status.HTTP_403_FORBIDDEN)
+            
+        data = AssessmentService.generate_student_transcript(student_id)
+        return Response(data)
+
+class MyTranscriptView(APIView):
+    """
+    Generate student transcript data for the currently logged-in student.
+    """
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        if request.user.role != 'STUDENT':
+            return Response({"detail": "Only students can access this endpoint."}, status=status.HTTP_403_FORBIDDEN)
+        
+        student = get_object_or_404(Student, user=request.user)
+        data = AssessmentService.generate_student_transcript(student.id)
+        return Response(data)
+
+from .models import AssignmentTask, AssignmentSubmission
+from .serializers import AssignmentTaskSerializer, AssignmentSubmissionSerializer
+from rest_framework.parsers import MultiPartParser, FormParser
+
+class AssignmentTaskViewSet(viewsets.ModelViewSet):
+    """
+    Manage AssignmentTasks.
+    Teachers create and manage them. Students can only view.
+    """
+    serializer_class = AssignmentTaskSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser]
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.role in ['ADMIN', 'HEAD']:
+            return AssignmentTask.objects.filter(subject__college=user.college)
+        elif user.role == 'TEACHER':
+            return AssignmentTask.objects.filter(subject__teacher__user=user)
+        elif user.role == 'STUDENT':
+            return AssignmentTask.objects.filter(subject__enrollments__student__user=user, subject__enrollments__is_active=True).distinct()
+        return AssignmentTask.objects.none()
+
+    def perform_create(self, serializer):
+        subject = serializer.validated_data['subject']
+        if subject.college != self.request.user.college:
+             raise ValidationError("Subject must belong to your college.")
+        
+        if self.request.user.role == 'TEACHER':
+            if not subject.teacher or subject.teacher.user != self.request.user:
+                 raise ValidationError("You can only create assignments for your subjects.")
+
+        serializer.save(created_by=self.request.user)
+
+class AssignmentSubmissionViewSet(viewsets.ModelViewSet):
+    """
+    Manage student submissions for AssignmentTasks.
+    Students upload submissions. Teachers grade them.
+    """
+    serializer_class = AssignmentSubmissionSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser]
+
+    def get_queryset(self):
+        user = self.request.user
+        assignment_id = self.request.query_params.get('assignment', None)
+        qs = AssignmentSubmission.objects.all()
+
+        if user.role in ['ADMIN', 'HEAD']:
+            qs = qs.filter(assignment__subject__college=user.college)
+        elif user.role == 'TEACHER':
+            qs = qs.filter(assignment__subject__teacher__user=user)
+        elif user.role == 'STUDENT':
+            qs = qs.filter(student__user=user)
+        else:
+            qs = qs.none()
+
+        if assignment_id:
+            qs = qs.filter(assignment_id=assignment_id)
+            
+        return qs
+
+    def perform_create(self, serializer):
+        user = self.request.user
+        if user.role != 'STUDENT':
+            raise ValidationError("Only students can submit assignments.")
+
+        try:
+            student = Student.objects.get(user=user)
+        except Student.DoesNotExist:
+            raise ValidationError("Student profile not found.")
+
+        assignment = serializer.validated_data['assignment']
+        
+        # Check enrollment
+        if not assignment.subject.enrollments.filter(student=student, is_active=True).exists():
+            raise ValidationError("You are not enrolled in this subject.")
+
+        serializer.save(student=student)
+
+    @action(detail=True, methods=['patch'], permission_classes=[IsTeacher | IsAdmin])
+    def grade(self, request, pk=None):
+        """
+        Action for a teacher to grade a submission.
+        """
+        submission = self.get_object()
+        marks = request.data.get('marks_obtained')
+        remarks = request.data.get('remarks', submission.remarks)
+
+        if marks is not None:
+            try:
+                marks = float(marks)
+                if marks > float(submission.assignment.max_marks) or marks < 0:
+                    return Response({"detail": f"Marks must be between 0 and {submission.assignment.max_marks}"}, status=status.HTTP_400_BAD_REQUEST)
+                submission.marks_obtained = marks
+            except ValueError:
+                return Response({"detail": "Invalid marks format"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        submission.remarks = remarks
+        submission.save()
+
+        return Response(self.get_serializer(submission).data)

@@ -25,7 +25,7 @@ const TeachersManagement = () => {
 
     const fetchTeachers = async () => {
         try {
-            const data = await adminService.getUsers();
+            const data = await adminService.getUsers({ page_size: 1000 });
             const teacherList = (Array.isArray(data) ? data : data?.results || []).filter(u => u.role === 'TEACHER');
             setTeachers(teacherList);
         } catch (error) {

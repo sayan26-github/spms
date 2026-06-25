@@ -1,0 +1,37 @@
+[
+  {
+    "registration_number": "ADM001",
+    "password": "Temp@123",
+    "first_name": "Aarav",
+    "last_name": "Sharma",
+    "email": "aarav.sharma@example.com"
+  },
+  {
+    "registration_number": "ADM002",
+    "password": "Temp@124",
+    "first_name": "Diya",
+    "last_name": "Patel",
+    "email": "diya.patel@example.com"
+  },
+  {
+    "registration_number": "ADM003",
+    "password": "Temp@125",
+    "first_name": "Rohan",
+    "last_name": "Gupta",
+    "email": "rohan.gupta@example.com"
+  },
+  {
+    "registration_number": "ADM004",
+    "password": "Temp@126",
+    "first_name": "Ananya",
+    "last_name": "Singh",
+    "email": "ananya.singh@example.com"
+  },
+  {
+    "registration_number": "ADM005",
+    "password": "Temp@127",
+    "first_name": "Vivaan",
+    "last_name": "Mehta",
+    "email": "vivaan.mehta@example.com"
+  }
+]

@@ -41,7 +41,7 @@ class AuthService:
         refresh['college'] = user.college.code
         refresh['name'] = f"{user.first_name} {user.last_name}"
 
-        return {
+        response_data = {
             'refresh': str(refresh),
             'access': str(refresh.access_token),
             'role': user.role,
@@ -50,6 +50,13 @@ class AuthService:
             'last_name': user.last_name,
             'college': user.college.code,
         }
+
+        if user.role == 'STUDENT' and hasattr(user, 'student_profile'):
+            profile = user.student_profile
+            response_data['batch'] = profile.batch.name if profile.batch else 'N/A'
+            response_data['department'] = profile.department.name if profile.department else 'N/A'
+
+        return response_data
 
     @staticmethod
     def change_password(user, old_password, new_password):

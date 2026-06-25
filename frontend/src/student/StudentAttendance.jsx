@@ -30,7 +30,7 @@ const StudentAttendance = () => {
                 const allRecords = Array.isArray(data) ? data : data.results || [];
 
                 if (subjectId) {
-                    setAttendance(allRecords.filter(r => r.class_session.subject.toString() === subjectId.toString() || r.class_session.subject.id?.toString() === subjectId.toString()));
+                    setAttendance(allRecords.filter(r => r.class_session_details.subject === parseInt(subjectId) || r.class_session_details.subject?.id === parseInt(subjectId)));
                 } else {
                     setAttendance(allRecords);
                 }
@@ -100,10 +100,10 @@ const StudentAttendance = () => {
                                         </div>
                                         <div className="ml-4">
                                             <h3 className="text-sm font-medium text-gray-900">
-                                                {new Date(record.class_session.date).toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+                                                {new Date(record.class_session_details.date).toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
                                             </h3>
                                             <p className="text-sm text-gray-500">
-                                                Topic: {record.class_session.topic || 'Regular Session'}
+                                                Topic: {record.class_session_details.topic || 'Regular Session'}
                                             </p>
                                         </div>
                                     </div>

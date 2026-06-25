@@ -271,7 +271,7 @@ class ResourceViewSet(viewsets.ModelViewSet):
         user = self.request.user
         
         if user.role == 'TEACHER':
-            if subject.teacher.user != user:
+            if not subject.teacher or subject.teacher.user != user:
                 raise ValidationError("You can only upload resources for your own subjects.")
         
         serializer.save()

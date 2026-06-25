@@ -10,18 +10,39 @@ class UserSerializer(serializers.ModelSerializer):
     """
     role_display = serializers.CharField(source='get_role_display', read_only=True)
     college_name = serializers.CharField(source='college.name', read_only=True)
+    bio = serializers.CharField(source='student_profile.bio', required=False, allow_blank=True, allow_null=True)
+    resume = serializers.FileField(source='student_profile.resume', required=False, allow_empty_file=True, allow_null=True)
+    batch = serializers.CharField(source='student_profile.batch.name', read_only=True, allow_null=True)
+    department = serializers.CharField(source='student_profile.department.name', read_only=True, allow_null=True)
 
     class Meta:
         model = User
         fields = [
             'id', 'registration_number', 'first_name', 'last_name', 
             'email', 'phone_number', 'role', 'role_display', 'college', 'college_name',
-            'is_active', 'must_change_password', 'last_login'
+            'is_active', 'must_change_password', 'last_login', 'bio', 'resume', 'batch', 'department'
         ]
         read_only_fields = [
             'id', 'registration_number', 'role', 'college', 
             'is_active', 'must_change_password', 'last_login'
         ]
+
+    def update(self, instance, validated_data):
+        student_profile_data = validated_data.pop('student_profile', None)
+        
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+
+        if student_profile_data and hasattr(instance, 'student_profile'):
+            profile = instance.student_profile
+            if 'bio' in student_profile_data:
+                profile.bio = student_profile_data['bio']
+            if 'resume' in student_profile_data:
+                profile.resume = student_profile_data['resume']
+            profile.save()
+            
+        return instance
 
 class LoginSerializer(serializers.Serializer):
     registration_number = serializers.CharField()

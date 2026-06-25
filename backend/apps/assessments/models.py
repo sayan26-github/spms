@@ -66,3 +66,48 @@ class Marks(TimeStampedModel):
 
     def __str__(self):
         return f"{self.student} - {self.marks_obtained}/{self.assessment.max_marks}"
+
+class AssignmentTask(TimeStampedModel):
+    """
+    An assignment created by a teacher requiring a document submission.
+    """
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name='assignment_tasks')
+    title = models.CharField(_('title'), max_length=150)
+    description = models.TextField(_('description'), blank=True)
+    file = models.FileField(_('assignment file'), upload_to='assignments/briefs/', blank=True, null=True)
+    due_date = models.DateTimeField(_('due date'))
+    max_marks = models.DecimalField(_('max marks'), max_digits=5, decimal_places=2, default=100.00)
+    
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL, 
+        on_delete=models.SET_NULL, 
+        null=True
+    )
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['subject', 'title'], name='unique_assignment_task_per_subject')
+        ]
+        ordering = ['-due_date']
+
+    def __str__(self):
+        return f"{self.subject.code} - {self.title}"
+
+class AssignmentSubmission(TimeStampedModel):
+    """
+    A student's submission for an AssignmentTask.
+    """
+    assignment = models.ForeignKey(AssignmentTask, on_delete=models.CASCADE, related_name='submissions')
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='assignment_submissions')
+    file = models.FileField(_('submission file'), upload_to='assignments/submissions/')
+    marks_obtained = models.DecimalField(_('marks obtained'), max_digits=5, decimal_places=2, null=True, blank=True)
+    remarks = models.TextField(_('remarks'), blank=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['assignment', 'student'], name='unique_submission_per_assignment')
+        ]
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"{self.student} -> {self.assignment.title}"

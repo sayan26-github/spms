@@ -8,23 +8,45 @@ export const AuthProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        // Check local storage on mount
-        const storedUser = localStorage.getItem("user");
-        const accessToken = localStorage.getItem("access_token");
+        const initializeAuth = async () => {
+            const storedUser = localStorage.getItem("user");
+            const accessToken = localStorage.getItem("access_token");
 
-        if (storedUser && accessToken) {
-            setUser(JSON.parse(storedUser));
-        }
-        setLoading(false);
+            if (storedUser && accessToken) {
+                try {
+                    const parsedUser = JSON.parse(storedUser);
+                    setUser(parsedUser);
+                    
+                    // Fetch fresh profile data to get latest details (like batch/department)
+                    try {
+                        const response = await authService.getProfile();
+                        const freshData = response.data;
+                        // Merge fresh data (it may have more or updated fields)
+                        const updatedUser = { ...parsedUser, ...freshData };
+                        setUser(updatedUser);
+                        localStorage.setItem("user", JSON.stringify(updatedUser));
+                    } catch (fetchErr) {
+                        console.error("Failed to fetch fresh profile, using stored data.", fetchErr);
+                    }
+                } catch (err) {
+                    console.error("Failed to parse stored user:", err);
+                    localStorage.removeItem("user");
+                    localStorage.removeItem("access_token");
+                }
+            }
+            setLoading(false);
+        };
+        
+        initializeAuth();
     }, []);
 
     const login = async (registrationNumber, password, collegeCode = "IITB") => {
         try {
             const response = await authService.login(registrationNumber, password, collegeCode);
 
-            const { access, refresh, role, name, first_name, last_name, college } = response.data;
+            const { access, refresh, role, name, first_name, last_name, college, batch, department } = response.data;
 
-            const userData = { role, name, first_name, last_name, college, registrationNumber };
+            const userData = { role, name, first_name, last_name, college, registrationNumber, batch, department };
 
             localStorage.setItem("access_token", access);
             localStorage.setItem("refresh_token", refresh);

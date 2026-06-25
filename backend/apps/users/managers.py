@@ -47,8 +47,12 @@ class CustomUserManager(BaseUserManager):
         if extra_fields.get('is_superuser') is not True:
             raise ValueError(_('Superuser must have is_superuser=True.'))
         
-        # We assume for superuser creation via CLI, the caller must handle college
-        # or we might need to handle it. For now, we leave it to standard call 
-        # which will fail if college is missing, prompting user to provide it.
-        
-        return self.create_user(registration_number, password=password, **extra_fields)
+        # Extract college from extra_fields — it must be provided
+        college = extra_fields.pop('college', None)
+        if not college:
+            raise ValueError(_('Superuser must be assigned to a college.'))
+
+        return self.create_user(
+            registration_number, college=college,
+            password=password, **extra_fields
+        )

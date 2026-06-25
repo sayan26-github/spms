@@ -11,8 +11,8 @@ const STAT_CARDS = [
     { key: 'total_teachers', label: 'Teachers', icon: Users, gradient: 'from-purple-500 to-purple-600', shadow: 'shadow-purple-500/20', link: '/admin/teachers' },
     { key: 'total_subjects', label: 'Subjects', icon: BookOpen, gradient: 'from-emerald-500 to-emerald-600', shadow: 'shadow-emerald-500/20', link: '/admin/subjects' },
     { key: 'total_enrollments', label: 'Active Enrollments', icon: ClipboardList, gradient: 'from-amber-500 to-orange-500', shadow: 'shadow-amber-500/20' },
-    { key: 'total_batches', label: 'Batches', icon: Layers, gradient: 'from-sky-500 to-cyan-500', shadow: 'shadow-sky-500/20' },
-    { key: 'total_departments', label: 'Departments', icon: Building, gradient: 'from-rose-500 to-pink-500', shadow: 'shadow-rose-500/20' },
+    { key: 'total_batches', label: 'Batches', icon: Layers, gradient: 'from-sky-500 to-cyan-500', shadow: 'shadow-sky-500/20', link: '/admin/batches' },
+    { key: 'total_departments', label: 'Departments', icon: Building, gradient: 'from-rose-500 to-pink-500', shadow: 'shadow-rose-500/20', link: '/admin/departments' },
 ];
 
 const QUICK_ACTIONS = [

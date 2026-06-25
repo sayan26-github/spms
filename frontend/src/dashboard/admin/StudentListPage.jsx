@@ -5,7 +5,7 @@ import { adminService } from '../../services/adminService';
 import studentService from '../../services/studentService';
 import batchService from '../../services/batchService';
 import departmentService from '../../services/departmentService';
-import { Plus, ChevronLeft, UserPlus, Users, Mail } from 'lucide-react';
+import { Plus, ChevronLeft, UserPlus, Users, Mail, FileText } from 'lucide-react';
 
 const StudentListPage = () => {
     const { batchId, deptId } = useParams();
@@ -176,6 +176,7 @@ const StudentListPage = () => {
                                     <th className="px-6 py-4 text-xs font-semibold uppercase tracking-wider">Student</th>
                                     <th className="px-6 py-4 text-xs font-semibold uppercase tracking-wider">Registration ID</th>
                                     <th className="px-6 py-4 text-xs font-semibold uppercase tracking-wider">Semester</th>
+                                    <th className="px-6 py-4 text-xs font-semibold uppercase tracking-wider text-right">Actions</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-brand-border">
@@ -201,6 +202,14 @@ const StudentListPage = () => {
                                         </td>
                                         <td className="px-6 py-4 text-sm text-brand-muted">
                                             {s.semester}
+                                        </td>
+                                        <td className="px-6 py-4 text-right">
+                                            <button 
+                                                onClick={() => navigate(`/admin/students/transcript/${s.id}`)}
+                                                className="inline-flex items-center px-3 py-1.5 text-xs font-semibold text-brand-primary bg-brand-primaryLight hover:bg-indigo-100 rounded-lg transition-colors"
+                                            >
+                                                <FileText size={14} className="mr-1.5" /> Transcript
+                                            </button>
                                         </td>
                                     </tr>
                                 ))}

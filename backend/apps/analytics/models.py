@@ -21,6 +21,20 @@ class Prediction(TimeStampedModel):
     # Metadata about the prediction run
     prediction_date = models.DateField(auto_now_add=True)
     model_version = models.CharField(max_length=50, default='v1.0')
+    
+    # ML output storage
+    recommendations = models.JSONField(
+        _('recommendations'),
+        default=list,
+        blank=True,
+        help_text=_('List of personalized recommendation strings.')
+    )
+    features_snapshot = models.JSONField(
+        _('features snapshot'),
+        default=dict,
+        blank=True,
+        help_text=_('Feature values used for this prediction.')
+    )
 
     class Meta:
         indexes = [

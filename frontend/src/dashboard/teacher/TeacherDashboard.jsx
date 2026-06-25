@@ -98,7 +98,7 @@ const TeacherDashboard = ({ user }) => {
             <RiskAnalysisWidget />
 
             {/* Quick Actions */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
                 <Link to="/attendance" className="p-5 modern-card rounded-2xl hover:-translate-y-1 transition-all flex items-center space-x-4 group">
                     <div className="p-3 bg-blue-50 rounded-xl text-blue-600 group-hover:bg-blue-100 transition-colors">
                         <Calendar size={24} />
@@ -126,6 +126,16 @@ const TeacherDashboard = ({ user }) => {
                     <div>
                         <h3 className="font-bold text-brand-text">Messages</h3>
                         <p className="text-xs text-brand-muted mt-1">Inbox & Alerts</p>
+                    </div>
+                </Link>
+
+                <Link to="/assignments" className="p-5 modern-card rounded-2xl hover:-translate-y-1 transition-all flex items-center space-x-4 group">
+                    <div className="p-3 bg-emerald-50 rounded-xl text-emerald-600 group-hover:bg-emerald-100 transition-colors">
+                        <BookOpen size={24} />
+                    </div>
+                    <div>
+                        <h3 className="font-bold text-brand-text">Assignments</h3>
+                        <p className="text-xs text-brand-muted mt-1">Distribute & Grade work</p>
                     </div>
                 </Link>
             </div>

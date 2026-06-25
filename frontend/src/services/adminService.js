@@ -20,8 +20,8 @@ export const adminService = {
     },
 
     // User Management
-    getUsers: async () => {
-        const response = await api.get(ADMIN_API.USERS);
+    getUsers: async (params = {}) => {
+        const response = await api.get(ADMIN_API.USERS, { params });
         return response.data;
     },
     createUser: async (userData) => {
@@ -45,8 +45,8 @@ export const adminService = {
     },
 
     // Subject Management
-    getSubjects: async () => {
-        const response = await api.get(ADMIN_API.SUBJECTS);
+    getSubjects: async (params = {}) => {
+        const response = await api.get(ADMIN_API.SUBJECTS, { params });
         return response.data;
     },
     createSubject: async (subjectData) => {
@@ -58,8 +58,8 @@ export const adminService = {
     },
 
     // Teacher Profiles
-    getTeachers: async () => {
-        const response = await api.get(ADMIN_API.TEACHERS);
+    getTeachers: async (params = {}) => {
+        const response = await api.get(ADMIN_API.TEACHERS, { params });
         return response.data;
     },
 

@@ -1,0 +1,1002 @@
+[
+  {
+    "registration_number": "STU2023CSE001",
+    "first_name": "Aarav",
+    "last_name": "Sharma",
+    "email": "aarav.sharma1@college.edu",
+    "password": "Student@1000",
+    "department_code": "CSE",
+    "batch_name": "2023",
+    "semester": 1
+  },
+  {
+    "registration_number": "STU2024ECE002",
+    "first_name": "Vivaan",
+    "last_name": "Singh",
+    "email": "vivaan.singh2@college.edu",
+    "password": "Student@1001",
+    "department_code": "ECE",
+    "batch_name": "2024",
+    "semester": 2
+  },
+  {
+    "registration_number": "STU2025EE003",
+    "first_name": "Aditya",
+    "last_name": "Joshi",
+    "email": "aditya.joshi3@college.edu",
+    "password": "Student@1002",
+    "department_code": "EE",
+    "batch_name": "2025",
+    "semester": 3
+  },
+  {
+    "registration_number": "STU2026ME004",
+    "first_name": "Arjun",
+    "last_name": "Das",
+    "email": "arjun.das4@college.edu",
+    "password": "Student@1003",
+    "department_code": "ME",
+    "batch_name": "2026",
+    "semester": 4
+  },
+  {
+    "registration_number": "STU2023CE005",
+    "first_name": "Krishna",
+    "last_name": "Jain",
+    "email": "krishna.jain5@college.edu",
+    "password": "Student@1004",
+    "department_code": "CE",
+    "batch_name": "2023",
+    "semester": 5
+  },
+  {
+    "registration_number": "STU2024CSE006",
+    "first_name": "Ishaan",
+    "last_name": "Tiwari",
+    "email": "ishaan.tiwari6@college.edu",
+    "password": "Student@1005",
+    "department_code": "CSE",
+    "batch_name": "2024",
+    "semester": 6
+  },
+  {
+    "registration_number": "STU2025ECE007",
+    "first_name": "Rohan",
+    "last_name": "Menon",
+    "email": "rohan.menon7@college.edu",
+    "password": "Student@1006",
+    "department_code": "ECE",
+    "batch_name": "2025",
+    "semester": 7
+  },
+  {
+    "registration_number": "STU2026EE008",
+    "first_name": "Karan",
+    "last_name": "Verma",
+    "email": "karan.verma8@college.edu",
+    "password": "Student@1007",
+    "department_code": "EE",
+    "batch_name": "2026",
+    "semester": 8
+  },
+  {
+    "registration_number": "STU2023ME009",
+    "first_name": "Rahul",
+    "last_name": "Patel",
+    "email": "rahul.patel9@college.edu",
+    "password": "Student@1008",
+    "department_code": "ME",
+    "batch_name": "2023",
+    "semester": 1
+  },
+  {
+    "registration_number": "STU2024CE010",
+    "first_name": "Aman",
+    "last_name": "Yadav",
+    "email": "aman.yadav10@college.edu",
+    "password": "Student@1009",
+    "department_code": "CE",
+    "batch_name": "2024",
+    "semester": 2
+  },
+  {
+    "registration_number": "STU2025CSE011",
+    "first_name": "Ananya",
+    "last_name": "Reddy",
+    "email": "ananya.reddy11@college.edu",
+    "password": "Student@1010",
+    "department_code": "CSE",
+    "batch_name": "2025",
+    "semester": 3
+  },
+  {
+    "registration_number": "STU2026ECE012",
+    "first_name": "Diya",
+    "last_name": "Kapoor",
+    "email": "diya.kapoor12@college.edu",
+    "password": "Student@1011",
+    "department_code": "ECE",
+    "batch_name": "2026",
+    "semester": 4
+  },
+  {
+    "registration_number": "STU2023EE013",
+    "first_name": "Priya",
+    "last_name": "Sinha",
+    "email": "priya.sinha13@college.edu",
+    "password": "Student@1012",
+    "department_code": "EE",
+    "batch_name": "2023",
+    "semester": 5
+  },
+  {
+    "registration_number": "STU2024ME014",
+    "first_name": "Sneha",
+    "last_name": "Pillai",
+    "email": "sneha.pillai14@college.edu",
+    "password": "Student@1013",
+    "department_code": "ME",
+    "batch_name": "2024",
+    "semester": 6
+  },
+  {
+    "registration_number": "STU2025CE015",
+    "first_name": "Pooja",
+    "last_name": "Gupta",
+    "email": "pooja.gupta15@college.edu",
+    "password": "Student@1014",
+    "department_code": "CE",
+    "batch_name": "2025",
+    "semester": 7
+  },
+  {
+    "registration_number": "STU2026CSE016",
+    "first_name": "Meera",
+    "last_name": "Kumar",
+    "email": "meera.kumar16@college.edu",
+    "password": "Student@1015",
+    "department_code": "CSE",
+    "batch_name": "2026",
+    "semester": 8
+  },
+  {
+    "registration_number": "STU2023ECE017",
+    "first_name": "Kavya",
+    "last_name": "Roy",
+    "email": "kavya.roy17@college.edu",
+    "password": "Student@1016",
+    "department_code": "ECE",
+    "batch_name": "2023",
+    "semester": 1
+  },
+  {
+    "registration_number": "STU2024EE018",
+    "first_name": "Nisha",
+    "last_name": "Nair",
+    "email": "nisha.nair18@college.edu",
+    "password": "Student@1017",
+    "department_code": "EE",
+    "batch_name": "2024",
+    "semester": 2
+  },
+  {
+    "registration_number": "STU2025ME019",
+    "first_name": "Riya",
+    "last_name": "Pandey",
+    "email": "riya.pandey19@college.edu",
+    "password": "Student@1018",
+    "department_code": "ME",
+    "batch_name": "2025",
+    "semester": 3
+  },
+  {
+    "registration_number": "STU2026CE020",
+    "first_name": "Shreya",
+    "last_name": "Ghosh",
+    "email": "shreya.ghosh20@college.edu",
+    "password": "Student@1019",
+    "department_code": "CE",
+    "batch_name": "2026",
+    "semester": 4
+  },
+  {
+    "registration_number": "STU2023CSE021",
+    "first_name": "Aarav",
+    "last_name": "Sharma",
+    "email": "aarav.sharma21@college.edu",
+    "password": "Student@1020",
+    "department_code": "CSE",
+    "batch_name": "2023",
+    "semester": 5
+  },
+  {
+    "registration_number": "STU2024ECE022",
+    "first_name": "Vivaan",
+    "last_name": "Singh",
+    "email": "vivaan.singh22@college.edu",
+    "password": "Student@1021",
+    "department_code": "ECE",
+    "batch_name": "2024",
+    "semester": 6
+  },
+  {
+    "registration_number": "STU2025EE023",
+    "first_name": "Aditya",
+    "last_name": "Joshi",
+    "email": "aditya.joshi23@college.edu",
+    "password": "Student@1022",
+    "department_code": "EE",
+    "batch_name": "2025",
+    "semester": 7
+  },
+  {
+    "registration_number": "STU2026ME024",
+    "first_name": "Arjun",
+    "last_name": "Das",
+    "email": "arjun.das24@college.edu",
+    "password": "Student@1023",
+    "department_code": "ME",
+    "batch_name": "2026",
+    "semester": 8
+  },
+  {
+    "registration_number": "STU2023CE025",
+    "first_name": "Krishna",
+    "last_name": "Jain",
+    "email": "krishna.jain25@college.edu",
+    "password": "Student@1024",
+    "department_code": "CE",
+    "batch_name": "2023",
+    "semester": 1
+  },
+  {
+    "registration_number": "STU2024CSE026",
+    "first_name": "Ishaan",
+    "last_name": "Tiwari",
+    "email": "ishaan.tiwari26@college.edu",
+    "password": "Student@1025",
+    "department_code": "CSE",
+    "batch_name": "2024",
+    "semester": 2
+  },
+  {
+    "registration_number": "STU2025ECE027",
+    "first_name": "Rohan",
+    "last_name": "Menon",
+    "email": "rohan.menon27@college.edu",
+    "password": "Student@1026",
+    "department_code": "ECE",
+    "batch_name": "2025",
+    "semester": 3
+  },
+  {
+    "registration_number": "STU2026EE028",
+    "first_name": "Karan",
+    "last_name": "Verma",
+    "email": "karan.verma28@college.edu",
+    "password": "Student@1027",
+    "department_code": "EE",
+    "batch_name": "2026",
+    "semester": 4
+  },
+  {
+    "registration_number": "STU2023ME029",
+    "first_name": "Rahul",
+    "last_name": "Patel",
+    "email": "rahul.patel29@college.edu",
+    "password": "Student@1028",
+    "department_code": "ME",
+    "batch_name": "2023",
+    "semester": 5
+  },
+  {
+    "registration_number": "STU2024CE030",
+    "first_name": "Aman",
+    "last_name": "Yadav",
+    "email": "aman.yadav30@college.edu",
+    "password": "Student@1029",
+    "department_code": "CE",
+    "batch_name": "2024",
+    "semester": 6
+  },
+  {
+    "registration_number": "STU2025CSE031",
+    "first_name": "Ananya",
+    "last_name": "Reddy",
+    "email": "ananya.reddy31@college.edu",
+    "password": "Student@1030",
+    "department_code": "CSE",
+    "batch_name": "2025",
+    "semester": 7
+  },
+  {
+    "registration_number": "STU2026ECE032",
+    "first_name": "Diya",
+    "last_name": "Kapoor",
+    "email": "diya.kapoor32@college.edu",
+    "password": "Student@1031",
+    "department_code": "ECE",
+    "batch_name": "2026",
+    "semester": 8
+  },
+  {
+    "registration_number": "STU2023EE033",
+    "first_name": "Priya",
+    "last_name": "Sinha",
+    "email": "priya.sinha33@college.edu",
+    "password": "Student@1032",
+    "department_code": "EE",
+    "batch_name": "2023",
+    "semester": 1
+  },
+  {
+    "registration_number": "STU2024ME034",
+    "first_name": "Sneha",
+    "last_name": "Pillai",
+    "email": "sneha.pillai34@college.edu",
+    "password": "Student@1033",
+    "department_code": "ME",
+    "batch_name": "2024",
+    "semester": 2
+  },
+  {
+    "registration_number": "STU2025CE035",
+    "first_name": "Pooja",
+    "last_name": "Gupta",
+    "email": "pooja.gupta35@college.edu",
+    "password": "Student@1034",
+    "department_code": "CE",
+    "batch_name": "2025",
+    "semester": 3
+  },
+  {
+    "registration_number": "STU2026CSE036",
+    "first_name": "Meera",
+    "last_name": "Kumar",
+    "email": "meera.kumar36@college.edu",
+    "password": "Student@1035",
+    "department_code": "CSE",
+    "batch_name": "2026",
+    "semester": 4
+  },
+  {
+    "registration_number": "STU2023ECE037",
+    "first_name": "Kavya",
+    "last_name": "Roy",
+    "email": "kavya.roy37@college.edu",
+    "password": "Student@1036",
+    "department_code": "ECE",
+    "batch_name": "2023",
+    "semester": 5
+  },
+  {
+    "registration_number": "STU2024EE038",
+    "first_name": "Nisha",
+    "last_name": "Nair",
+    "email": "nisha.nair38@college.edu",
+    "password": "Student@1037",
+    "department_code": "EE",
+    "batch_name": "2024",
+    "semester": 6
+  },
+  {
+    "registration_number": "STU2025ME039",
+    "first_name": "Riya",
+    "last_name": "Pandey",
+    "email": "riya.pandey39@college.edu",
+    "password": "Student@1038",
+    "department_code": "ME",
+    "batch_name": "2025",
+    "semester": 7
+  },
+  {
+    "registration_number": "STU2026CE040",
+    "first_name": "Shreya",
+    "last_name": "Ghosh",
+    "email": "shreya.ghosh40@college.edu",
+    "password": "Student@1039",
+    "department_code": "CE",
+    "batch_name": "2026",
+    "semester": 8
+  },
+  {
+    "registration_number": "STU2023CSE041",
+    "first_name": "Aarav",
+    "last_name": "Sharma",
+    "email": "aarav.sharma41@college.edu",
+    "password": "Student@1040",
+    "department_code": "CSE",
+    "batch_name": "2023",
+    "semester": 1
+  },
+  {
+    "registration_number": "STU2024ECE042",
+    "first_name": "Vivaan",
+    "last_name": "Singh",
+    "email": "vivaan.singh42@college.edu",
+    "password": "Student@1041",
+    "department_code": "ECE",
+    "batch_name": "2024",
+    "semester": 2
+  },
+  {
+    "registration_number": "STU2025EE043",
+    "first_name": "Aditya",
+    "last_name": "Joshi",
+    "email": "aditya.joshi43@college.edu",
+    "password": "Student@1042",
+    "department_code": "EE",
+    "batch_name": "2025",
+    "semester": 3
+  },
+  {
+    "registration_number": "STU2026ME044",
+    "first_name": "Arjun",
+    "last_name": "Das",
+    "email": "arjun.das44@college.edu",
+    "password": "Student@1043",
+    "department_code": "ME",
+    "batch_name": "2026",
+    "semester": 4
+  },
+  {
+    "registration_number": "STU2023CE045",
+    "first_name": "Krishna",
+    "last_name": "Jain",
+    "email": "krishna.jain45@college.edu",
+    "password": "Student@1044",
+    "department_code": "CE",
+    "batch_name": "2023",
+    "semester": 5
+  },
+  {
+    "registration_number": "STU2024CSE046",
+    "first_name": "Ishaan",
+    "last_name": "Tiwari",
+    "email": "ishaan.tiwari46@college.edu",
+    "password": "Student@1045",
+    "department_code": "CSE",
+    "batch_name": "2024",
+    "semester": 6
+  },
+  {
+    "registration_number": "STU2025ECE047",
+    "first_name": "Rohan",
+    "last_name": "Menon",
+    "email": "rohan.menon47@college.edu",
+    "password": "Student@1046",
+    "department_code": "ECE",
+    "batch_name": "2025",
+    "semester": 7
+  },
+  {
+    "registration_number": "STU2026EE048",
+    "first_name": "Karan",
+    "last_name": "Verma",
+    "email": "karan.verma48@college.edu",
+    "password": "Student@1047",
+    "department_code": "EE",
+    "batch_name": "2026",
+    "semester": 8
+  },
+  {
+    "registration_number": "STU2023ME049",
+    "first_name": "Rahul",
+    "last_name": "Patel",
+    "email": "rahul.patel49@college.edu",
+    "password": "Student@1048",
+    "department_code": "ME",
+    "batch_name": "2023",
+    "semester": 1
+  },
+  {
+    "registration_number": "STU2024CE050",
+    "first_name": "Aman",
+    "last_name": "Yadav",
+    "email": "aman.yadav50@college.edu",
+    "password": "Student@1049",
+    "department_code": "CE",
+    "batch_name": "2024",
+    "semester": 2
+  },
+  {
+    "registration_number": "STU2025CSE051",
+    "first_name": "Ananya",
+    "last_name": "Reddy",
+    "email": "ananya.reddy51@college.edu",
+    "password": "Student@1050",
+    "department_code": "CSE",
+    "batch_name": "2025",
+    "semester": 3
+  },
+  {
+    "registration_number": "STU2026ECE052",
+    "first_name": "Diya",
+    "last_name": "Kapoor",
+    "email": "diya.kapoor52@college.edu",
+    "password": "Student@1051",
+    "department_code": "ECE",
+    "batch_name": "2026",
+    "semester": 4
+  },
+  {
+    "registration_number": "STU2023EE053",
+    "first_name": "Priya",
+    "last_name": "Sinha",
+    "email": "priya.sinha53@college.edu",
+    "password": "Student@1052",
+    "department_code": "EE",
+    "batch_name": "2023",
+    "semester": 5
+  },
+  {
+    "registration_number": "STU2024ME054",
+    "first_name": "Sneha",
+    "last_name": "Pillai",
+    "email": "sneha.pillai54@college.edu",
+    "password": "Student@1053",
+    "department_code": "ME",
+    "batch_name": "2024",
+    "semester": 6
+  },
+  {
+    "registration_number": "STU2025CE055",
+    "first_name": "Pooja",
+    "last_name": "Gupta",
+    "email": "pooja.gupta55@college.edu",
+    "password": "Student@1054",
+    "department_code": "CE",
+    "batch_name": "2025",
+    "semester": 7
+  },
+  {
+    "registration_number": "STU2026CSE056",
+    "first_name": "Meera",
+    "last_name": "Kumar",
+    "email": "meera.kumar56@college.edu",
+    "password": "Student@1055",
+    "department_code": "CSE",
+    "batch_name": "2026",
+    "semester": 8
+  },
+  {
+    "registration_number": "STU2023ECE057",
+    "first_name": "Kavya",
+    "last_name": "Roy",
+    "email": "kavya.roy57@college.edu",
+    "password": "Student@1056",
+    "department_code": "ECE",
+    "batch_name": "2023",
+    "semester": 1
+  },
+  {
+    "registration_number": "STU2024EE058",
+    "first_name": "Nisha",
+    "last_name": "Nair",
+    "email": "nisha.nair58@college.edu",
+    "password": "Student@1057",
+    "department_code": "EE",
+    "batch_name": "2024",
+    "semester": 2
+  },
+  {
+    "registration_number": "STU2025ME059",
+    "first_name": "Riya",
+    "last_name": "Pandey",
+    "email": "riya.pandey59@college.edu",
+    "password": "Student@1058",
+    "department_code": "ME",
+    "batch_name": "2025",
+    "semester": 3
+  },
+  {
+    "registration_number": "STU2026CE060",
+    "first_name": "Shreya",
+    "last_name": "Ghosh",
+    "email": "shreya.ghosh60@college.edu",
+    "password": "Student@1059",
+    "department_code": "CE",
+    "batch_name": "2026",
+    "semester": 4
+  },
+  {
+    "registration_number": "STU2023CSE061",
+    "first_name": "Aarav",
+    "last_name": "Sharma",
+    "email": "aarav.sharma61@college.edu",
+    "password": "Student@1060",
+    "department_code": "CSE",
+    "batch_name": "2023",
+    "semester": 5
+  },
+  {
+    "registration_number": "STU2024ECE062",
+    "first_name": "Vivaan",
+    "last_name": "Singh",
+    "email": "vivaan.singh62@college.edu",
+    "password": "Student@1061",
+    "department_code": "ECE",
+    "batch_name": "2024",
+    "semester": 6
+  },
+  {
+    "registration_number": "STU2025EE063",
+    "first_name": "Aditya",
+    "last_name": "Joshi",
+    "email": "aditya.joshi63@college.edu",
+    "password": "Student@1062",
+    "department_code": "EE",
+    "batch_name": "2025",
+    "semester": 7
+  },
+  {
+    "registration_number": "STU2026ME064",
+    "first_name": "Arjun",
+    "last_name": "Das",
+    "email": "arjun.das64@college.edu",
+    "password": "Student@1063",
+    "department_code": "ME",
+    "batch_name": "2026",
+    "semester": 8
+  },
+  {
+    "registration_number": "STU2023CE065",
+    "first_name": "Krishna",
+    "last_name": "Jain",
+    "email": "krishna.jain65@college.edu",
+    "password": "Student@1064",
+    "department_code": "CE",
+    "batch_name": "2023",
+    "semester": 1
+  },
+  {
+    "registration_number": "STU2024CSE066",
+    "first_name": "Ishaan",
+    "last_name": "Tiwari",
+    "email": "ishaan.tiwari66@college.edu",
+    "password": "Student@1065",
+    "department_code": "CSE",
+    "batch_name": "2024",
+    "semester": 2
+  },
+  {
+    "registration_number": "STU2025ECE067",
+    "first_name": "Rohan",
+    "last_name": "Menon",
+    "email": "rohan.menon67@college.edu",
+    "password": "Student@1066",
+    "department_code": "ECE",
+    "batch_name": "2025",
+    "semester": 3
+  },
+  {
+    "registration_number": "STU2026EE068",
+    "first_name": "Karan",
+    "last_name": "Verma",
+    "email": "karan.verma68@college.edu",
+    "password": "Student@1067",
+    "department_code": "EE",
+    "batch_name": "2026",
+    "semester": 4
+  },
+  {
+    "registration_number": "STU2023ME069",
+    "first_name": "Rahul",
+    "last_name": "Patel",
+    "email": "rahul.patel69@college.edu",
+    "password": "Student@1068",
+    "department_code": "ME",
+    "batch_name": "2023",
+    "semester": 5
+  },
+  {
+    "registration_number": "STU2024CE070",
+    "first_name": "Aman",
+    "last_name": "Yadav",
+    "email": "aman.yadav70@college.edu",
+    "password": "Student@1069",
+    "department_code": "CE",
+    "batch_name": "2024",
+    "semester": 6
+  },
+  {
+    "registration_number": "STU2025CSE071",
+    "first_name": "Ananya",
+    "last_name": "Reddy",
+    "email": "ananya.reddy71@college.edu",
+    "password": "Student@1070",
+    "department_code": "CSE",
+    "batch_name": "2025",
+    "semester": 7
+  },
+  {
+    "registration_number": "STU2026ECE072",
+    "first_name": "Diya",
+    "last_name": "Kapoor",
+    "email": "diya.kapoor72@college.edu",
+    "password": "Student@1071",
+    "department_code": "ECE",
+    "batch_name": "2026",
+    "semester": 8
+  },
+  {
+    "registration_number": "STU2023EE073",
+    "first_name": "Priya",
+    "last_name": "Sinha",
+    "email": "priya.sinha73@college.edu",
+    "password": "Student@1072",
+    "department_code": "EE",
+    "batch_name": "2023",
+    "semester": 1
+  },
+  {
+    "registration_number": "STU2024ME074",
+    "first_name": "Sneha",
+    "last_name": "Pillai",
+    "email": "sneha.pillai74@college.edu",
+    "password": "Student@1073",
+    "department_code": "ME",
+    "batch_name": "2024",
+    "semester": 2
+  },
+  {
+    "registration_number": "STU2025CE075",
+    "first_name": "Pooja",
+    "last_name": "Gupta",
+    "email": "pooja.gupta75@college.edu",
+    "password": "Student@1074",
+    "department_code": "CE",
+    "batch_name": "2025",
+    "semester": 3
+  },
+  {
+    "registration_number": "STU2026CSE076",
+    "first_name": "Meera",
+    "last_name": "Kumar",
+    "email": "meera.kumar76@college.edu",
+    "password": "Student@1075",
+    "department_code": "CSE",
+    "batch_name": "2026",
+    "semester": 4
+  },
+  {
+    "registration_number": "STU2023ECE077",
+    "first_name": "Kavya",
+    "last_name": "Roy",
+    "email": "kavya.roy77@college.edu",
+    "password": "Student@1076",
+    "department_code": "ECE",
+    "batch_name": "2023",
+    "semester": 5
+  },
+  {
+    "registration_number": "STU2024EE078",
+    "first_name": "Nisha",
+    "last_name": "Nair",
+    "email": "nisha.nair78@college.edu",
+    "password": "Student@1077",
+    "department_code": "EE",
+    "batch_name": "2024",
+    "semester": 6
+  },
+  {
+    "registration_number": "STU2025ME079",
+    "first_name": "Riya",
+    "last_name": "Pandey",
+    "email": "riya.pandey79@college.edu",
+    "password": "Student@1078",
+    "department_code": "ME",
+    "batch_name": "2025",
+    "semester": 7
+  },
+  {
+    "registration_number": "STU2026CE080",
+    "first_name": "Shreya",
+    "last_name": "Ghosh",
+    "email": "shreya.ghosh80@college.edu",
+    "password": "Student@1079",
+    "department_code": "CE",
+    "batch_name": "2026",
+    "semester": 8
+  },
+  {
+    "registration_number": "STU2023CSE081",
+    "first_name": "Aarav",
+    "last_name": "Sharma",
+    "email": "aarav.sharma81@college.edu",
+    "password": "Student@1080",
+    "department_code": "CSE",
+    "batch_name": "2023",
+    "semester": 1
+  },
+  {
+    "registration_number": "STU2024ECE082",
+    "first_name": "Vivaan",
+    "last_name": "Singh",
+    "email": "vivaan.singh82@college.edu",
+    "password": "Student@1081",
+    "department_code": "ECE",
+    "batch_name": "2024",
+    "semester": 2
+  },
+  {
+    "registration_number": "STU2025EE083",
+    "first_name": "Aditya",
+    "last_name": "Joshi",
+    "email": "aditya.joshi83@college.edu",
+    "password": "Student@1082",
+    "department_code": "EE",
+    "batch_name": "2025",
+    "semester": 3
+  },
+  {
+    "registration_number": "STU2026ME084",
+    "first_name": "Arjun",
+    "last_name": "Das",
+    "email": "arjun.das84@college.edu",
+    "password": "Student@1083",
+    "department_code": "ME",
+    "batch_name": "2026",
+    "semester": 4
+  },
+  {
+    "registration_number": "STU2023CE085",
+    "first_name": "Krishna",
+    "last_name": "Jain",
+    "email": "krishna.jain85@college.edu",
+    "password": "Student@1084",
+    "department_code": "CE",
+    "batch_name": "2023",
+    "semester": 5
+  },
+  {
+    "registration_number": "STU2024CSE086",
+    "first_name": "Ishaan",
+    "last_name": "Tiwari",
+    "email": "ishaan.tiwari86@college.edu",
+    "password": "Student@1085",
+    "department_code": "CSE",
+    "batch_name": "2024",
+    "semester": 6
+  },
+  {
+    "registration_number": "STU2025ECE087",
+    "first_name": "Rohan",
+    "last_name": "Menon",
+    "email": "rohan.menon87@college.edu",
+    "password": "Student@1086",
+    "department_code": "ECE",
+    "batch_name": "2025",
+    "semester": 7
+  },
+  {
+    "registration_number": "STU2026EE088",
+    "first_name": "Karan",
+    "last_name": "Verma",
+    "email": "karan.verma88@college.edu",
+    "password": "Student@1087",
+    "department_code": "EE",
+    "batch_name": "2026",
+    "semester": 8
+  },
+  {
+    "registration_number": "STU2023ME089",
+    "first_name": "Rahul",
+    "last_name": "Patel",
+    "email": "rahul.patel89@college.edu",
+    "password": "Student@1088",
+    "department_code": "ME",
+    "batch_name": "2023",
+    "semester": 1
+  },
+  {
+    "registration_number": "STU2024CE090",
+    "first_name": "Aman",
+    "last_name": "Yadav",
+    "email": "aman.yadav90@college.edu",
+    "password": "Student@1089",
+    "department_code": "CE",
+    "batch_name": "2024",
+    "semester": 2
+  },
+  {
+    "registration_number": "STU2025CSE091",
+    "first_name": "Ananya",
+    "last_name": "Reddy",
+    "email": "ananya.reddy91@college.edu",
+    "password": "Student@1090",
+    "department_code": "CSE",
+    "batch_name": "2025",
+    "semester": 3
+  },
+  {
+    "registration_number": "STU2026ECE092",
+    "first_name": "Diya",
+    "last_name": "Kapoor",
+    "email": "diya.kapoor92@college.edu",
+    "password": "Student@1091",
+    "department_code": "ECE",
+    "batch_name": "2026",
+    "semester": 4
+  },
+  {
+    "registration_number": "STU2023EE093",
+    "first_name": "Priya",
+    "last_name": "Sinha",
+    "email": "priya.sinha93@college.edu",
+    "password": "Student@1092",
+    "department_code": "EE",
+    "batch_name": "2023",
+    "semester": 5
+  },
+  {
+    "registration_number": "STU2024ME094",
+    "first_name": "Sneha",
+    "last_name": "Pillai",
+    "email": "sneha.pillai94@college.edu",
+    "password": "Student@1093",
+    "department_code": "ME",
+    "batch_name": "2024",
+    "semester": 6
+  },
+  {
+    "registration_number": "STU2025CE095",
+    "first_name": "Pooja",
+    "last_name": "Gupta",
+    "email": "pooja.gupta95@college.edu",
+    "password": "Student@1094",
+    "department_code": "CE",
+    "batch_name": "2025",
+    "semester": 7
+  },
+  {
+    "registration_number": "STU2026CSE096",
+    "first_name": "Meera",
+    "last_name": "Kumar",
+    "email": "meera.kumar96@college.edu",
+    "password": "Student@1095",
+    "department_code": "CSE",
+    "batch_name": "2026",
+    "semester": 8
+  },
+  {
+    "registration_number": "STU2023ECE097",
+    "first_name": "Kavya",
+    "last_name": "Roy",
+    "email": "kavya.roy97@college.edu",
+    "password": "Student@1096",
+    "department_code": "ECE",
+    "batch_name": "2023",
+    "semester": 1
+  },
+  {
+    "registration_number": "STU2024EE098",
+    "first_name": "Nisha",
+    "last_name": "Nair",
+    "email": "nisha.nair98@college.edu",
+    "password": "Student@1097",
+    "department_code": "EE",
+    "batch_name": "2024",
+    "semester": 2
+  },
+  {
+    "registration_number": "STU2025ME099",
+    "first_name": "Riya",
+    "last_name": "Pandey",
+    "email": "riya.pandey99@college.edu",
+    "password": "Student@1098",
+    "department_code": "ME",
+    "batch_name": "2025",
+    "semester": 3
+  },
+  {
+    "registration_number": "STU2026CE100",
+    "first_name": "Shreya",
+    "last_name": "Ghosh",
+    "email": "shreya.ghosh100@college.edu",
+    "password": "Student@1099",
+    "department_code": "CE",
+    "batch_name": "2026",
+    "semester": 4
+  }
+]

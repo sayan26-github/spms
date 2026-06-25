@@ -9,7 +9,8 @@ import {
     MessageSquare,
     ClipboardCheck,
     BarChart3,
-    ShieldCheck
+    ShieldCheck,
+    Briefcase
 } from 'lucide-react';
 import { useAuth } from '../../auth/AuthContext';
 import AdminProfileModal from './AdminProfileModal';
@@ -32,6 +33,7 @@ const AdminLayout = () => {
         { path: '/admin/students', icon: GraduationCap, label: 'Students' },
         { path: '/admin/subjects', icon: BookOpen, label: 'Subjects' },
         { path: '/admin/enrollments', icon: ClipboardCheck, label: 'Enrollments' },
+        { path: '/admin/placements', icon: Briefcase, label: 'Placements' },
         { path: '/admin/analytics', icon: BarChart3, label: 'Analytics' },
         { path: '/messages', icon: MessageSquare, label: 'Messages' },
     ];

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { adminService } from '../../services/adminService';
 import {
     BarChart3, AlertTriangle, ChevronDown, ChevronRight,
-    RefreshCw, Users, BookOpen, GraduationCap, ShieldAlert
+    RefreshCw, Users, BookOpen, GraduationCap, ShieldAlert, Brain
 } from 'lucide-react';
 
 /* ────────────────── risk colour helpers ────────────────── */
@@ -209,6 +209,21 @@ const AdminAnalytics = () => {
                     <RefreshCw className={`w-4 h-4 ${running ? 'animate-spin' : ''}`} />
                     {running ? 'Running…' : 'Run Analysis'}
                 </button>
+            </div>
+
+            {/* ── ML Info Banner ── */}
+            <div className="bg-gradient-to-r from-indigo-50 to-violet-50 border border-indigo-100 rounded-2xl p-4 flex gap-4 items-start shadow-sm">
+                <div className="bg-white p-2.5 rounded-xl shadow-sm shrink-0">
+                    <Brain className="w-5 h-5 text-indigo-600" />
+                </div>
+                <div>
+                    <h3 className="text-sm font-bold text-indigo-900 mb-1">Powered by XGBoost ML Engine</h3>
+                    <p className="text-xs text-indigo-800/80 leading-relaxed max-w-4xl">
+                        Risk predictions are generated using an <strong>XGBoost Regressor</strong> trained on historical academic data. 
+                        The model analyzes 16 distinct features—including attendance trends, mid-semester assessments, and past performance—to predict future GPAs. 
+                        These predictions are dynamically classified into High and Medium risk tiers, allowing proactive intervention for students who need it most.
+                    </p>
+                </div>
             </div>
 
             {/* ── Error ── */}

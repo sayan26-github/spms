@@ -1,5 +1,6 @@
 from rest_framework import views, status, permissions, generics, viewsets
 from rest_framework.response import Response
+from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from django.utils.translation import gettext_lazy as _
 
 from .serializers import (
@@ -99,6 +100,7 @@ class ChangePasswordView(views.APIView):
 class UserProfileView(generics.RetrieveUpdateAPIView):
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = UserSerializer
+    parser_classes = [MultiPartParser, FormParser, JSONParser]
 
     def get_object(self):
         return self.request.user

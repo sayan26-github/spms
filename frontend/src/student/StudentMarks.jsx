@@ -32,8 +32,8 @@ const StudentMarks = () => {
                     // Filter marks where assessment belongs to subject
                     // Dependent on API returning nested subject info in 'assessment' field
                     setMarks(allMarks.filter(m =>
-                        m.assessment.subject === parseInt(subjectId) ||
-                        m.assessment.subject?.id === parseInt(subjectId)
+                        m.assessment_details.subject === parseInt(subjectId) ||
+                        m.assessment_details.subject?.id === parseInt(subjectId)
                     ));
                 } else {
                     setMarks(allMarks);
@@ -52,7 +52,7 @@ const StudentMarks = () => {
     const calculateAverage = () => {
         if (marks.length === 0) return 0;
         const totalObtained = marks.reduce((sum, m) => sum + parseFloat(m.marks_obtained), 0);
-        const totalMax = marks.reduce((sum, m) => sum + parseFloat(m.assessment.max_marks), 0);
+        const totalMax = marks.reduce((sum, m) => sum + parseFloat(m.assessment_details.max_marks), 0);
         if (totalMax === 0) return 0;
         return ((totalObtained / totalMax) * 100).toFixed(1);
     };
@@ -110,15 +110,15 @@ const StudentMarks = () => {
                             </thead>
                             <tbody className="bg-white divide-y divide-gray-200">
                                 {marks.map((mark) => {
-                                    const percentage = ((mark.marks_obtained / mark.assessment.max_marks) * 100).toFixed(1);
+                                    const percentage = ((mark.marks_obtained / mark.assessment_details.max_marks) * 100).toFixed(1);
                                     return (
                                         <tr key={mark.id}>
                                             <td className="px-6 py-4 whitespace-nowrap">
-                                                <div className="text-sm font-medium text-gray-900">{mark.assessment.name}</div>
-                                                <div className="text-xs text-gray-500">Max: {mark.assessment.max_marks}</div>
+                                                <div className="text-sm font-medium text-gray-900">{mark.assessment_details.name}</div>
+                                                <div className="text-xs text-gray-500">Max: {mark.assessment_details.max_marks}</div>
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                {new Date(mark.assessment.date).toLocaleDateString()}
+                                                {new Date(mark.assessment_details.date).toLocaleDateString()}
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap">
                                                 <div className="text-sm font-bold text-gray-900">{mark.marks_obtained}</div>

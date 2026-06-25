@@ -19,10 +19,12 @@ const EnrollDeptPage = () => {
         const load = async () => {
             try {
                 const [deptData, batchData] = await Promise.all([
-                    departmentService.getByBatch(batchId),
+                    departmentService.getAll({ page_size: 1000 }),
                     batchService.getAll()
                 ]);
-                setDepartments(deptData.results || deptData);
+                const allDepts = deptData.results || deptData;
+                const validDepts = allDepts.filter(d => !d.batch || String(d.batch) === String(batchId));
+                setDepartments(validDepts);
                 const allBatches = batchData.results || batchData;
                 const batch = allBatches.find((b) => String(b.id) === String(batchId));
                 setBatchName(batch?.name || `Batch ${batchId}`);

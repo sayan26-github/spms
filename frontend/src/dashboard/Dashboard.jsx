@@ -28,9 +28,16 @@ const Dashboard = () => {
                     <div className="flex justify-between h-16">
                         <div className="flex items-center">
                             <span className="text-2xl mr-2">📚</span>
-                            <h1 className="text-xl font-bold text-gray-900 tracking-tight">SPMS</h1>
+                            <h1 className="text-xl font-bold text-gray-900 tracking-tight border-r pr-4 mr-4 border-gray-300">SPMS</h1>
+                            <h2 className="text-lg font-semibold text-gray-700 hidden sm:block">
+                                {user?.role === 'STUDENT' ? 'Student Dashboard' : 
+                                 user?.role === 'TEACHER' ? 'Teacher Dashboard' : 'Dashboard'}
+                            </h2>
                         </div>
-                        <div className="flex items-center space-x-4">
+                        <div className="flex items-center space-x-6">
+                            <div className="text-sm text-gray-500 hidden md:block">
+                                {new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+                            </div>
                             <div className="text-right hidden sm:block">
                                 <p className="text-sm font-medium text-gray-900">{user?.name}</p>
                                 <p className="text-xs text-gray-500">{user?.role}</p>
