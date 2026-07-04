@@ -8,6 +8,7 @@ services:
   - type: web
     name: spms-backend
     env: python
+    rootDir: backend
     plan: free
     buildCommand: "./build.sh"
     startCommand: "gunicorn config.wsgi:application"
