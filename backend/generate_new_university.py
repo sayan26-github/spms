@@ -67,7 +67,9 @@ def main():
         })
 
     # Save to JSON
-    teachers_file = r'C:\Users\Sayan\Documents\spms\datafolder\gtu_teachers.json'
+    data_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'datafolder')
+    os.makedirs(data_dir, exist_ok=True)
+    teachers_file = os.path.join(data_dir, 'gtu_teachers.json')
     with open(teachers_file, 'w') as f:
         json.dump(teachers_data, f, indent=2)
 
@@ -107,7 +109,7 @@ def main():
         })
 
     # Save to JSON
-    students_file = r'C:\Users\Sayan\Documents\spms\datafolder\gtu_students.json'
+    students_file = os.path.join(data_dir, 'gtu_students.json')
     with open(students_file, 'w') as f:
         json.dump(students_data, f, indent=2)
 
