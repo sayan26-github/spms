@@ -2,11 +2,13 @@ databases:
   - name: spms_db
     databaseName: spms_db
     user: spms_user
+    plan: free
 
 services:
   - type: web
     name: spms-backend
     env: python
+    plan: free
     buildCommand: "./build.sh"
     startCommand: "gunicorn config.wsgi:application"
     envVars:
