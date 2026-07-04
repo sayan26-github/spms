@@ -46,19 +46,15 @@ class JobPostingViewSet(MultiTenantViewSet):
         if user.role != 'STUDENT':
             return Response({"error": "Only students can get recommendations"}, status=403)
             
-        student = Student.objects.get(user=user)
+        try:
+            student = Student.objects.get(user=user)
+        except Student.DoesNotExist:
+            return Response({"error": "Student profile not found"}, status=404)
+            
         active_jobs = self.get_queryset().filter(is_active=True)
         
-        # Extract student features here to pass to ML Engine
-        features_dict = AnalyticsService.extract_features_for_student(student)
-        num_skills = student.skills.count()
-        skill_score = num_skills * 10
-        from apps.analytics.ml_engine import FEATURE_NAMES
-        student_features_list = [features_dict[k] for k in FEATURE_NAMES]
-        student_features_list.append(skill_score)
-        
-        # Use ML Engine
-        recommendations = get_job_recommendations(student, active_jobs, student_features_list)
+        from .services import PlacementService
+        recommendations = PlacementService.get_job_recommendations_for_student(student, active_jobs)
         
         # Serialize jobs within recommendations
         serialized_recs = []
@@ -84,7 +80,11 @@ class StudentSkillViewSet(MultiTenantViewSet):
         return qs
 
     def perform_create(self, serializer):
-        student = Student.objects.get(user=self.request.user)
+        from rest_framework.exceptions import ValidationError
+        try:
+            student = Student.objects.get(user=self.request.user)
+        except Student.DoesNotExist:
+            raise ValidationError("Student profile not found.")
         serializer.save(college=self.request.user.college, student=student)
 
 class JobApplicationViewSet(MultiTenantViewSet):
@@ -98,7 +98,15 @@ class JobApplicationViewSet(MultiTenantViewSet):
         return qs
 
     def perform_create(self, serializer):
-        student = Student.objects.get(user=self.request.user)
+        from rest_framework.exceptions import ValidationError
+        try:
+            student = Student.objects.get(user=self.request.user)
+        except Student.DoesNotExist:
+            raise ValidationError("Student profile not found.")
+            
+        job = serializer.validated_data.get('job')
+        if job and job.college != self.request.user.college:
+            raise ValidationError("You can only apply to jobs within your college.")
         serializer.save(college=self.request.user.college, student=student)
 
 
@@ -106,24 +114,28 @@ class PlacementAnalyticsView(viewsets.ViewSet):
     """View to get ML Placement Probability"""
     permission_classes = [permissions.IsAuthenticated]
 
+    def list(self, request):
+        """Return available analytics endpoints."""
+        return Response({
+            'endpoints': {
+                'my_probability': '/placements/analytics/my_probability/',
+                'train_model': '/placements/analytics/train_model/',
+            }
+        })
+
     @action(detail=False, methods=['GET'])
     def my_probability(self, request):
         if request.user.role != 'STUDENT':
             return Response({"error": "Not a student"}, status=403)
             
-        student = Student.objects.get(user=request.user)
-        features_dict = AnalyticsService.extract_features_for_student(student)
-        
-        # Append some skill metrics to features
-        num_skills = student.skills.count()
-        skill_score = num_skills * 10
-        
-        from apps.analytics.ml_engine import FEATURE_NAMES
-        student_features_list = [features_dict[k] for k in FEATURE_NAMES]
-        student_features_list.append(skill_score)
-        
+        try:
+            student = Student.objects.get(user=request.user)
+        except Student.DoesNotExist:
+            return Response({"error": "Student profile not found"}, status=404)
+            
+        from .services import PlacementService
         active_jobs = JobPosting.objects.filter(college=request.user.college, is_active=True)
-        recs = get_job_recommendations(student, active_jobs, student_features_list)
+        recs = PlacementService.get_job_recommendations_for_student(student, active_jobs)
         
         if recs:
             top_recs = recs[:3]
@@ -141,38 +153,10 @@ class PlacementAnalyticsView(viewsets.ViewSet):
     def train_model(self, request):
         """Train the XGBoost placement model using historical data."""
         college = request.user.college
-        applications = JobApplication.objects.filter(college=college).select_related('student', 'job')
-        
-        X = []
-        y = []
-        
-        from apps.analytics.ml_engine import FEATURE_NAMES
-        
-        for app in applications:
-            try:
-                features_dict = AnalyticsService.extract_features_for_student(app.student)
-                num_skills = app.student.skills.count()
-                skill_score = num_skills * 10
-                
-                student_features_list = [features_dict[k] for k in FEATURE_NAMES]
-                student_features_list.append(skill_score)
-                
-                job_skills_count = app.job.required_skills.count()
-                ctc_val = float(app.job.ctc) if app.job.ctc else 0.0
-                job_features = [float(app.job.min_gpa), ctc_val, job_skills_count]
-                
-                X.append(student_features_list + job_features)
-                y.append(1 if app.status == 'OFFERED' else 0)
-            except Exception:
-                continue
-                
-        if not X:
-            return Response({"error": "No historical data available to train."}, status=400)
-            
-        predictor = PlacementPredictor()
-        success = predictor.train(X, y)
+        from .services import PlacementService
+        success, message = PlacementService.train_placement_model(college)
         
         if success:
-            return Response({"message": f"Model successfully trained on {len(X)} records."})
+            return Response({"message": message})
         else:
-            return Response({"error": "Training failed. Minimum 5 records required."}, status=400)
+            return Response({"error": message}, status=400)

@@ -1,40 +1,24 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Link } from 'react-router-dom';
-import batchService from '../../services/batchService';
+import { useBatches, useCreateBatch } from '../../hooks/useAdminQueries';
 import { Plus, ChevronRight, Calendar } from 'lucide-react';
 
 const StudentsManagement = () => {
-    const [batches, setBatches] = useState([]);
-    const [loading, setLoading] = useState(true);
     const [showModal, setShowModal] = useState(false);
     const [formData, setFormData] = useState({ name: '', year: '' });
     const [error, setError] = useState('');
 
-    useEffect(() => {
-        fetchBatches();
-    }, []);
-
-    const fetchBatches = async () => {
-        try {
-            setLoading(true);
-            const data = await batchService.getAll();
-            setBatches(Array.isArray(data) ? data : data?.results || []);
-        } catch (err) {
-            console.error('Failed to fetch batches', err);
-        } finally {
-            setLoading(false);
-        }
-    };
+    const { data: batches = [], isLoading: loading } = useBatches();
+    const createBatchMutation = useCreateBatch();
 
     const handleCreateBatch = async (e) => {
         e.preventDefault();
         setError('');
         try {
-            await batchService.create(formData);
+            await createBatchMutation.mutateAsync(formData);
             setShowModal(false);
             setFormData({ name: '', year: '' });
-            fetchBatches();
         } catch (err) {
             setError(err.response?.data?.detail || JSON.stringify(err.response?.data) || 'Failed to create batch');
         }
@@ -77,17 +61,18 @@ const StudentsManagement = () => {
                                 required
                             />
                         </div>
+
+                        <div className="pt-4 border-t border-brand-border flex justify-end space-x-3 mt-4">
+                            <button type="button" onClick={() => setShowModal(false)} className="px-5 py-2.5 text-sm font-semibold text-brand-muted hover:bg-slate-200 rounded-xl">
+                                Cancel
+                            </button>
+                            <button type="submit" className="px-5 py-2.5 text-sm font-semibold text-white bg-brand-primary hover:bg-indigo-700 rounded-xl shadow-sm">
+                                Create
+                            </button>
+                        </div>
                     </form>
                 </div>
 
-                <div className="p-6 border-t border-brand-border bg-slate-50 flex justify-end space-x-3 rounded-b-2xl">
-                    <button type="button" onClick={() => setShowModal(false)} className="px-5 py-2.5 text-sm font-semibold text-brand-muted hover:bg-slate-200 rounded-xl">
-                        Cancel
-                    </button>
-                    <button type="submit" form="batch-form" className="px-5 py-2.5 text-sm font-semibold text-white bg-brand-primary hover:bg-indigo-700 rounded-xl shadow-sm">
-                        Create
-                    </button>
-                </div>
             </div>
         </div>,
         document.body

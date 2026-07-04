@@ -1,8 +1,8 @@
 import { useAuth } from "../auth/AuthContext";
 import { Navigate } from "react-router-dom";
 import TeacherDashboard from "./teacher/TeacherDashboard";
-
 import StudentDashboard from "../student/StudentDashboard";
+import ChatbotWidget from "../components/ChatbotWidget";
 
 const Dashboard = () => {
     const { user, logout } = useAuth();
@@ -56,6 +56,9 @@ const Dashboard = () => {
             <main className="max-w-7xl mx-auto py-8 sm:px-6 lg:px-8">
                 {renderDashboard()}
             </main>
+
+            {/* AI Assistant for Students */}
+            {user?.role === 'STUDENT' && <ChatbotWidget />}
         </div>
     );
 };

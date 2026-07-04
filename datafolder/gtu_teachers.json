@@ -1,0 +1,152 @@
+[
+  {
+    "registration_number": "GTU_T_001",
+    "password": "Teach@123",
+    "first_name": "Esha",
+    "last_name": "Bose",
+    "email": "esha.bose1@gtu.edu",
+    "department_code": "CS",
+    "department_name": "Computer Science",
+    "designation": "Assistant Professor"
+  },
+  {
+    "registration_number": "GTU_T_002",
+    "password": "Teach@123",
+    "first_name": "Arun",
+    "last_name": "Patel",
+    "email": "arun.patel2@gtu.edu",
+    "department_code": "IT",
+    "department_name": "Information Technology",
+    "designation": "Assistant Professor"
+  },
+  {
+    "registration_number": "GTU_T_003",
+    "password": "Teach@123",
+    "first_name": "Gita",
+    "last_name": "Patel",
+    "email": "gita.patel3@gtu.edu",
+    "department_code": "CS",
+    "department_name": "Computer Science",
+    "designation": "Professor"
+  },
+  {
+    "registration_number": "GTU_T_004",
+    "password": "Teach@123",
+    "first_name": "Gita",
+    "last_name": "Bose",
+    "email": "gita.bose4@gtu.edu",
+    "department_code": "DS",
+    "department_name": "Data Science",
+    "designation": "Associate Professor"
+  },
+  {
+    "registration_number": "GTU_T_005",
+    "password": "Teach@123",
+    "first_name": "Gita",
+    "last_name": "Reddy",
+    "email": "gita.reddy5@gtu.edu",
+    "department_code": "DS",
+    "department_name": "Data Science",
+    "designation": "Professor"
+  },
+  {
+    "registration_number": "GTU_T_006",
+    "password": "Teach@123",
+    "first_name": "Farhan",
+    "last_name": "Reddy",
+    "email": "farhan.reddy6@gtu.edu",
+    "department_code": "IT",
+    "department_name": "Information Technology",
+    "designation": "Professor"
+  },
+  {
+    "registration_number": "GTU_T_007",
+    "password": "Teach@123",
+    "first_name": "Gita",
+    "last_name": "Singh",
+    "email": "gita.singh7@gtu.edu",
+    "department_code": "CS",
+    "department_name": "Computer Science",
+    "designation": "Assistant Professor"
+  },
+  {
+    "registration_number": "GTU_T_008",
+    "password": "Teach@123",
+    "first_name": "Deepa",
+    "last_name": "Sharma",
+    "email": "deepa.sharma8@gtu.edu",
+    "department_code": "CS",
+    "department_name": "Computer Science",
+    "designation": "Associate Professor"
+  },
+  {
+    "registration_number": "GTU_T_009",
+    "password": "Teach@123",
+    "first_name": "Bina",
+    "last_name": "Patel",
+    "email": "bina.patel9@gtu.edu",
+    "department_code": "CS",
+    "department_name": "Computer Science",
+    "designation": "Professor"
+  },
+  {
+    "registration_number": "GTU_T_010",
+    "password": "Teach@123",
+    "first_name": "Chetan",
+    "last_name": "Reddy",
+    "email": "chetan.reddy10@gtu.edu",
+    "department_code": "IT",
+    "department_name": "Information Technology",
+    "designation": "Assistant Professor"
+  },
+  {
+    "registration_number": "GTU_T_011",
+    "password": "Teach@123",
+    "first_name": "Deepa",
+    "last_name": "Iyer",
+    "email": "deepa.iyer11@gtu.edu",
+    "department_code": "CS",
+    "department_name": "Computer Science",
+    "designation": "Associate Professor"
+  },
+  {
+    "registration_number": "GTU_T_012",
+    "password": "Teach@123",
+    "first_name": "Deepa",
+    "last_name": "Patel",
+    "email": "deepa.patel12@gtu.edu",
+    "department_code": "DS",
+    "department_name": "Data Science",
+    "designation": "Associate Professor"
+  },
+  {
+    "registration_number": "GTU_T_013",
+    "password": "Teach@123",
+    "first_name": "Chetan",
+    "last_name": "Ghosh",
+    "email": "chetan.ghosh13@gtu.edu",
+    "department_code": "DS",
+    "department_name": "Data Science",
+    "designation": "Associate Professor"
+  },
+  {
+    "registration_number": "GTU_T_014",
+    "password": "Teach@123",
+    "first_name": "Esha",
+    "last_name": "Reddy",
+    "email": "esha.reddy14@gtu.edu",
+    "department_code": "IT",
+    "department_name": "Information Technology",
+    "designation": "Associate Professor"
+  },
+  {
+    "registration_number": "GTU_T_015",
+    "password": "Teach@123",
+    "first_name": "Jatin",
+    "last_name": "Bose",
+    "email": "jatin.bose15@gtu.edu",
+    "department_code": "DS",
+    "department_name": "Data Science",
+    "designation": "Associate Professor"
+  }
+]

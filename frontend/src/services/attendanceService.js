@@ -1,11 +1,21 @@
 import api from "../api/axios";
 import { ENDPOINTS } from "../api/endpoints";
 
+/**
+ * Helper: DRF paginated endpoints return { count, results }.
+ * This extracts the array from paginated or plain responses.
+ */
+const extractResults = (data) => {
+    if (data && Array.isArray(data.results)) return data.results;
+    if (Array.isArray(data)) return data;
+    return [];
+};
+
 export const attendanceService = {
     // Get sessions for a specific subject
     getSessions: async (subjectId) => {
         const response = await api.get(`${ENDPOINTS.SESSIONS}?subject=${subjectId}`);
-        return response.data;
+        return extractResults(response.data);
     },
 
     // Create a new class session
@@ -26,15 +36,15 @@ export const attendanceService = {
             ? `${ENDPOINTS.ATTENDANCE}?class_session=${sessionId}`
             : ENDPOINTS.ATTENDANCE;
         const response = await api.get(url);
-        return response.data;
+        return extractResults(response.data);
     },
 
     // Mark/Update attendance (BulK)
     // Expects: { session_id: 1, attendance_data: [{student_id: 1, status: 'PRESENT'}, ...] }
     updateAttendance: async (sessionId, attendanceData) => {
-        const response = await api.post(`${ENDPOINTS.ATTENDANCE}update-bulk/`, { // Fixed URL
+        const response = await api.post(`${ENDPOINTS.ATTENDANCE}update-bulk/`, {
             session_id: sessionId,
-            attendance: attendanceData, // Backend expects 'attendance', not 'attendance_data' based on previous context check
+            attendance: attendanceData,
         });
         return response.data;
     },

@@ -1,4 +1,5 @@
 import { createContext, useState, useEffect, useContext } from "react";
+import { useProfile } from '../hooks/useAuthQueries';
 import { authService } from "../services/authService";
 
 const AuthContext = createContext();
@@ -7,38 +8,41 @@ export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        const initializeAuth = async () => {
-            const storedUser = localStorage.getItem("user");
-            const accessToken = localStorage.getItem("access_token");
+    const accessToken = localStorage.getItem("access_token");
 
-            if (storedUser && accessToken) {
-                try {
-                    const parsedUser = JSON.parse(storedUser);
-                    setUser(parsedUser);
-                    
-                    // Fetch fresh profile data to get latest details (like batch/department)
-                    try {
-                        const response = await authService.getProfile();
-                        const freshData = response.data;
-                        // Merge fresh data (it may have more or updated fields)
-                        const updatedUser = { ...parsedUser, ...freshData };
-                        setUser(updatedUser);
-                        localStorage.setItem("user", JSON.stringify(updatedUser));
-                    } catch (fetchErr) {
-                        console.error("Failed to fetch fresh profile, using stored data.", fetchErr);
-                    }
-                } catch (err) {
-                    console.error("Failed to parse stored user:", err);
-                    localStorage.removeItem("user");
-                    localStorage.removeItem("access_token");
-                }
+    // We still load initial state from localStorage for instantaneous first paint
+    useEffect(() => {
+        const storedUser = localStorage.getItem("user");
+        if (storedUser && accessToken) {
+            try {
+                setUser(JSON.parse(storedUser));
+            } catch (err) {
+                localStorage.removeItem("user");
+                localStorage.removeItem("access_token");
             }
-            setLoading(false);
-        };
-        
-        initializeAuth();
-    }, []);
+        }
+        setLoading(false);
+    }, [accessToken]);
+
+    // Use React Query to keep the profile fresh in the background.
+    // It will auto-refetch on window focus or after staleTime.
+    const { data: freshData, isSuccess, isError, error } = useProfile(!!accessToken && !loading);
+
+    useEffect(() => {
+        if (isSuccess && freshData) {
+            setUser((prev) => {
+                const updatedUser = { ...prev, ...freshData };
+                localStorage.setItem("user", JSON.stringify(updatedUser));
+                return updatedUser;
+            });
+        }
+    }, [isSuccess, freshData]);
+
+    useEffect(() => {
+        if (isError) {
+            console.error("Failed to fetch fresh profile.", error);
+        }
+    }, [isError, error]);
 
     const login = async (registrationNumber, password, collegeCode = "IITB") => {
         try {

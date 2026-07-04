@@ -3,7 +3,7 @@ from rest_framework.routers import DefaultRouter
 from .views import (
     SubjectViewSet, EnrollmentViewSet, BatchViewSet,
     DepartmentViewSet, StudentViewSet, TeacherProfileViewSet,
-    dashboard_stats
+    ResourceViewSet, dashboard_stats
 )
 
 router = DefaultRouter()
@@ -13,6 +13,7 @@ router.register(r'students', StudentViewSet, basename='student')
 router.register(r'teachers', TeacherProfileViewSet, basename='teacher-profile')
 router.register(r'subjects', SubjectViewSet, basename='subject')
 router.register(r'enrollments', EnrollmentViewSet, basename='enrollment')
+router.register(r'resources', ResourceViewSet, basename='resource')
 
 urlpatterns = [
     path('dashboard-stats/', dashboard_stats, name='dashboard-stats'),

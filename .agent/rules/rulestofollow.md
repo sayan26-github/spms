@@ -102,7 +102,7 @@ Store predictions in database.
 
 Risk classification must be backend-driven.
 
-Keep MVP lightweight (LinearRegression only).
+
 
 💬 8. COMMUNICATION RULES
 

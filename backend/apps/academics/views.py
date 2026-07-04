@@ -94,9 +94,9 @@ class SubjectViewSet(viewsets.ModelViewSet):
         if user.role == 'ADMIN' or user.role == 'HEAD':
             return Subject.objects.filter(college=user.college)
         elif user.role == 'TEACHER':
-            return Subject.objects.filter(teacher__user=user)
+            return Subject.objects.filter(teacher__user=user, college=user.college)
         elif user.role == 'STUDENT':
-            return Subject.objects.filter(enrollments__student__user=user)
+            return Subject.objects.filter(enrollments__student__user=user, college=user.college).distinct()
         return Subject.objects.none()
 
     def perform_create(self, serializer):
@@ -121,9 +121,11 @@ class SubjectViewSet(viewsets.ModelViewSet):
                 {"detail": "Teacher not found"},
                 status=status.HTTP_404_NOT_FOUND
             )
-        subject.teacher = teacher
-        subject.save(update_fields=['teacher'])
-        return Response(SubjectSerializer(subject).data)
+        try:
+            subject = AcademicService.assign_teacher_to_subject(teacher, subject)
+            return Response(SubjectSerializer(subject).data)
+        except ValidationError as e:
+            return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 class EnrollmentViewSet(viewsets.ModelViewSet):
     """
@@ -140,9 +142,9 @@ class EnrollmentViewSet(viewsets.ModelViewSet):
         if user.role in ['ADMIN', 'HEAD']:
             return qs.filter(student__user__college=user.college)
         elif user.role == 'TEACHER':
-            return qs.filter(subject__teacher__user=user)
+            return qs.filter(subject__teacher__user=user, subject__college=user.college)
         elif user.role == 'STUDENT':
-            return qs.filter(student__user=user)
+            return qs.filter(student__user=user, student__user__college=user.college)
         return Enrollment.objects.none()
 
     @action(detail=False, methods=['get'])
@@ -189,29 +191,7 @@ class EnrollmentViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_404_NOT_FOUND
             )
 
-        from django.db import transaction
-        with transaction.atomic():
-            # Deactivate enrollments not in the new list
-            Enrollment.objects.filter(
-                subject=subject, is_active=True
-            ).exclude(
-                student_id__in=student_ids
-            ).update(is_active=False)
-
-            # Create or reactivate enrollments in the list
-            for sid in student_ids:
-                enrollment, created = Enrollment.objects.get_or_create(
-                    student_id=sid, subject=subject,
-                    defaults={'is_active': True}
-                )
-                if not created and not enrollment.is_active:
-                    enrollment.is_active = True
-                    enrollment.save(update_fields=['is_active'])
-
-        # Return updated list
-        updated = Enrollment.objects.select_related(
-            'student__user', 'subject'
-        ).filter(subject=subject, is_active=True)
+        updated = AcademicService.bulk_enroll(subject, student_ids)
         return Response(
             EnrollmentSerializer(updated, many=True).data,
             status=status.HTTP_200_OK
@@ -258,9 +238,9 @@ class ResourceViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         user = self.request.user
         if user.role == 'TEACHER':
-            return Resource.objects.filter(subject__teacher__user=user)
+            return Resource.objects.filter(subject__teacher__user=user, subject__college=user.college)
         elif user.role == 'STUDENT':
-            return Resource.objects.filter(subject__enrollments__student__user=user, subject__enrollments__is_active=True)
+            return Resource.objects.filter(subject__enrollments__student__user=user, subject__enrollments__is_active=True, subject__college=user.college).distinct()
         elif user.role in ['ADMIN', 'HEAD']:
              return Resource.objects.filter(subject__college=user.college)
         return Resource.objects.none()

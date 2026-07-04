@@ -22,9 +22,9 @@ class AssessmentViewSet(viewsets.ModelViewSet):
         if user.role in ['ADMIN', 'HEAD']:
             return Assessment.objects.filter(subject__college=user.college)
         elif user.role == 'TEACHER':
-            return Assessment.objects.filter(subject__teacher__user=user)
+            return Assessment.objects.filter(subject__teacher__user=user, subject__college=user.college)
         elif user.role == 'STUDENT':
-            return Assessment.objects.filter(subject__enrollments__student__user=user).distinct()
+            return Assessment.objects.filter(subject__enrollments__student__user=user, subject__college=user.college).distinct()
         return Assessment.objects.none()
 
     def perform_create(self, serializer):
@@ -85,12 +85,15 @@ class MarksViewSet(viewsets.ReadOnlyModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
+        base_qs = Marks.objects.select_related(
+            'assessment__subject', 'student__user'
+        )
         if user.role in ['ADMIN', 'HEAD']:
-            return Marks.objects.filter(assessment__subject__college=user.college)
+            return base_qs.filter(assessment__subject__college=user.college)
         elif user.role == 'TEACHER':
-            return Marks.objects.filter(assessment__subject__teacher__user=user)
+            return base_qs.filter(assessment__subject__teacher__user=user, assessment__subject__college=user.college)
         elif user.role == 'STUDENT':
-            return Marks.objects.filter(student__user=user)
+            return base_qs.filter(student__user=user, assessment__subject__college=user.college)
         return Marks.objects.none()
 
     @action(detail=False, methods=['post'], url_path='update-bulk', permission_classes=[IsTeacher | IsAdmin])
@@ -131,6 +134,11 @@ class TranscriptView(APIView):
         
         if request.user.role in ['ADMIN', 'HEAD']:
             if student.user.college != request.user.college:
+                return Response({"detail": "Permission denied"}, status=status.HTTP_403_FORBIDDEN)
+        elif request.user.role == 'TEACHER':
+            if student.user.college != request.user.college:
+                return Response({"detail": "Permission denied"}, status=status.HTTP_403_FORBIDDEN)
+            if not student.enrollments.filter(subject__teacher__user=request.user, is_active=True).exists():
                 return Response({"detail": "Permission denied"}, status=status.HTTP_403_FORBIDDEN)
         elif request.user.role == 'STUDENT':
             if student.user != request.user:
@@ -173,9 +181,9 @@ class AssignmentTaskViewSet(viewsets.ModelViewSet):
         if user.role in ['ADMIN', 'HEAD']:
             return AssignmentTask.objects.filter(subject__college=user.college)
         elif user.role == 'TEACHER':
-            return AssignmentTask.objects.filter(subject__teacher__user=user)
+            return AssignmentTask.objects.filter(subject__teacher__user=user, subject__college=user.college)
         elif user.role == 'STUDENT':
-            return AssignmentTask.objects.filter(subject__enrollments__student__user=user, subject__enrollments__is_active=True).distinct()
+            return AssignmentTask.objects.filter(subject__enrollments__student__user=user, subject__enrollments__is_active=True, subject__college=user.college).distinct()
         return AssignmentTask.objects.none()
 
     def perform_create(self, serializer):
@@ -206,9 +214,9 @@ class AssignmentSubmissionViewSet(viewsets.ModelViewSet):
         if user.role in ['ADMIN', 'HEAD']:
             qs = qs.filter(assignment__subject__college=user.college)
         elif user.role == 'TEACHER':
-            qs = qs.filter(assignment__subject__teacher__user=user)
+            qs = qs.filter(assignment__subject__teacher__user=user, assignment__subject__college=user.college)
         elif user.role == 'STUDENT':
-            qs = qs.filter(student__user=user)
+            qs = qs.filter(student__user=user, assignment__subject__college=user.college)
         else:
             qs = qs.none()
 
@@ -244,16 +252,10 @@ class AssignmentSubmissionViewSet(viewsets.ModelViewSet):
         marks = request.data.get('marks_obtained')
         remarks = request.data.get('remarks', submission.remarks)
 
-        if marks is not None:
-            try:
-                marks = float(marks)
-                if marks > float(submission.assignment.max_marks) or marks < 0:
-                    return Response({"detail": f"Marks must be between 0 and {submission.assignment.max_marks}"}, status=status.HTTP_400_BAD_REQUEST)
-                submission.marks_obtained = marks
-            except ValueError:
-                return Response({"detail": "Invalid marks format"}, status=status.HTTP_400_BAD_REQUEST)
-        
-        submission.remarks = remarks
-        submission.save()
-
-        return Response(self.get_serializer(submission).data)
+        try:
+            submission = AssessmentService.grade_submission(submission, marks, remarks)
+            return Response(self.get_serializer(submission).data)
+        except ValidationError as e:
+            return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        except ValueError:
+            return Response({"detail": "Invalid marks format"}, status=status.HTTP_400_BAD_REQUEST)

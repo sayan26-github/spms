@@ -1,11 +1,21 @@
 import api from "../api/axios";
 import { ENDPOINTS } from "../api/endpoints";
 
+/**
+ * Helper: DRF paginated endpoints return { count, results }.
+ * This extracts the array from paginated or plain responses.
+ */
+const extractResults = (data) => {
+    if (data && Array.isArray(data.results)) return data.results;
+    if (Array.isArray(data)) return data;
+    return [];
+};
+
 export const assessmentService = {
     // Get assessments for a specific subject
     getAssessments: async (subjectId) => {
         const response = await api.get(`${ENDPOINTS.ASSESSMENTS}?subject=${subjectId}`);
-        return response.data;
+        return extractResults(response.data);
     },
 
     // Create a new assessment
@@ -28,7 +38,7 @@ export const assessmentService = {
     // Get all marks for the logged-in student
     getAllStudentMarks: async () => {
         const response = await api.get(ENDPOINTS.MARKS);
-        return response.data;
+        return extractResults(response.data);
     },
 
     // Bulk update marks - For Teacher
@@ -42,13 +52,13 @@ export const assessmentService = {
 
     // Get Transcript for a specific student
     getTranscript: async (studentId) => {
-        const response = await api.get(`/assessments/transcript/${studentId}/`);
+        const response = await api.get(`${ENDPOINTS.TRANSCRIPT}${studentId}/`);
         return response.data;
     },
 
     // Get Transcript for the currently logged-in student
     getMyTranscript: async () => {
-        const response = await api.get('/assessments/transcript/me/');
+        const response = await api.get(`${ENDPOINTS.TRANSCRIPT}me/`);
         return response.data;
     },
 };

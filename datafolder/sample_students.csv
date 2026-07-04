@@ -1,0 +1,4 @@
+registration_number,first_name,last_name,email,password
+TEST001,John,Doe,johndoe@example.com,Student@123
+TEST002,Jane,Smith,janesmith@example.com,Student@123
+TEST003,Alice,Johnson,alice@example.com,Student@123

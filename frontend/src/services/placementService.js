@@ -12,19 +12,25 @@ const extractResults = (data) => {
 
 export const placementService = {
     // Companies (paginated)
-    getCompanies: () => api.get('/placements/companies/', { params: { page_size: 1000 } })
+    getCompanies: () => api.get('/placements/companies/')
         .then(res => extractResults(res.data)),
     
+    createCompany: (companyData) => api.post('/placements/companies/', companyData)
+        .then(res => res.data),
+    
     // Jobs (paginated)
-    getJobs: () => api.get('/placements/jobs/', { params: { page_size: 1000 } })
+    getJobs: () => api.get('/placements/jobs/')
         .then(res => extractResults(res.data)),
+    
+    createJob: (jobData) => api.post('/placements/jobs/', jobData)
+        .then(res => res.data),
     
     // Recommendations (custom action, returns plain array)
     getRecommendedJobs: () => api.get('/placements/jobs/recommended/')
         .then(res => res.data),
     
     // Applications (paginated)
-    getApplications: () => api.get('/placements/applications/', { params: { page_size: 1000 } })
+    getApplications: () => api.get('/placements/applications/')
         .then(res => extractResults(res.data)),
     
     applyToJob: (jobId, resumeFile) => {
@@ -41,10 +47,10 @@ export const placementService = {
         .then(res => res.data),
     
     // Skills (paginated)
-    getSkills: () => api.get('/placements/skills/', { params: { page_size: 1000 } })
+    getSkills: () => api.get('/placements/skills/')
         .then(res => extractResults(res.data)),
     
-    getMySkills: () => api.get('/placements/student-skills/', { params: { page_size: 1000 } })
+    getMySkills: () => api.get('/placements/student-skills/')
         .then(res => extractResults(res.data)),
     
     addSkill: (skillId, proficiency) => api.post('/placements/student-skills/', { skill_id: skillId, proficiency })

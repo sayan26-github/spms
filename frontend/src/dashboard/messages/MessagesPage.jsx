@@ -25,7 +25,7 @@ const MessagesPage = () => {
         setLoading(true);
         try {
             const data = await communicationService.getMessages(activeTab);
-            setMessages(data.results || []); // Handle pagination
+            setMessages(data || []); 
             setSelectedMessage(null);
         } catch (error) {
             console.error("Failed to fetch messages", error);

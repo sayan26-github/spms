@@ -64,6 +64,22 @@ class AssessmentService:
         return True
 
     @staticmethod
+    def grade_submission(submission, marks, remarks=None):
+        """
+        Grades an assignment submission.
+        """
+        if marks is not None:
+            marks = float(marks)
+            if marks > float(submission.assignment.max_marks) or marks < 0:
+                raise ValidationError(f"Marks must be between 0 and {submission.assignment.max_marks}")
+            submission.marks_obtained = marks
+        
+        if remarks is not None:
+            submission.remarks = remarks
+        submission.save()
+        return submission
+
+    @staticmethod
     def generate_student_transcript(student_id):
         student = Student.objects.select_related('user', 'department', 'batch').get(id=student_id)
         

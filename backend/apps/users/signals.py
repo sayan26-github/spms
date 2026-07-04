@@ -15,16 +15,3 @@ def create_user_profile(sender, instance, created, **kwargs):
             Student.objects.create(user=instance, semester=1)
         elif instance.role == UserRole.TEACHER:
             Teacher.objects.create(user=instance, department="General", designation="Lecturer")
-
-@receiver(post_save, sender=settings.AUTH_USER_MODEL)
-def save_user_profile(sender, instance, **kwargs):
-    """
-    Ensure the profile is saved when the user is saved.
-    """
-    if instance.role == UserRole.STUDENT:
-        if hasattr(instance, 'student_profile'):
-            instance.student_profile.save()
-    elif instance.role == UserRole.TEACHER:
-        if hasattr(instance, 'teacher_profile'):
-            instance.teacher_profile.save()
-

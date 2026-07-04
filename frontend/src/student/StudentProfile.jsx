@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ChevronLeft, User, Mail, Phone, FileText, UploadCloud, CheckCircle2, AlertCircle, Save, Trash2, Plus, Zap } from 'lucide-react';
-import { authService } from '../services/authService';
-import { placementService } from '../services/placementService';
 import { useAuth } from '../auth/AuthContext';
+import { useProfile, useUpdateProfile } from '../hooks/useAuthQueries';
+import { useSkills, useMySkills, useAddSkill, useRemoveSkill } from '../hooks/usePlacementQueries';
 
 const StudentProfile = () => {
     const navigate = useNavigate();
     const { user, updateUser } = useAuth();
     
-    const [loading, setLoading] = useState(true);
-    const [saving, setSaving] = useState(false);
     const [message, setMessage] = useState({ type: '', text: '' });
     
     const [formData, setFormData] = useState({
@@ -23,46 +21,35 @@ const StudentProfile = () => {
     const [resumeFile, setResumeFile] = useState(null);
     const [currentResumeUrl, setCurrentResumeUrl] = useState(null);
 
-    // Skills state
-    const [mySkills, setMySkills] = useState([]);
-    const [availableSkills, setAvailableSkills] = useState([]);
-    const [selectedSkillId, setSelectedSkillId] = useState('');
-    const [selectedProficiency, setSelectedProficiency] = useState(3);
-    const [skillsLoading, setSkillsLoading] = useState(false);
+    const { data: profile, isLoading: loadingProfile, isSuccess: profileSuccess } = useProfile();
+    const { data: availableSkills = [], isLoading: loadingSkillsList } = useSkills();
+    const { data: mySkills = [], isLoading: loadingMySkills } = useMySkills();
+
+    const updateProfileMutation = useUpdateProfile();
+    const addSkillMutation = useAddSkill();
+    const removeSkillMutation = useRemoveSkill();
+
+    const loading = loadingProfile || loadingSkillsList || loadingMySkills;
+    const saving = updateProfileMutation.isPending;
+    const skillsLoading = addSkillMutation.isPending || removeSkillMutation.isPending;
+
+    const [initialized, setInitialized] = useState(false);
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                // Fetch Profile
-                const res = await authService.getProfile();
-                const data = res.data;
-                setFormData({
-                    first_name: data.first_name || '',
-                    last_name: data.last_name || '',
-                    email: data.email || '',
-                    phone_number: data.phone_number || '',
-                    bio: data.bio || '',
-                });
-                if (data.resume) {
-                    setCurrentResumeUrl(data.resume);
-                }
-
-                // Fetch Skills
-                const [skillsData, mySkillsData] = await Promise.all([
-                    placementService.getSkills(),
-                    placementService.getMySkills()
-                ]);
-                setAvailableSkills(skillsData);
-                setMySkills(mySkillsData);
-
-            } catch (err) {
-                setMessage({ type: 'error', text: 'Failed to load profile data.' });
-            } finally {
-                setLoading(false);
+        if (profileSuccess && profile && !initialized) {
+            setFormData({
+                first_name: profile.first_name || '',
+                last_name: profile.last_name || '',
+                email: profile.email || '',
+                phone_number: profile.phone_number || '',
+                bio: profile.bio || '',
+            });
+            if (profile.resume) {
+                setCurrentResumeUrl(profile.resume);
             }
-        };
-        fetchData();
-    }, []);
+            setInitialized(true);
+        }
+    }, [profileSuccess, profile, initialized]);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -75,38 +62,30 @@ const StudentProfile = () => {
         }
     };
 
+    const [selectedSkillId, setSelectedSkillId] = useState('');
+    const [selectedProficiency, setSelectedProficiency] = useState(3);
+
     const handleAddSkill = async () => {
         if (!selectedSkillId) return;
-        setSkillsLoading(true);
         try {
-            await placementService.addSkill(selectedSkillId, selectedProficiency);
-            const mySkillsData = await placementService.getMySkills();
-            setMySkills(mySkillsData);
+            await addSkillMutation.mutateAsync({ skillId: selectedSkillId, proficiency: selectedProficiency });
             setSelectedSkillId('');
             setSelectedProficiency(3);
         } catch (err) {
             setMessage({ type: 'error', text: 'Failed to add skill.' });
-        } finally {
-            setSkillsLoading(false);
         }
     };
 
     const handleRemoveSkill = async (studentSkillId) => {
-        setSkillsLoading(true);
         try {
-            await placementService.removeSkill(studentSkillId);
-            const mySkillsData = await placementService.getMySkills();
-            setMySkills(mySkillsData);
+            await removeSkillMutation.mutateAsync(studentSkillId);
         } catch (err) {
             setMessage({ type: 'error', text: 'Failed to remove skill.' });
-        } finally {
-            setSkillsLoading(false);
         }
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setSaving(true);
         setMessage({ type: '', text: '' });
 
         try {
@@ -118,14 +97,13 @@ const StudentProfile = () => {
             
             // Append file if selected
             if (resumeFile) {
-                data.append('student_profile.resume', resumeFile);
+                data.append('resume', resumeFile);
             }
-            // Append bio under student_profile nested structure for DRF
-            if (formData.bio !== undefined) {
-                data.append('student_profile.bio', formData.bio);
+            if (formData.bio) {
+                data.append('bio', formData.bio);
             }
 
-            const res = await authService.updateProfileWithFile(data);
+            const res = await updateProfileMutation.mutateAsync(data);
             setMessage({ type: 'success', text: 'Profile updated successfully!' });
             
             // Update AuthContext if name changed
@@ -144,8 +122,6 @@ const StudentProfile = () => {
 
         } catch (err) {
             setMessage({ type: 'error', text: err.response?.data?.detail || 'Failed to update profile.' });
-        } finally {
-            setSaving(false);
         }
     };
 

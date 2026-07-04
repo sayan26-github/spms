@@ -67,7 +67,7 @@ class NotificationViewSet(viewsets.ModelViewSet):
     http_method_names = ['get', 'post', 'put', 'patch', 'delete'] # POST needed for actions, even if create is disabled via permissions if needed
 
     def get_queryset(self):
-        return Notification.objects.filter(recipient=self.request.user)
+        return Notification.objects.filter(recipient=self.request.user, recipient__college=self.request.user.college)
 
     @action(detail=True, methods=['post'])
     def mark_read(self, request, pk=None):

@@ -208,33 +208,31 @@ const AdminProfileModal = ({ isOpen, onClose }) => {
                                     />
                                 </div>
                             </div>
+                            <div className="pt-4 border-t border-brand-border flex justify-end space-x-3 mt-6">
+                                <button
+                                    type="button"
+                                    onClick={onClose}
+                                    className="px-5 py-2.5 text-sm font-semibold text-brand-muted hover:bg-slate-200 rounded-xl transition"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    type="submit"
+                                    disabled={loading || fetching}
+                                    className="px-5 py-2.5 text-sm font-semibold text-white bg-brand-primary hover:bg-indigo-700 rounded-xl shadow-sm transition flex items-center disabled:opacity-70"
+                                >
+                                    {loading ? 'Saving...' : (
+                                        <>
+                                            <Save size={16} className="mr-2" />
+                                            Save Changes
+                                        </>
+                                    )}
+                                </button>
+                            </div>
                         </form>
                     )}
                 </div>
 
-                {/* Footer Actions */}
-                <div className="p-6 border-t border-brand-border bg-slate-50 flex justify-end space-x-3 rounded-b-2xl">
-                    <button
-                        type="button"
-                        onClick={onClose}
-                        className="px-5 py-2.5 text-sm font-semibold text-brand-muted hover:bg-slate-200 rounded-xl transition"
-                    >
-                        Cancel
-                    </button>
-                    <button
-                        type="submit"
-                        form="profile-form"
-                        disabled={loading || fetching}
-                        className="px-5 py-2.5 text-sm font-semibold text-white bg-brand-primary hover:bg-indigo-700 rounded-xl shadow-sm transition flex items-center disabled:opacity-70"
-                    >
-                        {loading ? 'Saving...' : (
-                            <>
-                                <Save size={16} className="mr-2" />
-                                Save Changes
-                            </>
-                        )}
-                    </button>
-                </div>
             </div>
         </div>,
         document.body

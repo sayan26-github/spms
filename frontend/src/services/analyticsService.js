@@ -4,13 +4,13 @@ import { ENDPOINTS } from "../api/endpoints";
 export const analyticsService = {
     // Get dashboard stats (aggregated risk counts)
     getDashboardStats: async () => {
-        const response = await api.get(`${ENDPOINTS.PREDICTIONS}dashboard_stats/`);
+        const response = await api.get(`${ENDPOINTS.PREDICTIONS}dashboard-stats/`);
         return response.data;
     },
 
     // Trigger batch analysis
     runAnalysis: async () => {
-        const response = await api.post(`${ENDPOINTS.PREDICTIONS}run_analysis/`);
+        const response = await api.post(`${ENDPOINTS.PREDICTIONS}run-analysis/`);
         return response.data;
     },
 

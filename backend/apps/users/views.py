@@ -1,3 +1,7 @@
+import csv
+import io
+from django.db import transaction
+from rest_framework.decorators import action
 from rest_framework import views, status, permissions, generics, viewsets
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
@@ -105,6 +109,11 @@ class UserProfileView(generics.RetrieveUpdateAPIView):
     def get_object(self):
         return self.request.user
 
+from rest_framework.decorators import action
+from django.db import transaction
+import csv
+import io
+
 class UserViewSet(viewsets.ModelViewSet):
     """
     Admin ViewSet for managing users (Students, Teachers).
@@ -125,6 +134,60 @@ class UserViewSet(viewsets.ModelViewSet):
         if self.action == 'create':
             return UserCreateSerializer
         return UserSerializer
+
+    @action(detail=False, methods=['post'], parser_classes=[MultiPartParser])
+    def bulk_import(self, request):
+        file = request.FILES.get('file')
+        batch_id = request.data.get('batch_id')
+        department_id = request.data.get('department_id')
+        
+        if not file:
+            return Response({"detail": "No file provided."}, status=status.HTTP_400_BAD_REQUEST)
+        if not file.name.endswith('.csv'):
+            return Response({"detail": "File must be a CSV."}, status=status.HTTP_400_BAD_REQUEST)
+            
+        try:
+            decoded_file = file.read().decode('utf-8')
+            io_string = io.StringIO(decoded_file)
+            reader = csv.DictReader(io_string)
+            
+            created_count = 0
+            errors = []
+            
+            with transaction.atomic():
+                for i, row in enumerate(reader, start=1):
+                    if not all(k in row for k in ['registration_number', 'first_name', 'last_name', 'email', 'password']):
+                        raise ValueError(f"Row {i} is missing required columns (registration_number, first_name, last_name, email, password).")
+                        
+                    data = {
+                        'registration_number': row['registration_number'].strip(),
+                        'first_name': row['first_name'].strip(),
+                        'last_name': row['last_name'].strip(),
+                        'email': row['email'].strip(),
+                        'password': row['password'].strip(),
+                        'role': 'STUDENT',
+                        'batch_id': batch_id,
+                        'department_id': department_id
+                    }
+                    
+                    serializer = UserCreateSerializer(data=data)
+                    if serializer.is_valid():
+                        serializer.save(college=request.user.college)
+                        created_count += 1
+                    else:
+                        errors.append(f"Row {i} error: {serializer.errors}")
+                        
+                if errors:
+                    raise ValueError(errors)
+                
+            return Response({"detail": f"Successfully imported {created_count} students."}, status=status.HTTP_201_CREATED)
+            
+        except ValueError as ve:
+            if isinstance(ve.args[0], list):
+                return Response({"detail": "Errors during import", "errors": ve.args[0]}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"detail": str(ve)}, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 from rest_framework import mixins
 

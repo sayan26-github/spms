@@ -1,6 +1,16 @@
 import api from "../api/axios";
 import { ENDPOINTS } from "../api/endpoints";
 
+/**
+ * Helper: DRF paginated endpoints return { count, results }.
+ * This extracts the array from paginated or plain responses.
+ */
+const extractResults = (data) => {
+    if (data && Array.isArray(data.results)) return data.results;
+    if (Array.isArray(data)) return data;
+    return [];
+};
+
 // Fallback if ENDPOINTS.SUBJECTS isn't defined yet
 const SUBJECTS_URL = ENDPOINTS.SUBJECTS || "/academics/subjects/";
 
@@ -8,17 +18,14 @@ export const academicService = {
     getSubjects: async () => {
         const response = await api.get(SUBJECTS_URL);
         // Backend might return [ ... ] or { count: ..., results: [ ... ] }
-        return response.data;
+        return extractResults(response.data);
     },
 
     getEnrolledStudents: async (subjectId) => {
-        // We might need a custom endpoint or filter enrollments
-        // For now, let's assume we can get students via enrollments endpoint if needed
-        // or maybe the subject detail has them.
-        // Actually, for attendance, we usually fetch students via the session or just a list of enrolled.
-        // Let's rely on the attendance service to handle session-based student fetching.
-        // But if we need raw student list:
-        const response = await api.get(`/academics/enrollments/?subject=${subjectId}`);
+        // Use the by-subject action endpoint which properly filters by subject_id
+        const response = await api.get(`/academics/enrollments/by-subject/`, {
+            params: { subject_id: subjectId }
+        });
         return response.data;
     }
 };

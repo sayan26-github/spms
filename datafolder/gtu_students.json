@@ -1,0 +1,502 @@
+[
+  {
+    "registration_number": "GTU_S_2023_IT_001",
+    "password": "Student@123",
+    "first_name": "Hari",
+    "last_name": "Ghosh",
+    "email": "hari.ghosh1@gtu.edu",
+    "department_code": "IT",
+    "batch_name": "2023",
+    "semester": 5
+  },
+  {
+    "registration_number": "GTU_S_2023_IT_002",
+    "password": "Student@123",
+    "first_name": "Isha",
+    "last_name": "Singh",
+    "email": "isha.singh2@gtu.edu",
+    "department_code": "IT",
+    "batch_name": "2023",
+    "semester": 5
+  },
+  {
+    "registration_number": "GTU_S_2023_DS_003",
+    "password": "Student@123",
+    "first_name": "Esha",
+    "last_name": "Singh",
+    "email": "esha.singh3@gtu.edu",
+    "department_code": "DS",
+    "batch_name": "2023",
+    "semester": 5
+  },
+  {
+    "registration_number": "GTU_S_2024_DS_004",
+    "password": "Student@123",
+    "first_name": "Isha",
+    "last_name": "Kumar",
+    "email": "isha.kumar4@gtu.edu",
+    "department_code": "DS",
+    "batch_name": "2024",
+    "semester": 3
+  },
+  {
+    "registration_number": "GTU_S_2024_DS_005",
+    "password": "Student@123",
+    "first_name": "Deepa",
+    "last_name": "Singh",
+    "email": "deepa.singh5@gtu.edu",
+    "department_code": "DS",
+    "batch_name": "2024",
+    "semester": 3
+  },
+  {
+    "registration_number": "GTU_S_2023_IT_006",
+    "password": "Student@123",
+    "first_name": "Esha",
+    "last_name": "Iyer",
+    "email": "esha.iyer6@gtu.edu",
+    "department_code": "IT",
+    "batch_name": "2023",
+    "semester": 5
+  },
+  {
+    "registration_number": "GTU_S_2024_DS_007",
+    "password": "Student@123",
+    "first_name": "Deepa",
+    "last_name": "Iyer",
+    "email": "deepa.iyer7@gtu.edu",
+    "department_code": "DS",
+    "batch_name": "2024",
+    "semester": 3
+  },
+  {
+    "registration_number": "GTU_S_2025_DS_008",
+    "password": "Student@123",
+    "first_name": "Arun",
+    "last_name": "Nair",
+    "email": "arun.nair8@gtu.edu",
+    "department_code": "DS",
+    "batch_name": "2025",
+    "semester": 1
+  },
+  {
+    "registration_number": "GTU_S_2025_CS_009",
+    "password": "Student@123",
+    "first_name": "Chetan",
+    "last_name": "Ghosh",
+    "email": "chetan.ghosh9@gtu.edu",
+    "department_code": "CS",
+    "batch_name": "2025",
+    "semester": 1
+  },
+  {
+    "registration_number": "GTU_S_2025_DS_010",
+    "password": "Student@123",
+    "first_name": "Bina",
+    "last_name": "Bose",
+    "email": "bina.bose10@gtu.edu",
+    "department_code": "DS",
+    "batch_name": "2025",
+    "semester": 1
+  },
+  {
+    "registration_number": "GTU_S_2025_DS_011",
+    "password": "Student@123",
+    "first_name": "Arun",
+    "last_name": "Nair",
+    "email": "arun.nair11@gtu.edu",
+    "department_code": "DS",
+    "batch_name": "2025",
+    "semester": 1
+  },
+  {
+    "registration_number": "GTU_S_2025_DS_012",
+    "password": "Student@123",
+    "first_name": "Deepa",
+    "last_name": "Reddy",
+    "email": "deepa.reddy12@gtu.edu",
+    "department_code": "DS",
+    "batch_name": "2025",
+    "semester": 1
+  },
+  {
+    "registration_number": "GTU_S_2024_DS_013",
+    "password": "Student@123",
+    "first_name": "Bina",
+    "last_name": "Patel",
+    "email": "bina.patel13@gtu.edu",
+    "department_code": "DS",
+    "batch_name": "2024",
+    "semester": 3
+  },
+  {
+    "registration_number": "GTU_S_2024_DS_014",
+    "password": "Student@123",
+    "first_name": "Gita",
+    "last_name": "Sharma",
+    "email": "gita.sharma14@gtu.edu",
+    "department_code": "DS",
+    "batch_name": "2024",
+    "semester": 3
+  },
+  {
+    "registration_number": "GTU_S_2023_DS_015",
+    "password": "Student@123",
+    "first_name": "Chetan",
+    "last_name": "Das",
+    "email": "chetan.das15@gtu.edu",
+    "department_code": "DS",
+    "batch_name": "2023",
+    "semester": 5
+  },
+  {
+    "registration_number": "GTU_S_2024_IT_016",
+    "password": "Student@123",
+    "first_name": "Isha",
+    "last_name": "Ghosh",
+    "email": "isha.ghosh16@gtu.edu",
+    "department_code": "IT",
+    "batch_name": "2024",
+    "semester": 3
+  },
+  {
+    "registration_number": "GTU_S_2024_DS_017",
+    "password": "Student@123",
+    "first_name": "Gita",
+    "last_name": "Das",
+    "email": "gita.das17@gtu.edu",
+    "department_code": "DS",
+    "batch_name": "2024",
+    "semester": 3
+  },
+  {
+    "registration_number": "GTU_S_2025_DS_018",
+    "password": "Student@123",
+    "first_name": "Esha",
+    "last_name": "Singh",
+    "email": "esha.singh18@gtu.edu",
+    "department_code": "DS",
+    "batch_name": "2025",
+    "semester": 1
+  },
+  {
+    "registration_number": "GTU_S_2023_IT_019",
+    "password": "Student@123",
+    "first_name": "Arun",
+    "last_name": "Singh",
+    "email": "arun.singh19@gtu.edu",
+    "department_code": "IT",
+    "batch_name": "2023",
+    "semester": 5
+  },
+  {
+    "registration_number": "GTU_S_2024_IT_020",
+    "password": "Student@123",
+    "first_name": "Esha",
+    "last_name": "Ghosh",
+    "email": "esha.ghosh20@gtu.edu",
+    "department_code": "IT",
+    "batch_name": "2024",
+    "semester": 3
+  },
+  {
+    "registration_number": "GTU_S_2025_CS_021",
+    "password": "Student@123",
+    "first_name": "Farhan",
+    "last_name": "Patel",
+    "email": "farhan.patel21@gtu.edu",
+    "department_code": "CS",
+    "batch_name": "2025",
+    "semester": 1
+  },
+  {
+    "registration_number": "GTU_S_2024_CS_022",
+    "password": "Student@123",
+    "first_name": "Esha",
+    "last_name": "Kumar",
+    "email": "esha.kumar22@gtu.edu",
+    "department_code": "CS",
+    "batch_name": "2024",
+    "semester": 3
+  },
+  {
+    "registration_number": "GTU_S_2024_IT_023",
+    "password": "Student@123",
+    "first_name": "Farhan",
+    "last_name": "Sharma",
+    "email": "farhan.sharma23@gtu.edu",
+    "department_code": "IT",
+    "batch_name": "2024",
+    "semester": 3
+  },
+  {
+    "registration_number": "GTU_S_2023_CS_024",
+    "password": "Student@123",
+    "first_name": "Bina",
+    "last_name": "Ghosh",
+    "email": "bina.ghosh24@gtu.edu",
+    "department_code": "CS",
+    "batch_name": "2023",
+    "semester": 5
+  },
+  {
+    "registration_number": "GTU_S_2025_IT_025",
+    "password": "Student@123",
+    "first_name": "Bina",
+    "last_name": "Das",
+    "email": "bina.das25@gtu.edu",
+    "department_code": "IT",
+    "batch_name": "2025",
+    "semester": 1
+  },
+  {
+    "registration_number": "GTU_S_2023_DS_026",
+    "password": "Student@123",
+    "first_name": "Gita",
+    "last_name": "Singh",
+    "email": "gita.singh26@gtu.edu",
+    "department_code": "DS",
+    "batch_name": "2023",
+    "semester": 5
+  },
+  {
+    "registration_number": "GTU_S_2025_DS_027",
+    "password": "Student@123",
+    "first_name": "Bina",
+    "last_name": "Kumar",
+    "email": "bina.kumar27@gtu.edu",
+    "department_code": "DS",
+    "batch_name": "2025",
+    "semester": 1
+  },
+  {
+    "registration_number": "GTU_S_2023_DS_028",
+    "password": "Student@123",
+    "first_name": "Farhan",
+    "last_name": "Bose",
+    "email": "farhan.bose28@gtu.edu",
+    "department_code": "DS",
+    "batch_name": "2023",
+    "semester": 5
+  },
+  {
+    "registration_number": "GTU_S_2025_IT_029",
+    "password": "Student@123",
+    "first_name": "Deepa",
+    "last_name": "Reddy",
+    "email": "deepa.reddy29@gtu.edu",
+    "department_code": "IT",
+    "batch_name": "2025",
+    "semester": 1
+  },
+  {
+    "registration_number": "GTU_S_2024_CS_030",
+    "password": "Student@123",
+    "first_name": "Bina",
+    "last_name": "Ghosh",
+    "email": "bina.ghosh30@gtu.edu",
+    "department_code": "CS",
+    "batch_name": "2024",
+    "semester": 3
+  },
+  {
+    "registration_number": "GTU_S_2023_IT_031",
+    "password": "Student@123",
+    "first_name": "Arun",
+    "last_name": "Iyer",
+    "email": "arun.iyer31@gtu.edu",
+    "department_code": "IT",
+    "batch_name": "2023",
+    "semester": 5
+  },
+  {
+    "registration_number": "GTU_S_2024_CS_032",
+    "password": "Student@123",
+    "first_name": "Gita",
+    "last_name": "Nair",
+    "email": "gita.nair32@gtu.edu",
+    "department_code": "CS",
+    "batch_name": "2024",
+    "semester": 3
+  },
+  {
+    "registration_number": "GTU_S_2024_DS_033",
+    "password": "Student@123",
+    "first_name": "Bina",
+    "last_name": "Singh",
+    "email": "bina.singh33@gtu.edu",
+    "department_code": "DS",
+    "batch_name": "2024",
+    "semester": 3
+  },
+  {
+    "registration_number": "GTU_S_2023_DS_034",
+    "password": "Student@123",
+    "first_name": "Bina",
+    "last_name": "Nair",
+    "email": "bina.nair34@gtu.edu",
+    "department_code": "DS",
+    "batch_name": "2023",
+    "semester": 5
+  },
+  {
+    "registration_number": "GTU_S_2024_CS_035",
+    "password": "Student@123",
+    "first_name": "Gita",
+    "last_name": "Nair",
+    "email": "gita.nair35@gtu.edu",
+    "department_code": "CS",
+    "batch_name": "2024",
+    "semester": 3
+  },
+  {
+    "registration_number": "GTU_S_2024_IT_036",
+    "password": "Student@123",
+    "first_name": "Farhan",
+    "last_name": "Patel",
+    "email": "farhan.patel36@gtu.edu",
+    "department_code": "IT",
+    "batch_name": "2024",
+    "semester": 3
+  },
+  {
+    "registration_number": "GTU_S_2025_CS_037",
+    "password": "Student@123",
+    "first_name": "Hari",
+    "last_name": "Singh",
+    "email": "hari.singh37@gtu.edu",
+    "department_code": "CS",
+    "batch_name": "2025",
+    "semester": 1
+  },
+  {
+    "registration_number": "GTU_S_2025_CS_038",
+    "password": "Student@123",
+    "first_name": "Bina",
+    "last_name": "Das",
+    "email": "bina.das38@gtu.edu",
+    "department_code": "CS",
+    "batch_name": "2025",
+    "semester": 1
+  },
+  {
+    "registration_number": "GTU_S_2024_DS_039",
+    "password": "Student@123",
+    "first_name": "Chetan",
+    "last_name": "Ghosh",
+    "email": "chetan.ghosh39@gtu.edu",
+    "department_code": "DS",
+    "batch_name": "2024",
+    "semester": 3
+  },
+  {
+    "registration_number": "GTU_S_2023_IT_040",
+    "password": "Student@123",
+    "first_name": "Esha",
+    "last_name": "Bose",
+    "email": "esha.bose40@gtu.edu",
+    "department_code": "IT",
+    "batch_name": "2023",
+    "semester": 5
+  },
+  {
+    "registration_number": "GTU_S_2024_DS_041",
+    "password": "Student@123",
+    "first_name": "Chetan",
+    "last_name": "Patel",
+    "email": "chetan.patel41@gtu.edu",
+    "department_code": "DS",
+    "batch_name": "2024",
+    "semester": 3
+  },
+  {
+    "registration_number": "GTU_S_2025_DS_042",
+    "password": "Student@123",
+    "first_name": "Esha",
+    "last_name": "Reddy",
+    "email": "esha.reddy42@gtu.edu",
+    "department_code": "DS",
+    "batch_name": "2025",
+    "semester": 1
+  },
+  {
+    "registration_number": "GTU_S_2024_CS_043",
+    "password": "Student@123",
+    "first_name": "Deepa",
+    "last_name": "Kumar",
+    "email": "deepa.kumar43@gtu.edu",
+    "department_code": "CS",
+    "batch_name": "2024",
+    "semester": 3
+  },
+  {
+    "registration_number": "GTU_S_2025_CS_044",
+    "password": "Student@123",
+    "first_name": "Arun",
+    "last_name": "Iyer",
+    "email": "arun.iyer44@gtu.edu",
+    "department_code": "CS",
+    "batch_name": "2025",
+    "semester": 1
+  },
+  {
+    "registration_number": "GTU_S_2023_CS_045",
+    "password": "Student@123",
+    "first_name": "Isha",
+    "last_name": "Nair",
+    "email": "isha.nair45@gtu.edu",
+    "department_code": "CS",
+    "batch_name": "2023",
+    "semester": 5
+  },
+  {
+    "registration_number": "GTU_S_2024_IT_046",
+    "password": "Student@123",
+    "first_name": "Jatin",
+    "last_name": "Sharma",
+    "email": "jatin.sharma46@gtu.edu",
+    "department_code": "IT",
+    "batch_name": "2024",
+    "semester": 3
+  },
+  {
+    "registration_number": "GTU_S_2024_IT_047",
+    "password": "Student@123",
+    "first_name": "Bina",
+    "last_name": "Kumar",
+    "email": "bina.kumar47@gtu.edu",
+    "department_code": "IT",
+    "batch_name": "2024",
+    "semester": 3
+  },
+  {
+    "registration_number": "GTU_S_2025_DS_048",
+    "password": "Student@123",
+    "first_name": "Isha",
+    "last_name": "Das",
+    "email": "isha.das48@gtu.edu",
+    "department_code": "DS",
+    "batch_name": "2025",
+    "semester": 1
+  },
+  {
+    "registration_number": "GTU_S_2024_DS_049",
+    "password": "Student@123",
+    "first_name": "Arun",
+    "last_name": "Singh",
+    "email": "arun.singh49@gtu.edu",
+    "department_code": "DS",
+    "batch_name": "2024",
+    "semester": 3
+  },
+  {
+    "registration_number": "GTU_S_2024_IT_050",
+    "password": "Student@123",
+    "first_name": "Isha",
+    "last_name": "Singh",
+    "email": "isha.singh50@gtu.edu",
+    "department_code": "IT",
+    "batch_name": "2024",
+    "semester": 3
+  }
+]

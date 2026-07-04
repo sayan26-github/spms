@@ -20,10 +20,10 @@ class ClassSessionViewSet(viewsets.ModelViewSet):
         if user.role in ['ADMIN', 'HEAD']:
             return ClassSession.objects.filter(subject__college=user.college)
         elif user.role == 'TEACHER':
-            return ClassSession.objects.filter(subject__teacher__user=user)
+            return ClassSession.objects.filter(subject__teacher__user=user, subject__college=user.college)
         elif user.role == 'STUDENT':
             # Students can see sessions for subjects they are enrolled in
-            return ClassSession.objects.filter(subject__enrollments__student__user=user)
+            return ClassSession.objects.filter(subject__enrollments__student__user=user, subject__college=user.college).distinct()
         return ClassSession.objects.none()
 
     def perform_create(self, serializer):
@@ -71,12 +71,15 @@ class AttendanceViewSet(viewsets.ReadOnlyModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
+        base_qs = Attendance.objects.select_related(
+            'class_session__subject', 'student__user'
+        )
         if user.role in ['ADMIN', 'HEAD']:
-            return Attendance.objects.filter(class_session__subject__college=user.college)
+            return base_qs.filter(class_session__subject__college=user.college)
         elif user.role == 'TEACHER':
-            return Attendance.objects.filter(class_session__subject__teacher__user=user)
+            return base_qs.filter(class_session__subject__teacher__user=user, class_session__subject__college=user.college)
         elif user.role == 'STUDENT':
-            return Attendance.objects.filter(student__user=user)
+            return base_qs.filter(student__user=user, class_session__subject__college=user.college)
         return Attendance.objects.none()
 
     @action(detail=False, methods=['post'], url_path='update-bulk', permission_classes=[IsTeacher | IsAdmin])
@@ -94,8 +97,9 @@ class AttendanceViewSet(viewsets.ReadOnlyModelViewSet):
         # Verify permissions for session
         try:
             session = ClassSession.objects.get(id=session_id)
-            if request.user.role == 'TEACHER' and session.subject.teacher.user != request.user:
-                return Response({"detail": "Permission denied"}, status=status.HTTP_403_FORBIDDEN)
+            if request.user.role == 'TEACHER':
+                if not session.subject.teacher or session.subject.teacher.user != request.user:
+                    return Response({"detail": "Permission denied"}, status=status.HTTP_403_FORBIDDEN)
             if session.subject.college != request.user.college:
                 return Response({"detail": "Permission denied"}, status=status.HTTP_403_FORBIDDEN)
             

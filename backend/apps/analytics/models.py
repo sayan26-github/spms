@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from datetime import date
 from apps.common.models import TimeStampedModel
 from apps.common.constants import RiskLevel
 from apps.academics.models import Student
@@ -19,7 +20,7 @@ class Prediction(TimeStampedModel):
     risk_score = models.DecimalField(_('risk score'), max_digits=5, decimal_places=4, help_text=_('Probability of failure/dropout (0-1)'))
     
     # Metadata about the prediction run
-    prediction_date = models.DateField(auto_now_add=True)
+    prediction_date = models.DateField(default=date.today)
     model_version = models.CharField(max_length=50, default='v1.0')
     
     # ML output storage

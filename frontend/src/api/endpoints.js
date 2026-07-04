@@ -9,7 +9,7 @@ export const ENDPOINTS = {
     ADMINS: "/auth/admins/",
 
     // Dashboard Metrics
-    ANALYTICS_DASHBOARD_STATS: "/analytics/predictions/dashboard_stats/",
+    ANALYTICS_DASHBOARD_STATS: "/analytics/predictions/dashboard-stats/",
     ACADEMICS_DASHBOARD_STATS: "/academics/dashboard-stats/",
 
     // Attendance
@@ -19,6 +19,7 @@ export const ENDPOINTS = {
     // Assessments
     ASSESSMENTS: "/assessments/tests/",
     MARKS: "/assessments/marks/",
+    TRANSCRIPT: "/assessments/transcript/",
 
     // Academics
     SUBJECTS: "/academics/subjects/",
@@ -27,9 +28,9 @@ export const ENDPOINTS = {
     PREDICTIONS: "/analytics/predictions/",
     MY_INSIGHTS: '/analytics/predictions/my-insights/',
     SUBJECT_RECOMMENDATIONS: '/analytics/predictions/subject-recommendations/',
+    CHAT: '/analytics/predictions/chat/',
 
     // Communication
     MESSAGES: "/communication/messages/",
-    RECIPIENTS: '/communication/messages/recipients/',
     RESOURCES: '/academics/resources/',
 };

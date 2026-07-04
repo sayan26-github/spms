@@ -1,11 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { createPortal } from 'react-dom';
-import { adminService } from '../../services/adminService';
+import { useUsers, useCreateUser, useDeleteUser } from '../../hooks/useAdminQueries';
 import { Plus, Edit, Trash, Search, UserPlus } from 'lucide-react';
 
 const UserManagement = () => {
-    const [users, setUsers] = useState([]);
-    const [loading, setLoading] = useState(true);
     const [showModal, setShowModal] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const [formData, setFormData] = useState({
@@ -17,20 +15,11 @@ const UserManagement = () => {
         role: 'STUDENT'
     });
 
-    useEffect(() => {
-        fetchUsers();
-    }, []);
+    const { data: usersData, isLoading: loading } = useUsers();
+    const users = Array.isArray(usersData) ? usersData : usersData?.results || [];
 
-    const fetchUsers = async () => {
-        try {
-            const data = await adminService.getUsers();
-            setUsers(data.results || data); // Handle pagination or flat list
-        } catch (error) {
-            console.error("Failed to fetch users", error);
-        } finally {
-            setLoading(false);
-        }
-    };
+    const createUserMutation = useCreateUser();
+    const deleteUserMutation = useDeleteUser();
 
     const handleInputChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -39,10 +28,9 @@ const UserManagement = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await adminService.createUser(formData);
+            await createUserMutation.mutateAsync(formData);
             setShowModal(false);
             setFormData({ registration_number: '', first_name: '', last_name: '', email: '', password: '', role: 'STUDENT' });
-            fetchUsers();
             alert('User created successfully');
         } catch (error) {
             alert('Failed to create user: ' + (error.response?.data?.detail || JSON.stringify(error.response?.data)));
@@ -52,8 +40,7 @@ const UserManagement = () => {
     const handleDelete = async (id) => {
         if (window.confirm('Are you sure you want to delete this user?')) {
             try {
-                await adminService.deleteUser(id);
-                fetchUsers();
+                await deleteUserMutation.mutateAsync(id);
             } catch (error) {
                 console.error("Failed to delete", error);
             }

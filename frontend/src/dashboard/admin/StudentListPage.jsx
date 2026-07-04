@@ -1,20 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useParams, useNavigate } from 'react-router-dom';
-import { adminService } from '../../services/adminService';
-import studentService from '../../services/studentService';
-import batchService from '../../services/batchService';
-import departmentService from '../../services/departmentService';
-import { Plus, ChevronLeft, UserPlus, Users, Mail, FileText } from 'lucide-react';
+import { useBatches, useDepartmentsByBatch, useStudentsByBatchAndDept, useCreateUser, useBulkImportStudents } from '../../hooks/useAdminQueries';
+import { Plus, ChevronLeft, UserPlus, Users, Mail, FileText, Upload } from 'lucide-react';
 
 const StudentListPage = () => {
     const { batchId, deptId } = useParams();
     const navigate = useNavigate();
-    const [batch, setBatch] = useState(null);
-    const [dept, setDept] = useState(null);
-    const [students, setStudents] = useState([]);
-    const [loading, setLoading] = useState(true);
     const [showModal, setShowModal] = useState(false);
+    const [showImportModal, setShowImportModal] = useState(false);
+    const [importFile, setImportFile] = useState(null);
+    const [importing, setImporting] = useState(false);
     const [error, setError] = useState('');
     const [formData, setFormData] = useState({
         registration_number: '',
@@ -27,38 +23,23 @@ const StudentListPage = () => {
         department_id: ''
     });
 
-    useEffect(() => {
-        fetchData();
-    }, [batchId, deptId]);
+    const { data: batchList = [], isLoading: loadingBatches } = useBatches();
+    const { data: deptList = [], isLoading: loadingDepts } = useDepartmentsByBatch(batchId);
+    const { data: students = [], isLoading: loadingStudents } = useStudentsByBatchAndDept(batchId, deptId);
 
-    const fetchData = async () => {
-        try {
-            setLoading(true);
-            const [batchList, deptList, studentsData] = await Promise.all([
-                batchService.getAll(),
-                departmentService.getByBatch(batchId),
-                studentService.getByBatchAndDept(batchId, deptId)
-            ]);
+    const createUserMutation = useCreateUser();
+    const bulkImportMutation = useBulkImportStudents();
 
-            const batchesArr = Array.isArray(batchList) ? batchList : batchList?.results || [];
-            const deptsArr = Array.isArray(deptList) ? deptList : deptList?.results || [];
-            const studentsArr = Array.isArray(studentsData) ? studentsData : studentsData?.results || [];
+    const loading = loadingBatches || loadingDepts || loadingStudents;
 
-            setBatch(batchesArr.find(b => String(b.id) === String(batchId)) || { name: `Batch ${batchId}` });
-            setDept(deptsArr.find(d => String(d.id) === String(deptId)) || { name: `Department ${deptId}` });
-            setStudents(studentsArr);
-        } catch (err) {
-            console.error('Failed to fetch data', err);
-        } finally {
-            setLoading(false);
-        }
-    };
+    const batch = batchList.find(b => String(b.id) === String(batchId)) || { name: `Batch ${batchId}` };
+    const dept = deptList.find(d => String(d.id) === String(deptId)) || { name: `Department ${deptId}` };
 
     const handleCreateStudent = async (e) => {
         e.preventDefault();
         setError('');
         try {
-            await adminService.createUser({
+            await createUserMutation.mutateAsync({
                 ...formData,
                 batch_id: batchId,
                 department_id: deptId
@@ -68,9 +49,28 @@ const StudentListPage = () => {
                 registration_number: '', first_name: '', last_name: '',
                 email: '', password: '', role: 'STUDENT', batch_id: '', department_id: ''
             });
-            fetchData();
         } catch (err) {
             setError(err.response?.data?.detail || JSON.stringify(err.response?.data) || 'Failed to create student');
+        }
+    };
+
+    const handleBulkImport = async (e) => {
+        e.preventDefault();
+        if (!importFile) return;
+        setError('');
+        setImporting(true);
+        try {
+            const importFormData = new FormData();
+            importFormData.append('file', importFile);
+            importFormData.append('batch_id', batchId);
+            importFormData.append('department_id', deptId);
+            await bulkImportMutation.mutateAsync(importFormData);
+            setShowImportModal(false);
+            setImportFile(null);
+        } catch (err) {
+            setError(err.response?.data?.detail || JSON.stringify(err.response?.data) || 'Failed to import students');
+        } finally {
+            setImporting(false);
         }
     };
 
@@ -115,17 +115,55 @@ const StudentListPage = () => {
                             <label className="text-sm font-semibold text-brand-text">Password *</label>
                             <input name="password" type="password" placeholder="Secure password" value={formData.password} onChange={handleInputChange} className="w-full modern-input rounded-xl px-4 py-2 text-sm" required />
                         </div>
+
+                        <div className="pt-4 border-t border-brand-border flex justify-end space-x-3 mt-4">
+                            <button type="button" onClick={() => setShowModal(false)} className="px-5 py-2.5 text-sm font-semibold text-brand-muted hover:bg-slate-200 rounded-xl">
+                                Cancel
+                            </button>
+                            <button type="submit" className="px-5 py-2.5 text-sm font-semibold text-white bg-brand-primary hover:bg-indigo-700 rounded-xl shadow-sm">
+                                Create
+                            </button>
+                        </div>
                     </form>
                 </div>
 
-                <div className="p-6 border-t border-brand-border bg-slate-50 flex justify-end space-x-3 rounded-b-2xl">
-                    <button type="button" onClick={() => setShowModal(false)} className="px-5 py-2.5 text-sm font-semibold text-brand-muted hover:bg-slate-200 rounded-xl">
-                        Cancel
-                    </button>
-                    <button type="submit" form="student-form" className="px-5 py-2.5 text-sm font-semibold text-white bg-brand-primary hover:bg-indigo-700 rounded-xl shadow-sm">
-                        Create
+            </div>
+        </div>,
+        document.body
+    ) : null;
+
+    const importModal = showImportModal ? createPortal(
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4">
+            <div className="modern-card w-full max-w-md rounded-2xl shadow-2xl animate-fade-in relative flex flex-col">
+                <div className="p-6 border-b border-brand-border flex justify-between items-center">
+                    <h2 className="text-xl font-bold text-brand-text">Bulk Import Students</h2>
+                    <button onClick={() => setShowImportModal(false)} className="text-brand-muted hover:bg-slate-100 p-2 rounded-lg">
+                        <Plus size={20} className="rotate-45" />
                     </button>
                 </div>
+
+                <div className="p-6">
+                    {error && (
+                        <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-700 rounded-lg text-sm">{error}</div>
+                    )}
+                    <form id="import-form" onSubmit={handleBulkImport} className="space-y-4">
+                        <div className="space-y-1.5">
+                            <label className="text-sm font-semibold text-brand-text">Upload CSV File *</label>
+                            <input type="file" accept=".csv" onChange={(e) => setImportFile(e.target.files[0])} className="w-full modern-input rounded-xl px-4 py-2 text-sm" required />
+                            <p className="text-xs text-brand-muted mt-1">Columns required: registration_number, first_name, last_name, email, password</p>
+                        </div>
+
+                        <div className="pt-4 border-t border-brand-border flex justify-end space-x-3 mt-4">
+                            <button type="button" onClick={() => setShowImportModal(false)} className="px-5 py-2.5 text-sm font-semibold text-brand-muted hover:bg-slate-200 rounded-xl">
+                                Cancel
+                            </button>
+                            <button type="submit" disabled={importing} className="px-5 py-2.5 text-sm font-semibold text-white bg-brand-primary hover:bg-indigo-700 rounded-xl shadow-sm">
+                                {importing ? 'Importing...' : 'Import'}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
             </div>
         </div>,
         document.body
@@ -151,13 +189,22 @@ const StudentListPage = () => {
                     <h1 className="text-2xl font-bold text-brand-text">{dept?.name} — Students</h1>
                     <p className="text-sm text-brand-muted mt-1">{batch?.name}</p>
                 </div>
-                <button
-                    onClick={() => setShowModal(true)}
-                    className="flex items-center px-4 py-2.5 bg-brand-primary text-white rounded-xl shadow-sm hover:bg-indigo-700 transition"
-                >
-                    <UserPlus size={18} className="mr-2" />
-                    <span className="font-semibold text-sm">Add Student</span>
-                </button>
+                <div className="flex items-center gap-3">
+                    <button
+                        onClick={() => setShowImportModal(true)}
+                        className="flex items-center px-4 py-2.5 bg-slate-100 text-brand-text border border-slate-200 rounded-xl shadow-sm hover:bg-slate-200 transition"
+                    >
+                        <Upload size={18} className="mr-2" />
+                        <span className="font-semibold text-sm">Bulk Import</span>
+                    </button>
+                    <button
+                        onClick={() => setShowModal(true)}
+                        className="flex items-center px-4 py-2.5 bg-brand-primary text-white rounded-xl shadow-sm hover:bg-indigo-700 transition"
+                    >
+                        <UserPlus size={18} className="mr-2" />
+                        <span className="font-semibold text-sm">Add Student</span>
+                    </button>
+                </div>
             </div>
 
             {loading ? (
@@ -220,6 +267,7 @@ const StudentListPage = () => {
             )}
 
             {modal}
+            {importModal}
         </div>
     );
 };
