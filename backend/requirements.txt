@@ -11,3 +11,4 @@ python-dotenv
 dj-database-url
 whitenoise
 google-generativeai
+drf-spectacular
