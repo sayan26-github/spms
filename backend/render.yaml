@@ -6,7 +6,7 @@ databases:
 
 services:
   - type: web
-    name: spms-backend
+    name: spms-api
     env: python
     rootDir: backend
     plan: free
