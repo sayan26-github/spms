@@ -56,7 +56,7 @@ export const adminService = {
 
     // Subject Management
     getSubjects: async (params = {}) => {
-        const response = await api.get(ADMIN_API.SUBJECTS, { params });
+        const response = await api.get(ADMIN_API.SUBJECTS, { params: { page_size: 1000, ...params } });
         return extractResults(response.data);
     },
     createSubject: async (subjectData) => {
@@ -84,7 +84,7 @@ export const adminService = {
 
     // Student Profiles (filtered)
     getStudents: async (params = {}) => {
-        const response = await api.get(ADMIN_API.STUDENTS, { params });
+        const response = await api.get(ADMIN_API.STUDENTS, { params: { page_size: 1000, ...params } });
         return extractResults(response.data);
     },
     bulkImportStudents: async (formData) => {
@@ -102,8 +102,8 @@ export const adminService = {
         });
         return response.data;
     },
-    getEnrollments: async () => {
-        const response = await api.get(ADMIN_API.ENROLLMENTS);
+    getEnrollments: async (params = {}) => {
+        const response = await api.get(ADMIN_API.ENROLLMENTS, { params: { page_size: 1000, ...params } });
         return extractResults(response.data);
     },
     getEnrollmentsBySubject: async (subjectId) => {

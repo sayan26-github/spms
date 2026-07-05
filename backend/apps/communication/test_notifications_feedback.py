@@ -91,7 +91,8 @@ class NotificationFeedbackTests(APITransactionTestCase):
             subject=self.subject,
             rating=4,
             comments="Good",
-            is_anonymous=True
+            is_anonymous=True,
+            college=self.college
         )
         
         self.client.force_authenticate(user=self.student_user)
@@ -108,7 +109,8 @@ class NotificationFeedbackTests(APITransactionTestCase):
             subject=self.subject,
             rating=4,
             comments="Good",
-            is_anonymous=False
+            is_anonymous=False,
+            college=self.college
         )
         
         self.client.force_authenticate(user=self.student_user)

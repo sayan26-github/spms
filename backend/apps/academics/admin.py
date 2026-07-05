@@ -19,8 +19,9 @@ class StudentAdmin(admin.ModelAdmin):
 
 @admin.register(Teacher)
 class TeacherAdmin(admin.ModelAdmin):
-    list_display = ('user', 'department', 'designation')
-    search_fields = ('user__first_name', 'user__last_name', 'user__registration_number')
+    list_display = ('user', 'department_name', 'designation')
+    search_fields = ('user__first_name', 'user__last_name', 'user__email', 'department_name', 'designation')
+    list_filter = ('department_name', 'designation')
 
 @admin.register(Enrollment)
 class EnrollmentAdmin(admin.ModelAdmin):

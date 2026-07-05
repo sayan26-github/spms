@@ -3,9 +3,9 @@ import api from '../api/axios';
 const STUDENT_API = '/academics/students/';
 
 export const studentService = {
-    getByBatchAndDept: async (batchId, deptId) => {
+    getByBatchAndDept: async (batchId, deptId, additionalParams = {}) => {
         const response = await api.get(STUDENT_API, {
-            params: { batch: batchId, department: deptId }
+            params: { batch: batchId, department: deptId, ...additionalParams }
         });
         return response.data;
     },

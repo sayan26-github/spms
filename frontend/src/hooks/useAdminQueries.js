@@ -9,7 +9,7 @@ export const useBatches = () => {
     return useQuery({
         queryKey: ['batches'],
         queryFn: async () => {
-            const data = await batchService.getAll();
+            const data = await batchService.getAll({ page_size: 1000 });
             return Array.isArray(data) ? data : data?.results || [];
         }
     });
@@ -30,7 +30,7 @@ export const useDepartmentsByBatch = (batchId) => {
     return useQuery({
         queryKey: ['departments', batchId],
         queryFn: async () => {
-            const data = await departmentService.getByBatch(batchId);
+            const data = await departmentService.getByBatch(batchId, { page_size: 1000 });
             return Array.isArray(data) ? data : data?.results || [];
         },
         enabled: !!batchId
@@ -52,7 +52,7 @@ export const useStudentsByBatchAndDept = (batchId, deptId) => {
     return useQuery({
         queryKey: ['students', batchId, deptId],
         queryFn: async () => {
-            const data = await studentService.getByBatchAndDept(batchId, deptId);
+            const data = await studentService.getByBatchAndDept(batchId, deptId, { page_size: 1000 });
             return Array.isArray(data) ? data : data?.results || [];
         },
         enabled: !!batchId && !!deptId

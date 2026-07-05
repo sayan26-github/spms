@@ -15,8 +15,8 @@ const extractResults = (data) => {
 const SUBJECTS_URL = ENDPOINTS.SUBJECTS || "/academics/subjects/";
 
 export const academicService = {
-    getSubjects: async () => {
-        const response = await api.get(SUBJECTS_URL);
+    getSubjects: async (params = {}) => {
+        const response = await api.get(SUBJECTS_URL, { params: { page_size: 1000, ...params } });
         // Backend might return [ ... ] or { count: ..., results: [ ... ] }
         return extractResults(response.data);
     },

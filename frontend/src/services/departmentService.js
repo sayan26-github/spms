@@ -3,12 +3,12 @@ import api from '../api/axios';
 const DEPT_API = '/academics/departments/';
 
 export const departmentService = {
-    getAll: async () => {
-        const response = await api.get(DEPT_API);
+    getAll: async (params = {}) => {
+        const response = await api.get(DEPT_API, { params });
         return response.data;
     },
-    getByBatch: async (batchId) => {
-        const response = await api.get(DEPT_API, { params: { batch: batchId } });
+    getByBatch: async (batchId, additionalParams = {}) => {
+        const response = await api.get(DEPT_API, { params: { batch: batchId, ...additionalParams } });
         return response.data;
     },
     create: async (data) => {

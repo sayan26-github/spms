@@ -109,10 +109,6 @@ class UserProfileView(generics.RetrieveUpdateAPIView):
     def get_object(self):
         return self.request.user
 
-from rest_framework.decorators import action
-from django.db import transaction
-import csv
-import io
 
 class UserViewSet(viewsets.ModelViewSet):
     """

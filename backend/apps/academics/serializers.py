@@ -23,9 +23,11 @@ class DepartmentSerializer(serializers.ModelSerializer):
 
 class TeacherProfileSerializer(serializers.ModelSerializer):
     user_details = UserSerializer(source='user', read_only=True)
+    department_details = DepartmentSerializer(source='department', read_only=True)
+
     class Meta:
         model = Teacher
-        fields = ['id', 'user_details', 'department', 'designation']
+        fields = ['id', 'user_details', 'department', 'department_details', 'department_name', 'designation']
 
 class StudentProfileSerializer(serializers.ModelSerializer):
     user_details = UserSerializer(source='user', read_only=True)

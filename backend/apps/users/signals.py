@@ -14,4 +14,4 @@ def create_user_profile(sender, instance, created, **kwargs):
         if instance.role == UserRole.STUDENT:
             Student.objects.create(user=instance, semester=1)
         elif instance.role == UserRole.TEACHER:
-            Teacher.objects.create(user=instance, department="General", designation="Lecturer")
+            Teacher.objects.create(user=instance, department_name="General", designation="Lecturer")

@@ -3,8 +3,8 @@ import api from '../api/axios';
 const BATCH_API = '/academics/batches/';
 
 export const batchService = {
-    getAll: async () => {
-        const response = await api.get(BATCH_API);
+    getAll: async (params = {}) => {
+        const response = await api.get(BATCH_API, { params });
         return response.data;
     },
     create: async (data) => {

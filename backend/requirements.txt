@@ -12,3 +12,5 @@ dj-database-url
 whitenoise
 google-generativeai
 drf-spectacular
+xgboost
+joblib

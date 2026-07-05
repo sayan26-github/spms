@@ -44,7 +44,7 @@ export const AuthProvider = ({ children }) => {
         }
     }, [isError, error]);
 
-    const login = async (registrationNumber, password, collegeCode = "IITB") => {
+    const login = async (registrationNumber, password, collegeCode) => {
         try {
             const response = await authService.login(registrationNumber, password, collegeCode);
 

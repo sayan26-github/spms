@@ -13,8 +13,8 @@ class College(TimeStampedModel):
     address = models.TextField(_('address'), blank=True)
     
     # Contact info
-    contact_email = models.EmailField(_('contact email'))
-    contact_phone = models.CharField(_('contact phone'), max_length=20)
+    contact_email = models.EmailField(_('contact email'), blank=True)
+    contact_phone = models.CharField(_('contact phone'), max_length=20, blank=True)
 
     class Meta:
         verbose_name = _('college')
@@ -80,13 +80,23 @@ class Teacher(TimeStampedModel):
         on_delete=models.CASCADE, 
         related_name='teacher_profile'
     )
-    # Teacher department can be string or FK. Keeping string for now as per plan, 
-    # but could be FK to Department model if strict relation needed.
-    department = models.CharField(_('department'), max_length=100) 
+    department = models.ForeignKey(
+        Department,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='teachers',
+        help_text=_('Department this teacher belongs to.'),
+    )
+    department_name = models.CharField(
+        _('department name (legacy)'), max_length=100, blank=True,
+        help_text=_('Kept for backward compatibility with existing data.'),
+    )
     designation = models.CharField(_('designation'), max_length=100)
 
     def __str__(self):
-        return f"Prof. {self.user.last_name} ({self.department})"
+        dept = self.department.name if self.department else self.department_name
+        return f"Prof. {self.user.last_name} ({dept})"
 
 class Student(TimeStampedModel):
     """
