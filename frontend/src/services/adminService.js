@@ -76,7 +76,7 @@ export const adminService = {
     // Teacher Assignment
     assignTeacher: async (subjectId, teacherId) => {
         const response = await api.post(
-            `${ADMIN_API.SUBJECTS}${subjectId}/assign-teacher/`,
+            `${ADMIN_API.SUBJECTS}${subjectId}/assign_teacher/`,
             { teacher_id: teacherId }
         );
         return response.data;
@@ -107,13 +107,13 @@ export const adminService = {
         return extractResults(response.data);
     },
     getEnrollmentsBySubject: async (subjectId) => {
-        const response = await api.get(`${ADMIN_API.ENROLLMENTS}by-subject/`, {
+        const response = await api.get(`${ADMIN_API.ENROLLMENTS}by_subject/`, {
             params: { subject_id: subjectId }
         });
         return response.data;
     },
     bulkEnroll: async (subjectId, studentIds) => {
-        const response = await api.post(`${ADMIN_API.ENROLLMENTS}bulk-enroll/`, {
+        const response = await api.post(`${ADMIN_API.ENROLLMENTS}bulk_enroll/`, {
             subject_id: subjectId,
             student_ids: studentIds
         });

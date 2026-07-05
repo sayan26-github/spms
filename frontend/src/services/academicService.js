@@ -22,8 +22,8 @@ export const academicService = {
     },
 
     getEnrolledStudents: async (subjectId) => {
-        // Use the by-subject action endpoint which properly filters by subject_id
-        const response = await api.get(`/academics/enrollments/by-subject/`, {
+        // Use the by_subject action endpoint which properly filters by subject_id
+        const response = await api.get(`/academics/enrollments/by_subject/`, {
             params: { subject_id: subjectId }
         });
         return response.data;
