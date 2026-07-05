@@ -75,12 +75,19 @@ class AttendanceViewSet(viewsets.ReadOnlyModelViewSet):
             'class_session__subject', 'student__user'
         )
         if user.role in ['ADMIN', 'HEAD']:
-            return base_qs.filter(class_session__subject__college=user.college)
+            qs = base_qs.filter(class_session__subject__college=user.college)
         elif user.role == 'TEACHER':
-            return base_qs.filter(class_session__subject__teacher__user=user, class_session__subject__college=user.college)
+            qs = base_qs.filter(class_session__subject__teacher__user=user, class_session__subject__college=user.college)
         elif user.role == 'STUDENT':
-            return base_qs.filter(student__user=user, class_session__subject__college=user.college)
-        return Attendance.objects.none()
+            qs = base_qs.filter(student__user=user, class_session__subject__college=user.college)
+        else:
+            qs = Attendance.objects.none()
+            
+        session_id = self.request.query_params.get('session_id')
+        if session_id:
+            qs = qs.filter(class_session_id=session_id)
+            
+        return qs
 
     @action(detail=False, methods=['post'], url_path='update-bulk', permission_classes=[IsTeacher | IsAdmin])
     def update_bulk(self, request):

@@ -34,6 +34,7 @@ class CompanyViewSet(MultiTenantViewSet):
 class SkillViewSet(MultiTenantViewSet):
     queryset = Skill.objects.all()
     serializer_class = SkillSerializer
+    pagination_class = None
 
 class JobPostingViewSet(MultiTenantViewSet):
     queryset = JobPosting.objects.all()
@@ -142,6 +143,8 @@ class PlacementAnalyticsView(viewsets.ViewSet):
             avg_prob = sum(r['placement_probability'] for r in top_recs) / len(top_recs)
         else:
             avg_prob = 0.5
+            
+        num_skills = StudentSkill.objects.filter(student=student).count()
         
         return Response({
             "placement_probability": round(avg_prob, 4),
