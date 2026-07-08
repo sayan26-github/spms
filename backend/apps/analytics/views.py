@@ -29,15 +29,17 @@ class PredictionViewSet(viewsets.ReadOnlyModelViewSet):
             return Prediction.objects.filter(student__user=user)
         return Prediction.objects.none()
 
-    @action(detail=False, methods=['post'], url_path='run-analysis', permission_classes=[IsAdmin | IsHead])
+    @action(detail=False, methods=['post'], url_path='run-analysis', permission_classes=[permissions.IsAuthenticated])
     def run_analysis(self, request):
         """
         Trigger batch analysis for the college.
         """
+        if request.user.role not in ['ADMIN', 'HEAD', 'TEACHER']:
+            return Response({"detail": "You do not have permission to perform this action."}, status=status.HTTP_403_FORBIDDEN)
         count = AnalyticsService.run_batch_predictions(request.user.college)
         return Response({"detail": f"Analysis completed for {count} students."}, status=status.HTTP_200_OK)
 
-    @action(detail=False, methods=['get'], permission_classes=[IsTeacher | IsHead | IsAdmin])
+    @action(detail=False, methods=['get'], url_path='dashboard-stats', permission_classes=[permissions.IsAuthenticated])
     def dashboard_stats(self, request):
         """
         Get aggregated stats for the dashboard.
