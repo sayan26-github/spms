@@ -1,15 +1,8 @@
 import api from "../api/axios";
 import { ENDPOINTS } from "../api/endpoints";
+import { extractResults } from "../utils/apiHelpers";
 
-/**
- * Helper: DRF paginated endpoints return { count, results }.
- * This extracts the array from paginated or plain responses.
- */
-const extractResults = (data) => {
-    if (data && Array.isArray(data.results)) return data.results;
-    if (Array.isArray(data)) return data;
-    return [];
-};
+
 
 export const attendanceService = {
     // Get sessions for a specific subject
@@ -33,7 +26,7 @@ export const attendanceService = {
     // If no sessionId, fetch all for user (Student view)
     getAttendance: async (sessionId) => {
         const url = sessionId
-            ? `${ENDPOINTS.ATTENDANCE}?class_session=${sessionId}`
+            ? `${ENDPOINTS.ATTENDANCE}?session_id=${sessionId}`
             : ENDPOINTS.ATTENDANCE;
         const response = await api.get(url);
         return extractResults(response.data);

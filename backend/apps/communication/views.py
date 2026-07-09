@@ -69,6 +69,12 @@ class NotificationViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         return Notification.objects.filter(recipient=self.request.user, recipient__college=self.request.user.college)
 
+    def perform_create(self, serializer):
+        from rest_framework.exceptions import PermissionDenied
+        if self.request.user.role not in ['ADMIN', 'HEAD']:
+            raise PermissionDenied("Only administrators can create system notifications.")
+        serializer.save(college=self.request.user.college)
+
     @action(detail=True, methods=['post'])
     def mark_read(self, request, pk=None):
         notification = self.get_object()

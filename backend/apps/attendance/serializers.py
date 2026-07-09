@@ -12,6 +12,8 @@ class ClassSessionSerializer(serializers.ModelSerializer):
         read_only_fields = ['created_by']
 
     def get_attendance_count(self, obj):
+        if hasattr(obj, 'attendance_count_annotated'):
+            return obj.attendance_count_annotated
         return obj.attendances.count()
 
 class AttendanceSerializer(serializers.ModelSerializer):

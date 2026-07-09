@@ -31,6 +31,7 @@ class Notification(TimeStampedModel):
     """
     System notifications for users.
     """
+    college = models.ForeignKey(College, on_delete=models.CASCADE)
     recipient = models.ForeignKey(User, on_delete=models.CASCADE, related_name='notifications')
     title = models.CharField(max_length=255)
     message = models.TextField()

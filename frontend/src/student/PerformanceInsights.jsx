@@ -92,7 +92,7 @@ const PerformanceInsights = () => {
                                 <RiskIcon size={24} />
                                 <div>
                                     <p className="font-bold text-xl">{prediction.risk_level} Risk</p>
-                                    <p className="text-sm text-white/70">Confidence: {Math.round(prediction.risk_score * 100)}%</p>
+                                    <p className="text-sm text-white/70">Academic Health: {100 - Math.round(prediction.risk_score * 100)}%</p>
                                 </div>
                             </div>
                             <p className="text-xs text-white/40 mt-2">Model: {prediction.model_version}</p>

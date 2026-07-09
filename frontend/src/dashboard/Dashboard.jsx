@@ -39,7 +39,7 @@ const Dashboard = () => {
                                 {new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
                             </div>
                             <div className="text-right hidden sm:block">
-                                <p className="text-sm font-medium text-gray-900">{user?.name}</p>
+                                <p className="text-sm font-medium text-gray-900">{user?.first_name} {user?.last_name}</p>
                                 <p className="text-xs text-gray-500">{user?.role}</p>
                             </div>
                             <button

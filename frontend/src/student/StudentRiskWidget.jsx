@@ -65,10 +65,10 @@ const StudentRiskWidget = () => {
             </div>
             <div className="text-right hidden sm:block">
                 <div className="text-xs font-semibold uppercase tracking-wider opacity-80">
-                    Confidence Score
+                    Academic Health
                 </div>
                 <div className="text-xl font-bold">
-                    {Math.round(prediction.risk_score * 100)}%
+                    {100 - Math.round(prediction.risk_score * 100)}%
                 </div>
             </div>
         </div>

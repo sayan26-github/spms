@@ -23,6 +23,9 @@ FEATURE_NAMES = sorted([
     'skill_count', 'avg_skill_proficiency', 'job_applications_count',
 ])
 
+# Features used for placement prediction
+PLACEMENT_FEATURE_NAMES = FEATURE_NAMES + ['skill_score', 'job_min_gpa', 'job_ctc', 'job_skills_count']
+
 # Path where trained model is persisted
 MODEL_DIR = os.path.join(os.path.dirname(__file__), 'trained_models')
 MODEL_PATH = os.path.join(MODEL_DIR, 'xgb_model.joblib')
@@ -54,7 +57,7 @@ class PerformancePredictor:
     def train(self, X, y):
         """
         Train the XGBoost model with real data.
-        X: list of feature vectors (each vector has 16 values)
+        X: list of feature vectors (each vector has 21 values)
         y: list of actual GPA values (target)
         """
         try:
@@ -73,6 +76,8 @@ class PerformancePredictor:
             )
             self.is_trained = False
             return False
+
+        assert len(X_arr[0]) == len(FEATURE_NAMES), f"Expected {len(FEATURE_NAMES)} features, got {len(X_arr[0])}"
 
         self.model = XGBRegressor(
             n_estimators=100,
@@ -182,6 +187,8 @@ class PlacementPredictor:
 
         if len(X_arr) < 5:
             return False
+
+        assert len(X_arr[0]) == len(PLACEMENT_FEATURE_NAMES), f"Expected {len(PLACEMENT_FEATURE_NAMES)} features, got {len(X_arr[0])}"
 
         self.model = XGBClassifier(
             n_estimators=100,

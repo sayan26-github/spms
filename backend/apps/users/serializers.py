@@ -101,9 +101,11 @@ class UserCreateSerializer(serializers.ModelSerializer):
                 if department_id:
                     student_profile.department_id = department_id
                 student_profile.save()
-            except Exception:
+            except Exception as e:
                 # Fallback if signal didn't run or profile missing
-                pass
+                import logging
+                logger = logging.getLogger(__name__)
+                logger.error(f"Failed to update profile for user {user.username}: {e}")
                 
         return user
 

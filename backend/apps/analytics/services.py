@@ -348,6 +348,7 @@ class AnalyticsService:
             student=student,
             prediction_date=today,
             defaults={
+                'college': student.user.college,
                 'predicted_gpa': predicted_gpa,
                 'risk_level': risk_level,
                 'risk_score': risk_score,
@@ -368,17 +369,21 @@ class AnalyticsService:
         from apps.academics.models import Student
 
         def _update_task(s_ids):
-            students = Student.objects.filter(id__in=s_ids)
-            predictor = PerformancePredictor()
-            # If we don't have a globally loaded model, we could train it or just use fallback.
-            # Usually predictor loads the saved model on init if available.
-            for student in students:
-                try:
-                    AnalyticsService.generate_prediction_for_student(student, predictor)
-                except Exception as e:
-                    import logging
-                    logger = logging.getLogger(__name__)
-                    logger.error(f"Async ML update failed for student {student.id}: {e}")
+            from django.db import connection
+            try:
+                students = Student.objects.filter(id__in=s_ids)
+                predictor = PerformancePredictor()
+                # If we don't have a globally loaded model, we could train it or just use fallback.
+                # Usually predictor loads the saved model on init if available.
+                for student in students:
+                    try:
+                        AnalyticsService.generate_prediction_for_student(student, predictor)
+                    except Exception as e:
+                        import logging
+                        logger = logging.getLogger(__name__)
+                        logger.error(f"Async ML update failed for student {student.id}: {e}")
+            finally:
+                connection.close()
 
         if student_ids:
             unique_ids = list(set(student_ids))
@@ -460,6 +465,7 @@ class AnalyticsService:
                             f"Please intervene and schedule a mentoring session."
                         )
                         Notification.objects.create(
+                            college=college,
                             recipient=teacher.user,
                             title=title,
                             message=message,

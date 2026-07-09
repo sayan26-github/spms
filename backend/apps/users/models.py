@@ -67,9 +67,9 @@ class User(AbstractBaseUser, PermissionsMixin, TimeStampedModel):
         # Auto-generate username/uniqueness
         # We need college to be set.
         if self.college_id and self.registration_number:
-            expected_username = f"{self.college.code}_{self.registration_number}"
-            if self.username != expected_username:
-                self.username = expected_username
+            # Prevent N+1 queries if username is already set correctly
+            if not self.username or not self.username.endswith(f"_{self.registration_number}"):
+                self.username = f"{self.college.code}_{self.registration_number}"
         
         super().save(*args, **kwargs)
 

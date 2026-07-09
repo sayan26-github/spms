@@ -15,6 +15,7 @@ class AttendanceService:
 
         with transaction.atomic():
             session = ClassSession.objects.create(
+                college=subject.college,
                 subject=subject,
                 date=date,
                 created_by=teacher_user,
@@ -28,6 +29,7 @@ class AttendanceService:
             for enrollment in enrollments:
                 attendance_records.append(
                     Attendance(
+                        college=subject.college,
                         class_session=session,
                         student=enrollment.student,
                         status=AttendanceStatus.ABSENT # Default to Absent
@@ -70,7 +72,7 @@ class AttendanceService:
                             to_update.append(att)
                     else:
                         to_create.append(
-                            Attendance(class_session=session, student_id=student_id, status=status)
+                            Attendance(college=session.subject.college, class_session=session, student_id=student_id, status=status)
                         )
                         
             if to_update:

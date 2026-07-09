@@ -11,6 +11,7 @@ from .serializers import (
 from apps.users.models import User
 from .services import AcademicService
 from django.core.exceptions import ValidationError
+from rest_framework.exceptions import ValidationError as DRFValidationError
 
 class BatchViewSet(viewsets.ModelViewSet):
     """
@@ -252,7 +253,7 @@ class ResourceViewSet(viewsets.ModelViewSet):
         
         if user.role == 'TEACHER':
             if not subject.teacher or subject.teacher.user != user:
-                raise ValidationError("You can only upload resources for your own subjects.")
+                raise DRFValidationError("You can only upload resources for your own subjects.")
         
         serializer.save()
 

@@ -4,12 +4,13 @@ from django.utils.translation import gettext_lazy as _
 from django.core.exceptions import ValidationError
 from apps.common.models import TimeStampedModel
 from apps.common.constants import AssessmentType
-from apps.academics.models import Subject, Student
+from apps.academics.models import Subject, Student, College
 
 class Assessment(TimeStampedModel):
     """
     Represents an examination, test, or assignment.
     """
+    college = models.ForeignKey(College, on_delete=models.CASCADE)
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name='assessments')
     name = models.CharField(_('assessment name'), max_length=100) # e.g. "Unit Test 1"
     assessment_type = models.CharField(
@@ -41,6 +42,7 @@ class Marks(TimeStampedModel):
     """
     Marks obtained by a student in an assessment.
     """
+    college = models.ForeignKey(College, on_delete=models.CASCADE)
     assessment = models.ForeignKey(Assessment, on_delete=models.CASCADE, related_name='marks')
     student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='marks')
     marks_obtained = models.DecimalField(_('marks obtained'), max_digits=5, decimal_places=2)
@@ -61,7 +63,7 @@ class Marks(TimeStampedModel):
              raise ValidationError(f"Marks obtained ({self.marks_obtained}) cannot exceed max marks ({self.assessment.max_marks}).")
 
     def save(self, *args, **kwargs):
-        self.full_clean()
+        # Removed full_clean to allow bulk_create. Validation must be handled by serializers/services.
         super().save(*args, **kwargs)
 
     def __str__(self):
@@ -71,6 +73,7 @@ class AssignmentTask(TimeStampedModel):
     """
     An assignment created by a teacher requiring a document submission.
     """
+    college = models.ForeignKey(College, on_delete=models.CASCADE)
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name='assignment_tasks')
     title = models.CharField(_('title'), max_length=150)
     description = models.TextField(_('description'), blank=True)
@@ -97,6 +100,7 @@ class AssignmentSubmission(TimeStampedModel):
     """
     A student's submission for an AssignmentTask.
     """
+    college = models.ForeignKey(College, on_delete=models.CASCADE)
     assignment = models.ForeignKey(AssignmentTask, on_delete=models.CASCADE, related_name='submissions')
     student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='assignment_submissions')
     file = models.FileField(_('submission file'), upload_to='assignments/submissions/')

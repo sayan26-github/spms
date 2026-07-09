@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { MessageSquare, X, Send, User, Bot, Loader2 } from 'lucide-react';
-import api from '../api/axios';
-import { ENDPOINTS } from '../api/endpoints';
+import analyticsService from '../services/analyticsService';
 
 const ChatbotWidget = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -32,8 +31,8 @@ const ChatbotWidget = () => {
         setIsTyping(true);
 
         try {
-            const response = await api.post(ENDPOINTS.CHAT, { message: userText });
-            setMessages(prev => [...prev, { role: 'ai', text: response.data.response }]);
+            const response = await analyticsService.sendChatMessage(userText);
+            setMessages(prev => [...prev, { role: 'ai', text: response.response }]);
         } catch (error) {
             console.error("Chat error:", error);
             setMessages(prev => [...prev, { role: 'ai', text: "Sorry, I encountered an error connecting to my server. Please try again later." }]);

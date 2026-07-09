@@ -1,14 +1,7 @@
 import api from '../api/axios';
+import { extractResults } from '../utils/apiHelpers';
 
-/**
- * Helper: DRF paginated endpoints return { count, results }.
- * This extracts the array from paginated or plain responses.
- */
-const extractResults = (data) => {
-    if (data && Array.isArray(data.results)) return data.results;
-    if (Array.isArray(data)) return data;
-    return [];
-};
+
 
 const ADMIN_API = {
     USERS: '/auth/users/',

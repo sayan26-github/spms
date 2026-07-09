@@ -71,6 +71,15 @@ class FeedbackSerializer(serializers.ModelSerializer):
             return "Anonymous"
         return obj.student.get_full_name()
 
+    def validate_subject(self, value):
+        user = self.context['request'].user
+        if user.role == 'STUDENT':
+            from apps.academics.models import Student
+            student = Student.objects.filter(user=user).first()
+            if not student or not value.enrollments.filter(student=student, is_active=True).exists():
+                raise serializers.ValidationError("You can only leave feedback for subjects you are enrolled in.")
+        return value
+
     def create(self, validated_data):
         user = self.context['request'].user
         validated_data['student'] = user

@@ -34,6 +34,7 @@ class AssessmentService:
             ).values_list('student_id', flat=True)
         )
 
+        marks_to_create = []
         with transaction.atomic():
             for record in marks_data:
                 student_id = record.get('student_id')
@@ -42,19 +43,26 @@ class AssessmentService:
 
                 if student_id and marks_obtained is not None:
                     if student_id not in valid_student_ids:
-                        # Skip or raise error? skipping for bulk leniency, or could log.
-                        # For strictness, let's skip but maybe we should warn.
                         continue
 
-                    # Use update_or_create to handle re-uploads
-                    Marks.objects.update_or_create(
+                    if float(marks_obtained) > float(assessment.max_marks) or float(marks_obtained) < 0:
+                        raise ValidationError(f"Marks must be between 0 and {assessment.max_marks}")
+
+                    marks_to_create.append(Marks(
                         assessment=assessment,
                         student_id=student_id,
-                        defaults={
-                            'marks_obtained': marks_obtained,
-                            'remarks': remarks
-                        }
-                    )
+                        college=assessment.subject.college,
+                        marks_obtained=marks_obtained,
+                        remarks=remarks
+                    ))
+
+            if marks_to_create:
+                Marks.objects.bulk_create(
+                    marks_to_create,
+                    update_conflicts=True,
+                    unique_fields=['assessment', 'student'],
+                    update_fields=['marks_obtained', 'remarks']
+                )
 
         # Trigger async ML prediction recalculation for affected students
         if valid_student_ids:

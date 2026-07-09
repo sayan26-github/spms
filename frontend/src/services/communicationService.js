@@ -1,15 +1,8 @@
 import api from '../api/axios';
 import { ENDPOINTS } from '../api/endpoints';
+import { extractResults } from '../utils/apiHelpers';
 
-/**
- * Helper: DRF paginated endpoints return { count, results }.
- * This extracts the array from paginated or plain responses.
- */
-const extractResults = (data) => {
-    if (data && Array.isArray(data.results)) return data.results;
-    if (Array.isArray(data)) return data;
-    return [];
-};
+
 
 export const communicationService = {
     // Get messages (Inbox or Sent)

@@ -16,15 +16,17 @@ class ClassSessionViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
+        from django.db.models import Count
         user = self.request.user
+        qs = ClassSession.objects.none()
         if user.role in ['ADMIN', 'HEAD']:
-            return ClassSession.objects.filter(subject__college=user.college)
+            qs = ClassSession.objects.filter(subject__college=user.college)
         elif user.role == 'TEACHER':
-            return ClassSession.objects.filter(subject__teacher__user=user, subject__college=user.college)
+            qs = ClassSession.objects.filter(subject__teacher__user=user, subject__college=user.college)
         elif user.role == 'STUDENT':
             # Students can see sessions for subjects they are enrolled in
-            return ClassSession.objects.filter(subject__enrollments__student__user=user, subject__college=user.college).distinct()
-        return ClassSession.objects.none()
+            qs = ClassSession.objects.filter(subject__enrollments__student__user=user, subject__college=user.college).distinct()
+        return qs.annotate(attendance_count_annotated=Count('attendances'))
 
     def perform_create(self, serializer):
         # We override create to use Service for atomic operations if we want custom logic
@@ -41,9 +43,7 @@ class ClassSessionViewSet(viewsets.ModelViewSet):
             return Response({"detail": "Subject and Date required"}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
-            subject = Subject.objects.get(id=subject_id)
-            if subject.college != request.user.college:
-                return Response({"detail": "Invalid Subject"}, status=status.HTTP_403_FORBIDDEN)
+            subject = Subject.objects.get(id=subject_id, college=request.user.college)
             
             # Permission check: Only teacher of subject or admin
             if request.user.role == 'TEACHER':

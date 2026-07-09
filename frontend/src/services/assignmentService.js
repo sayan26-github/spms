@@ -1,4 +1,7 @@
 import api from "../api/axios";
+import { extractResults } from "../utils/apiHelpers";
+
+
 
 export const assignmentService = {
     // ---- Teacher Operations ----
@@ -7,7 +10,7 @@ export const assignmentService = {
         let url = "/assessments/assignments/";
         if (subjectId) url += `?subject=${subjectId}`;
         const response = await api.get(url);
-        return response.data;
+        return extractResults(response.data);
     },
 
     createAssignment: async (formData) => {
@@ -22,7 +25,7 @@ export const assignmentService = {
 
     getSubmissionsForAssignment: async (assignmentId) => {
         const response = await api.get(`/assessments/submissions/?assignment=${assignmentId}`);
-        return response.data;
+        return extractResults(response.data);
     },
 
     gradeSubmission: async (submissionId, marks, remarks) => {
@@ -37,12 +40,12 @@ export const assignmentService = {
 
     getMyAssignments: async () => {
         const response = await api.get("/assessments/assignments/");
-        return response.data;
+        return extractResults(response.data);
     },
 
     getMySubmissions: async () => {
         const response = await api.get("/assessments/submissions/");
-        return response.data;
+        return extractResults(response.data);
     },
 
     submitAssignment: async (formData) => {

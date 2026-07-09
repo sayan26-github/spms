@@ -36,6 +36,12 @@ export const analyticsService = {
     getTeacherAnalytics: async () => {
         const response = await api.get(`${ENDPOINTS.PREDICTIONS}teacher-analytics/`);
         return response.data;
+    },
+
+    // Chatbot endpoint
+    sendChatMessage: async (message) => {
+        const response = await api.post(ENDPOINTS.CHAT, { message });
+        return response.data;
     }
 };
 

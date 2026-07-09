@@ -7,6 +7,7 @@ from .serializers import AssessmentSerializer, MarksSerializer, BulkMarksSeriali
 from .services import AssessmentService
 from apps.academics.models import Subject, Student
 from django.core.exceptions import ValidationError
+from rest_framework.exceptions import ValidationError as DRFValidationError
 from rest_framework.views import APIView
 from django.shortcuts import get_object_or_404
 
@@ -31,13 +32,13 @@ class AssessmentViewSet(viewsets.ModelViewSet):
         # Additional check: ensure subject belongs to user's college and teacher
         subject = serializer.validated_data['subject']
         if subject.college != self.request.user.college:
-             raise ValidationError("Subject must belong to your college.")
+             raise DRFValidationError("Subject must belong to your college.")
         
         if self.request.user.role == 'TEACHER':
             if not subject.teacher or subject.teacher.user != self.request.user:
-                 raise ValidationError("You can only create assessments for your subjects.")
+                 raise DRFValidationError("You can only create assessments for your subjects.")
 
-        serializer.save(created_by=self.request.user)
+        serializer.save(created_by=self.request.user, college=self.request.user.college)
 
     @action(detail=True, methods=['get'])
     def sheet(self, request, pk=None):
@@ -110,8 +111,9 @@ class MarksViewSet(viewsets.ReadOnlyModelViewSet):
 
         try:
             assessment = Assessment.objects.get(id=assessment_id)
-            if request.user.role == 'TEACHER' and assessment.subject.teacher.user != request.user:
-                return Response({"detail": "Permission denied"}, status=status.HTTP_403_FORBIDDEN)
+            if request.user.role == 'TEACHER':
+                if not assessment.subject.teacher or assessment.subject.teacher.user != request.user:
+                    return Response({"detail": "Permission denied"}, status=status.HTTP_403_FORBIDDEN)
             if assessment.subject.college != request.user.college:
                 return Response({"detail": "Permission denied"}, status=status.HTTP_403_FORBIDDEN)
             
@@ -189,13 +191,13 @@ class AssignmentTaskViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         subject = serializer.validated_data['subject']
         if subject.college != self.request.user.college:
-             raise ValidationError("Subject must belong to your college.")
+             raise DRFValidationError("Subject must belong to your college.")
         
         if self.request.user.role == 'TEACHER':
             if not subject.teacher or subject.teacher.user != self.request.user:
-                 raise ValidationError("You can only create assignments for your subjects.")
+                 raise DRFValidationError("You can only create assignments for your subjects.")
 
-        serializer.save(created_by=self.request.user)
+        serializer.save(created_by=self.request.user, college=self.request.user.college)
 
 class AssignmentSubmissionViewSet(viewsets.ModelViewSet):
     """
@@ -209,7 +211,7 @@ class AssignmentSubmissionViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         user = self.request.user
         assignment_id = self.request.query_params.get('assignment', None)
-        qs = AssignmentSubmission.objects.all()
+        qs = AssignmentSubmission.objects.select_related('assignment__subject__teacher__user', 'student__user')
 
         if user.role in ['ADMIN', 'HEAD']:
             qs = qs.filter(assignment__subject__college=user.college)
@@ -228,20 +230,20 @@ class AssignmentSubmissionViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         user = self.request.user
         if user.role != 'STUDENT':
-            raise ValidationError("Only students can submit assignments.")
+            raise DRFValidationError("Only students can submit assignments.")
 
         try:
             student = Student.objects.get(user=user)
         except Student.DoesNotExist:
-            raise ValidationError("Student profile not found.")
+            raise DRFValidationError("Student profile not found.")
 
         assignment = serializer.validated_data['assignment']
         
         # Check enrollment
         if not assignment.subject.enrollments.filter(student=student, is_active=True).exists():
-            raise ValidationError("You are not enrolled in this subject.")
+            raise DRFValidationError("You are not enrolled in this subject.")
 
-        serializer.save(student=student)
+        serializer.save(student=student, college=self.request.user.college)
 
     @action(detail=True, methods=['patch'], permission_classes=[IsTeacher | IsAdmin])
     def grade(self, request, pk=None):

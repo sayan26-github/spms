@@ -9,6 +9,7 @@ class Prediction(TimeStampedModel):
     """
     Stores AI-generated performance predictions and risk assessments.
     """
+    college = models.ForeignKey('academics.College', on_delete=models.CASCADE, related_name='predictions', null=True, blank=True)
     student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='predictions')
     predicted_gpa = models.DecimalField(_('predicted GPA'), max_digits=4, decimal_places=2, null=True, blank=True)
     risk_level = models.CharField(
@@ -39,8 +40,12 @@ class Prediction(TimeStampedModel):
 
     class Meta:
         indexes = [
+            models.Index(fields=['college']),
             models.Index(fields=['student', 'risk_level'], name='student_risk_idx'),
             models.Index(fields=['risk_level'], name='risk_level_lookup_idx'),
+        ]
+        constraints = [
+            models.UniqueConstraint(fields=['student', 'prediction_date'], name='unique_prediction_per_date')
         ]
         get_latest_by = 'created_at'
 
