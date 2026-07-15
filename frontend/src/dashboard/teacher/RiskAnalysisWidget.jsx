@@ -11,8 +11,12 @@ const RiskAnalysisWidget = () => {
 
     const fetchStats = async () => {
         try {
-            const data = await analyticsService.getDashboardStats();
-            setStats(data);
+            const data = await analyticsService.getTeacherAnalytics();
+            setStats({
+                high: data.high_count,
+                medium: data.medium_count,
+                low: data.total_students_taught - (data.high_count + data.medium_count)
+            });
         } catch (error) {
             console.error("Failed to fetch analytics stats", error);
         } finally {
