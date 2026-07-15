@@ -1,4 +1,6 @@
 from rest_framework import viewsets, permissions, status
+from apps.common.constants import UserRole
+
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from apps.users.permissions import IsTeacher, IsAdmin, IsSameCollege
@@ -20,12 +22,13 @@ class AssessmentViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
-        if user.role in ['ADMIN', 'HEAD']:
-            return Assessment.objects.filter(subject__college=user.college)
-        elif user.role == 'TEACHER':
-            return Assessment.objects.filter(subject__teacher__user=user, subject__college=user.college)
-        elif user.role == 'STUDENT':
-            return Assessment.objects.filter(subject__enrollments__student__user=user, subject__college=user.college).distinct()
+        qs = Assessment.objects.select_related('subject')
+        if user.role in [UserRole.ADMIN, UserRole.HEAD]:
+            return qs.filter(subject__college=user.college)
+        elif user.role == UserRole.TEACHER:
+            return qs.filter(subject__teacher__user=user, subject__college=user.college)
+        elif user.role == UserRole.STUDENT:
+            return qs.filter(subject__enrollments__student__user=user, subject__college=user.college).distinct()
         return Assessment.objects.none()
 
     def perform_create(self, serializer):
@@ -34,7 +37,7 @@ class AssessmentViewSet(viewsets.ModelViewSet):
         if subject.college != self.request.user.college:
              raise DRFValidationError("Subject must belong to your college.")
         
-        if self.request.user.role == 'TEACHER':
+        if self.request.user.role == UserRole.TEACHER:
             if not subject.teacher or subject.teacher.user != self.request.user:
                  raise DRFValidationError("You can only create assessments for your subjects.")
 
@@ -89,11 +92,11 @@ class MarksViewSet(viewsets.ReadOnlyModelViewSet):
         base_qs = Marks.objects.select_related(
             'assessment__subject', 'student__user'
         )
-        if user.role in ['ADMIN', 'HEAD']:
+        if user.role in [UserRole.ADMIN, UserRole.HEAD]:
             return base_qs.filter(assessment__subject__college=user.college)
-        elif user.role == 'TEACHER':
+        elif user.role == UserRole.TEACHER:
             return base_qs.filter(assessment__subject__teacher__user=user, assessment__subject__college=user.college)
-        elif user.role == 'STUDENT':
+        elif user.role == UserRole.STUDENT:
             return base_qs.filter(student__user=user, assessment__subject__college=user.college)
         return Marks.objects.none()
 
@@ -111,7 +114,7 @@ class MarksViewSet(viewsets.ReadOnlyModelViewSet):
 
         try:
             assessment = Assessment.objects.get(id=assessment_id)
-            if request.user.role == 'TEACHER':
+            if request.user.role == UserRole.TEACHER:
                 if not assessment.subject.teacher or assessment.subject.teacher.user != request.user:
                     return Response({"detail": "Permission denied"}, status=status.HTTP_403_FORBIDDEN)
             if assessment.subject.college != request.user.college:
@@ -134,15 +137,15 @@ class TranscriptView(APIView):
     def get(self, request, student_id):
         student = get_object_or_404(Student, id=student_id)
         
-        if request.user.role in ['ADMIN', 'HEAD']:
+        if request.user.role in [UserRole.ADMIN, UserRole.HEAD]:
             if student.user.college != request.user.college:
                 return Response({"detail": "Permission denied"}, status=status.HTTP_403_FORBIDDEN)
-        elif request.user.role == 'TEACHER':
+        elif request.user.role == UserRole.TEACHER:
             if student.user.college != request.user.college:
                 return Response({"detail": "Permission denied"}, status=status.HTTP_403_FORBIDDEN)
             if not student.enrollments.filter(subject__teacher__user=request.user, is_active=True).exists():
                 return Response({"detail": "Permission denied"}, status=status.HTTP_403_FORBIDDEN)
-        elif request.user.role == 'STUDENT':
+        elif request.user.role == UserRole.STUDENT:
             if student.user != request.user:
                 return Response({"detail": "Permission denied"}, status=status.HTTP_403_FORBIDDEN)
         else:
@@ -180,11 +183,11 @@ class AssignmentTaskViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
-        if user.role in ['ADMIN', 'HEAD']:
+        if user.role in [UserRole.ADMIN, UserRole.HEAD]:
             return AssignmentTask.objects.filter(subject__college=user.college)
-        elif user.role == 'TEACHER':
+        elif user.role == UserRole.TEACHER:
             return AssignmentTask.objects.filter(subject__teacher__user=user, subject__college=user.college)
-        elif user.role == 'STUDENT':
+        elif user.role == UserRole.STUDENT:
             return AssignmentTask.objects.filter(subject__enrollments__student__user=user, subject__enrollments__is_active=True, subject__college=user.college).distinct()
         return AssignmentTask.objects.none()
 
@@ -193,7 +196,7 @@ class AssignmentTaskViewSet(viewsets.ModelViewSet):
         if subject.college != self.request.user.college:
              raise DRFValidationError("Subject must belong to your college.")
         
-        if self.request.user.role == 'TEACHER':
+        if self.request.user.role == UserRole.TEACHER:
             if not subject.teacher or subject.teacher.user != self.request.user:
                  raise DRFValidationError("You can only create assignments for your subjects.")
 
@@ -208,16 +211,22 @@ class AssignmentSubmissionViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
     parser_classes = [MultiPartParser, FormParser]
 
+    def get_permissions(self):
+        if self.action in ['update', 'partial_update', 'destroy']:
+            from apps.users.permissions import IsAdmin, IsHead
+            return [permissions.IsAuthenticated(), (IsTeacher | IsAdmin | IsHead)()]
+        return super().get_permissions()
+
     def get_queryset(self):
         user = self.request.user
         assignment_id = self.request.query_params.get('assignment', None)
         qs = AssignmentSubmission.objects.select_related('assignment__subject__teacher__user', 'student__user')
 
-        if user.role in ['ADMIN', 'HEAD']:
+        if user.role in [UserRole.ADMIN, UserRole.HEAD]:
             qs = qs.filter(assignment__subject__college=user.college)
-        elif user.role == 'TEACHER':
+        elif user.role == UserRole.TEACHER:
             qs = qs.filter(assignment__subject__teacher__user=user, assignment__subject__college=user.college)
-        elif user.role == 'STUDENT':
+        elif user.role == UserRole.STUDENT:
             qs = qs.filter(student__user=user, assignment__subject__college=user.college)
         else:
             qs = qs.none()

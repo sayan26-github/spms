@@ -1,4 +1,6 @@
 from rest_framework import viewsets, permissions, status
+from apps.common.constants import UserRole
+
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from apps.users.permissions import IsSameCollege, IsAdmin, IsStudent
@@ -76,7 +78,7 @@ class StudentSkillViewSet(MultiTenantViewSet):
 
     def get_queryset(self):
         qs = super().get_queryset()
-        if self.request.user.role == 'STUDENT':
+        if self.request.user.role == UserRole.STUDENT:
             return qs.filter(student__user=self.request.user)
         return qs
 
@@ -94,7 +96,7 @@ class JobApplicationViewSet(MultiTenantViewSet):
 
     def get_queryset(self):
         qs = super().get_queryset()
-        if self.request.user.role == 'STUDENT':
+        if self.request.user.role == UserRole.STUDENT:
             return qs.filter(student__user=self.request.user)
         return qs
 

@@ -50,7 +50,8 @@ class Marks(TimeStampedModel):
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=['assessment', 'student'], name='unique_marks_per_assessment')
+            models.UniqueConstraint(fields=['assessment', 'student'], name='unique_marks_per_assessment'),
+            models.CheckConstraint(check=models.Q(marks_obtained__gte=0), name='marks_obtained_positive'),
         ]
         indexes = [
             models.Index(fields=['assessment', 'marks_obtained'], name='assessment_marks_idx'),

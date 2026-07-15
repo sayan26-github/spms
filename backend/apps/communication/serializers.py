@@ -1,4 +1,6 @@
 from rest_framework import serializers
+from apps.common.constants import UserRole
+
 from .models import Message, Notification, Feedback
 from apps.users.serializers import UserSerializer
 from apps.users.models import User
@@ -38,12 +40,6 @@ class MessageSerializer(serializers.ModelSerializer):
             )
         return value
 
-    def create(self, validated_data):
-        user = self.context['request'].user
-        validated_data['sender'] = user
-        validated_data['college'] = user.college
-        return super().create(validated_data)
-
 class NotificationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Notification
@@ -51,7 +47,7 @@ class NotificationSerializer(serializers.ModelSerializer):
             'id', 'recipient', 'title', 'message',
             'notification_type', 'is_read', 'created_at'
         ]
-        read_only_fields = ['id', 'recipient', 'created_at']
+        read_only_fields = ['id', 'created_at']
 
 class FeedbackSerializer(serializers.ModelSerializer):
     student_name = serializers.SerializerMethodField()
@@ -73,16 +69,10 @@ class FeedbackSerializer(serializers.ModelSerializer):
 
     def validate_subject(self, value):
         user = self.context['request'].user
-        if user.role == 'STUDENT':
+        if user.role == UserRole.STUDENT:
             from apps.academics.models import Student
             student = Student.objects.filter(user=user).first()
             if not student or not value.enrollments.filter(student=student, is_active=True).exists():
                 raise serializers.ValidationError("You can only leave feedback for subjects you are enrolled in.")
         return value
-
-    def create(self, validated_data):
-        user = self.context['request'].user
-        validated_data['student'] = user
-        validated_data['college'] = user.college
-        return super().create(validated_data)
 

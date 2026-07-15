@@ -27,5 +27,8 @@ export const authService = {
                 "Content-Type": "multipart/form-data",
             },
         });
+    },
+    changePassword: async (data) => {
+        return api.post(ENDPOINTS.CHANGE_PASSWORD, data);
     }
 };

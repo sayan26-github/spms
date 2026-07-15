@@ -113,6 +113,7 @@ class AssessmentService:
                 
             if subj_id not in semester_data[sem]['subjects']:
                 semester_data[sem]['subjects'][subj_id] = {
+                    'id': subj_id,
                     'code': mark.assessment.subject.code,
                     'name': mark.assessment.subject.name,
                     'obtained': Decimal('0.0'),

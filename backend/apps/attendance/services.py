@@ -54,6 +54,12 @@ class AttendanceService:
             raise ValidationError("Session not found")
 
         with transaction.atomic():
+            # Get valid enrolled student ids
+            from apps.academics.models import Enrollment
+            valid_student_ids = set(Enrollment.objects.filter(
+                subject=session.subject, is_active=True
+            ).values_list('student_id', flat=True))
+
             existing_attendances = Attendance.objects.filter(class_session=session)
             existing_map = {att.student_id: att for att in existing_attendances}
             
@@ -65,6 +71,9 @@ class AttendanceService:
                 status = record.get('status')
                 
                 if student_id and status:
+                    if student_id not in valid_student_ids:
+                        raise ValidationError(f"Student {student_id} is not enrolled in this subject.")
+                        
                     if student_id in existing_map:
                         att = existing_map[student_id]
                         if att.status != status:

@@ -1,4 +1,6 @@
 from rest_framework import viewsets, permissions, status
+from apps.common.constants import UserRole
+
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from apps.users.permissions import IsTeacher, IsAdmin, IsSameCollege
@@ -19,11 +21,11 @@ class ClassSessionViewSet(viewsets.ModelViewSet):
         from django.db.models import Count
         user = self.request.user
         qs = ClassSession.objects.none()
-        if user.role in ['ADMIN', 'HEAD']:
+        if user.role in [UserRole.ADMIN, UserRole.HEAD]:
             qs = ClassSession.objects.filter(subject__college=user.college)
-        elif user.role == 'TEACHER':
+        elif user.role == UserRole.TEACHER:
             qs = ClassSession.objects.filter(subject__teacher__user=user, subject__college=user.college)
-        elif user.role == 'STUDENT':
+        elif user.role == UserRole.STUDENT:
             # Students can see sessions for subjects they are enrolled in
             qs = ClassSession.objects.filter(subject__enrollments__student__user=user, subject__college=user.college).distinct()
         return qs.annotate(attendance_count_annotated=Count('attendances'))
@@ -46,7 +48,7 @@ class ClassSessionViewSet(viewsets.ModelViewSet):
             subject = Subject.objects.get(id=subject_id, college=request.user.college)
             
             # Permission check: Only teacher of subject or admin
-            if request.user.role == 'TEACHER':
+            if request.user.role == UserRole.TEACHER:
                 if not subject.teacher or subject.teacher.user != request.user:
                     return Response(
                         {"detail": "You are not the teacher of this subject"},
@@ -74,11 +76,11 @@ class AttendanceViewSet(viewsets.ReadOnlyModelViewSet):
         base_qs = Attendance.objects.select_related(
             'class_session__subject', 'student__user'
         )
-        if user.role in ['ADMIN', 'HEAD']:
+        if user.role in [UserRole.ADMIN, UserRole.HEAD]:
             qs = base_qs.filter(class_session__subject__college=user.college)
-        elif user.role == 'TEACHER':
+        elif user.role == UserRole.TEACHER:
             qs = base_qs.filter(class_session__subject__teacher__user=user, class_session__subject__college=user.college)
-        elif user.role == 'STUDENT':
+        elif user.role == UserRole.STUDENT:
             qs = base_qs.filter(student__user=user, class_session__subject__college=user.college)
         else:
             qs = Attendance.objects.none()
@@ -104,7 +106,7 @@ class AttendanceViewSet(viewsets.ReadOnlyModelViewSet):
         # Verify permissions for session
         try:
             session = ClassSession.objects.get(id=session_id)
-            if request.user.role == 'TEACHER':
+            if request.user.role == UserRole.TEACHER:
                 if not session.subject.teacher or session.subject.teacher.user != request.user:
                     return Response({"detail": "Permission denied"}, status=status.HTTP_403_FORBIDDEN)
             if session.subject.college != request.user.college:

@@ -18,7 +18,7 @@ class MessageViewSet(viewsets.ModelViewSet):
         user = self.request.user
         # Base queryset: messages belonging to user's college
         # Filter: either sender is user OR receiver is user
-        qs = Message.objects.filter(college=user.college).filter(
+        qs = Message.objects.select_related('sender', 'receiver').filter(college=user.college).filter(
             Q(sender=user) | Q(receiver=user)
         )
         
@@ -34,7 +34,14 @@ class MessageViewSet(viewsets.ModelViewSet):
         return qs
 
     def perform_create(self, serializer):
-        serializer.save(sender=self.request.user, college=self.request.user.college)
+        from .services import CommunicationService
+        instance = CommunicationService.create_message(
+            sender=self.request.user,
+            receiver=serializer.validated_data['receiver'],
+            subject=serializer.validated_data.get('subject', ''),
+            body=serializer.validated_data.get('body', '')
+        )
+        serializer.instance = instance
 
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -66,14 +73,26 @@ class NotificationViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
     http_method_names = ['get', 'post', 'put', 'patch', 'delete'] # POST needed for actions, even if create is disabled via permissions if needed
 
+    def get_permissions(self):
+        if self.action == 'create':
+            from apps.users.permissions import IsAdmin, IsHead
+            return [permissions.IsAuthenticated(), (IsAdmin() | IsHead())]
+        return super().get_permissions()
+
     def get_queryset(self):
         return Notification.objects.filter(recipient=self.request.user, recipient__college=self.request.user.college)
 
     def perform_create(self, serializer):
-        from rest_framework.exceptions import PermissionDenied
-        if self.request.user.role not in ['ADMIN', 'HEAD']:
-            raise PermissionDenied("Only administrators can create system notifications.")
-        serializer.save(college=self.request.user.college)
+        from .services import CommunicationService
+        from apps.common.constants import NotificationType
+        instance = CommunicationService.create_notification(
+            college=self.request.user.college,
+            recipient=serializer.validated_data.get('recipient'),
+            title=serializer.validated_data.get('title'),
+            message=serializer.validated_data.get('message'),
+            notification_type=serializer.validated_data.get('notification_type', NotificationType.SYSTEM)
+        )
+        serializer.instance = instance
 
     @action(detail=True, methods=['post'])
     def mark_read(self, request, pk=None):
@@ -105,7 +124,12 @@ class FeedbackViewSet(viewsets.ModelViewSet):
             return Feedback.objects.filter(student=user, college=user.college)
 
     def perform_create(self, serializer):
-        serializer.save(
+        from .services import CommunicationService
+        instance = CommunicationService.create_feedback(
             student=self.request.user,
-            college=self.request.user.college
+            subject=serializer.validated_data.get('subject'),
+            rating=serializer.validated_data.get('rating'),
+            comments=serializer.validated_data.get('comments', ''),
+            is_anonymous=serializer.validated_data.get('is_anonymous', False)
         )
+        serializer.instance = instance

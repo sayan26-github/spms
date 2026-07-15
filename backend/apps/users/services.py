@@ -51,7 +51,7 @@ class AuthService:
             'college': user.college.code,
         }
 
-        if user.role == 'STUDENT' and hasattr(user, 'student_profile'):
+        if user.role == UserRole.STUDENT and hasattr(user, 'student_profile'):
             profile = user.student_profile
             response_data['batch'] = profile.batch.name if profile.batch else 'N/A'
             response_data['department'] = profile.department.name if profile.department else 'N/A'

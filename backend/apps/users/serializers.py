@@ -1,4 +1,6 @@
 from rest_framework import serializers
+from apps.common.constants import UserRole
+
 from django.contrib.auth import authenticate
 from django.utils.translation import gettext_lazy as _
 from .models import User
@@ -92,7 +94,7 @@ class UserCreateSerializer(serializers.ModelSerializer):
         # If user is a student, we might need to link batch/dept here if passed
         # OR the Profile is created via signals. 
         # Assuming Profile is created via signals (which it should be), we update it.
-        if user.role == 'STUDENT' and (batch_id or department_id):
+        if user.role == UserRole.STUDENT and (batch_id or department_id):
             # Fetch profile (created by signal)
             try:
                 student_profile = user.student_profile
@@ -105,7 +107,24 @@ class UserCreateSerializer(serializers.ModelSerializer):
                 # Fallback if signal didn't run or profile missing
                 import logging
                 logger = logging.getLogger(__name__)
-                logger.error(f"Failed to update profile for user {user.username}: {e}")
+                logger.error(f"Failed to update profile for user {user.registration_number}: {e}")
+                
+        elif user.role == UserRole.TEACHER and department_id:
+            try:
+                teacher_profile = user.teacher_profile
+                teacher_profile.department_id = department_id
+                
+                # Also set the legacy department_name
+                from apps.academics.models import Department
+                dept = Department.objects.filter(id=department_id).first()
+                if dept:
+                    teacher_profile.department_name = dept.name
+                    
+                teacher_profile.save()
+            except Exception as e:
+                import logging
+                logger = logging.getLogger(__name__)
+                logger.error(f"Failed to update profile for teacher {user.registration_number}: {e}")
                 
         return user
 

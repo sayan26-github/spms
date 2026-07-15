@@ -9,7 +9,7 @@ class Prediction(TimeStampedModel):
     """
     Stores AI-generated performance predictions and risk assessments.
     """
-    college = models.ForeignKey('academics.College', on_delete=models.CASCADE, related_name='predictions', null=True, blank=True)
+    college = models.ForeignKey('academics.College', on_delete=models.CASCADE, related_name='predictions')
     student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='predictions')
     predicted_gpa = models.DecimalField(_('predicted GPA'), max_digits=4, decimal_places=2, null=True, blank=True)
     risk_level = models.CharField(

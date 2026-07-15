@@ -131,6 +131,18 @@ class UserViewSet(viewsets.ModelViewSet):
             return UserCreateSerializer
         return UserSerializer
 
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        
+        if instance == request.user:
+            return Response({"detail": "You cannot delete yourself."}, status=status.HTTP_403_FORBIDDEN)
+            
+        from apps.common.constants import UserRole
+        if instance.role == UserRole.HEAD:
+            return Response({"detail": "You cannot delete a HEAD user."}, status=status.HTTP_403_FORBIDDEN)
+            
+        return super().destroy(request, *args, **kwargs)
+
     @action(detail=False, methods=['post'], parser_classes=[MultiPartParser])
     def bulk_import(self, request):
         file = request.FILES.get('file')

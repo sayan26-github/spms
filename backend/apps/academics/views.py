@@ -1,4 +1,6 @@
 from rest_framework import viewsets, permissions, status
+from apps.common.constants import UserRole
+
 from rest_framework.decorators import action, api_view, permission_classes as permission_classes_decorator
 from rest_framework.response import Response
 from apps.users.permissions import IsTeacher, IsAdmin, IsSameCollege, IsHead
@@ -92,11 +94,11 @@ class SubjectViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
-        if user.role == 'ADMIN' or user.role == 'HEAD':
+        if user.role == UserRole.ADMIN or user.role == UserRole.HEAD:
             return Subject.objects.filter(college=user.college)
-        elif user.role == 'TEACHER':
+        elif user.role == UserRole.TEACHER:
             return Subject.objects.filter(teacher__user=user, college=user.college)
-        elif user.role == 'STUDENT':
+        elif user.role == UserRole.STUDENT:
             return Subject.objects.filter(enrollments__student__user=user, college=user.college).distinct()
         return Subject.objects.none()
 
@@ -135,16 +137,21 @@ class EnrollmentViewSet(viewsets.ModelViewSet):
     serializer_class = EnrollmentSerializer
     permission_classes = [permissions.IsAuthenticated]
 
+    def get_permissions(self):
+        if self.action in ['create', 'update', 'partial_update', 'destroy']:
+            return [permissions.IsAuthenticated(), (IsAdmin | IsHead)()]
+        return super().get_permissions()
+
     def get_queryset(self):
         user = self.request.user
         qs = Enrollment.objects.select_related(
             'student__user', 'subject'
         )
-        if user.role in ['ADMIN', 'HEAD']:
+        if user.role in [UserRole.ADMIN, UserRole.HEAD]:
             return qs.filter(student__user__college=user.college)
-        elif user.role == 'TEACHER':
+        elif user.role == UserRole.TEACHER:
             return qs.filter(subject__teacher__user=user, subject__college=user.college)
-        elif user.role == 'STUDENT':
+        elif user.role == UserRole.STUDENT:
             return qs.filter(student__user=user, student__user__college=user.college)
         return Enrollment.objects.none()
 
@@ -236,13 +243,18 @@ class ResourceViewSet(viewsets.ModelViewSet):
     serializer_class = ResourceSerializer
     permission_classes = [permissions.IsAuthenticated]
 
+    def get_permissions(self):
+        if self.action in ['create', 'update', 'partial_update', 'destroy']:
+            return [permissions.IsAuthenticated(), (IsAdmin | IsHead | IsTeacher)()]
+        return super().get_permissions()
+
     def get_queryset(self):
         user = self.request.user
-        if user.role == 'TEACHER':
+        if user.role == UserRole.TEACHER:
             return Resource.objects.filter(subject__teacher__user=user, subject__college=user.college)
-        elif user.role == 'STUDENT':
+        elif user.role == UserRole.STUDENT:
             return Resource.objects.filter(subject__enrollments__student__user=user, subject__enrollments__is_active=True, subject__college=user.college).distinct()
-        elif user.role in ['ADMIN', 'HEAD']:
+        elif user.role in [UserRole.ADMIN, UserRole.HEAD]:
              return Resource.objects.filter(subject__college=user.college)
         return Resource.objects.none()
 
@@ -251,11 +263,28 @@ class ResourceViewSet(viewsets.ModelViewSet):
         subject = serializer.validated_data['subject']
         user = self.request.user
         
-        if user.role == 'TEACHER':
+        if user.role == UserRole.TEACHER:
             if not subject.teacher or subject.teacher.user != user:
                 raise DRFValidationError("You can only upload resources for your own subjects.")
         
         serializer.save()
+
+    def perform_update(self, serializer):
+        subject = serializer.validated_data.get('subject', self.get_object().subject)
+        user = self.request.user
+        
+        if user.role == UserRole.TEACHER:
+            if not subject.teacher or subject.teacher.user != user:
+                raise DRFValidationError("You can only edit resources for your own subjects.")
+        
+        serializer.save()
+
+    def perform_destroy(self, instance):
+        user = self.request.user
+        if user.role == UserRole.TEACHER:
+            if not instance.subject.teacher or instance.subject.teacher.user != user:
+                raise DRFValidationError("You can only delete resources for your own subjects.")
+        instance.delete()
 
 
 @api_view(['GET'])

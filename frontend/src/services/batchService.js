@@ -1,11 +1,12 @@
 import api from '../api/axios';
+import { extractResults } from '../utils/apiHelpers';
 
 const BATCH_API = '/academics/batches/';
 
 export const batchService = {
     getAll: async (params = {}) => {
         const response = await api.get(BATCH_API, { params });
-        return response.data;
+        return extractResults(response.data);
     },
     create: async (data) => {
         const response = await api.post(BATCH_API, data);

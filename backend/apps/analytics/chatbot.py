@@ -20,7 +20,7 @@ class ChatbotService:
         try:
             # Configure Gemini
             genai.configure(api_key=api_key)
-            model = genai.GenerativeModel('gemini-flash-latest')
+
 
             # Fetch student data for context
             try:
@@ -51,13 +51,19 @@ class ChatbotService:
                 "Use this context to give personalized advice when they ask about their grades, eligibility, or attendance. "
             )
 
-            # Generate response
-            response = model.generate_content(
-                f"{system_prompt}\n\nUser Question: {message}"
+            model = genai.GenerativeModel(
+                model_name='gemini-1.5-flash',
+                system_instruction=system_prompt
             )
+
+            # Generate response
+            response = model.generate_content(message)
             
             return response.text
 
         except Exception as e:
-            logger.error(f"Gemini API Error: {e}")
+            error_str = str(e)
+            logger.error(f"Gemini API Error: {error_str}")
+            if "429" in error_str or "Quota exceeded" in error_str:
+                return "I'm receiving too many requests right now (API rate limit). Please wait a few seconds and try again!"
             return "I'm sorry, I'm having trouble connecting to my brain right now. Please try again later."

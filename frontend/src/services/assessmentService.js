@@ -12,12 +12,14 @@ export const assessmentService = {
     },
 
     // Create a new assessment
-    createAssessment: async (subjectId, name, maxMarks, date) => {
+    createAssessment: async (subjectId, name, maxMarks, date, assessmentType = 'QUIZ', weightage = 0) => {
         const response = await api.post(ENDPOINTS.ASSESSMENTS, {
             subject: subjectId,
             name,
             max_marks: maxMarks,
-            date
+            date,
+            assessment_type: assessmentType,
+            weightage
         });
         return response.data;
     },

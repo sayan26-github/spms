@@ -39,16 +39,24 @@ class AcademicService:
         Bulk enroll/sync students for a subject.
         Creates new enrollments, deactivates removed ones.
         """
+        # Validate that all students belong to the subject's college
+        valid_student_ids = list(Student.objects.filter(
+            id__in=student_ids, user__college=subject.college
+        ).values_list('id', flat=True))
+        
+        if len(valid_student_ids) != len(student_ids):
+            raise ValidationError("One or more students do not belong to the subject's college.")
+
         with transaction.atomic():
             # Deactivate enrollments not in the new list
             Enrollment.objects.filter(
                 subject=subject, is_active=True
             ).exclude(
-                student_id__in=student_ids
+                student_id__in=valid_student_ids
             ).update(is_active=False)
 
             # Create or reactivate enrollments in the list
-            for sid in student_ids:
+            for sid in valid_student_ids:
                 enrollment, created = Enrollment.objects.get_or_create(
                     student_id=sid, subject=subject,
                     defaults={'is_active': True}

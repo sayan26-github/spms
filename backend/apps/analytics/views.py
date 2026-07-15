@@ -1,4 +1,6 @@
 from rest_framework import viewsets, permissions, status
+from apps.common.constants import UserRole
+
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from apps.users.permissions import IsAdmin, IsHead, IsTeacher
@@ -18,14 +20,14 @@ class PredictionViewSet(viewsets.ReadOnlyModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
-        if user.role in ['ADMIN', 'HEAD']:
+        if user.role in [UserRole.ADMIN, UserRole.HEAD]:
             return Prediction.objects.filter(student__user__college=user.college)
-        elif user.role == 'TEACHER':
+        elif user.role == UserRole.TEACHER:
             # Teachers can see predictions for students in their college? Or strictly their subjects?
             # Analytics is high level. Let's allow Teachers to see analytics for their college students for now
             # as they need to identify at-risk students.
             return Prediction.objects.filter(student__user__college=user.college)
-        elif user.role == 'STUDENT':
+        elif user.role == UserRole.STUDENT:
             return Prediction.objects.filter(student__user=user)
         return Prediction.objects.none()
 
@@ -34,7 +36,8 @@ class PredictionViewSet(viewsets.ReadOnlyModelViewSet):
         """
         Trigger batch analysis for the college.
         """
-        if request.user.role not in ['ADMIN', 'HEAD', 'TEACHER']:
+        from apps.common.constants import UserRole
+        if request.user.role not in [UserRole.ADMIN, UserRole.HEAD, UserRole.TEACHER]:
             return Response({"detail": "You do not have permission to perform this action."}, status=status.HTTP_403_FORBIDDEN)
         count = AnalyticsService.run_batch_predictions(request.user.college)
         return Response({"detail": f"Analysis completed for {count} students."}, status=status.HTTP_200_OK)
@@ -112,7 +115,8 @@ class PredictionViewSet(viewsets.ReadOnlyModelViewSet):
         feature breakdown, and subject-level performance.
         """
         user = request.user
-        if user.role != 'STUDENT':
+        from apps.common.constants import UserRole
+        if user.role != UserRole.STUDENT:
             return Response(
                 {"detail": "Only students can access insights."},
                 status=status.HTTP_403_FORBIDDEN
@@ -136,7 +140,8 @@ class PredictionViewSet(viewsets.ReadOnlyModelViewSet):
         Returns the top 3 recommended electives for the student.
         """
         user = request.user
-        if user.role != 'STUDENT':
+        from apps.common.constants import UserRole
+        if user.role != UserRole.STUDENT:
             return Response(
                 {"detail": "Only students can access recommendations."},
                 status=status.HTTP_403_FORBIDDEN
